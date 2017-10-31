@@ -113,7 +113,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled enableProguardInReleaseBuilds
+            enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
@@ -133,6 +133,7 @@ android {
 }
 
 dependencies {
+    compile project(":react-native-line")
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
