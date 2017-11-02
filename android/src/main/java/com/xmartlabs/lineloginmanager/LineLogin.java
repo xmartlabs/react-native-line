@@ -85,7 +85,13 @@ public class LineLogin extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getUserProfile(final Promise promise) {
         if (loginResult != null) {
-            promise.resolve(loginResult.getLineProfile());
+            LineProfile profile = loginResult.getLineProfile();
+            WritableMap result = Arguments.createMap();
+            result.putString("displayName", profile.getDisplayName());
+            result.putString("userId", profile.getUserId());
+            result.putString("statusMessage", profile.getStatusMessage());
+            result.putString("pictureUrl", profile.getPictureUrl().toString());
+            promise.resolve(result);
         } else {
             promise.reject(ERROR, "No user logged in");
         }
