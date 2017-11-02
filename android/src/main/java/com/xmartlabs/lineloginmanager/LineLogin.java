@@ -2,6 +2,9 @@ package com.xmartlabs.lineloginmanager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -11,8 +14,12 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.linecorp.linesdk.LineAccessToken;
+import com.linecorp.linesdk.LineApiResponse;
 import com.linecorp.linesdk.LineCredential;
 import com.linecorp.linesdk.LineProfile;
+import com.linecorp.linesdk.api.LineApiClient;
+import com.linecorp.linesdk.api.LineApiClientBuilder;
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 
@@ -22,29 +29,30 @@ public class LineLogin extends ReactContextBaseJavaModule {
     private static final String CHANNEL_ID = "1544017747";
     private static final int REQUEST_CODE = 1;
 
-    private Promise loginPromise;
+    private LineApiClient lineApiClient;
+    private Promise currentPromise;
     private LineLoginResult loginResult;
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
             super.onActivityResult(activity, requestCode, resultCode, data);
             if (requestCode != REQUEST_CODE) {
-                loginPromise.reject(ERROR, "Unsupported request");
+                currentPromise.reject(ERROR, "Unsupported request");
                 return;
             }
-            if (loginPromise != null) {
+            if (currentPromise != null) {
                 loginResult = LineLoginApi.getLoginResultFromIntent(data);
                 switch (loginResult.getResponseCode()) {
                     case SUCCESS:
-                        loginPromise.resolve(parseLoginResult(loginResult));
+                        currentPromise.resolve(parseLoginResult(loginResult));
                         break;
                     case CANCEL:
                         loginResult = null;
-                        loginPromise.reject(ERROR, "Line login canceled by user");
+                        currentPromise.reject(ERROR, "Line login canceled by user");
                         break;
                     default:
                         loginResult = null;
-                        loginPromise.reject(ERROR, loginResult.getErrorData().toString());
+                        currentPromise.reject(ERROR, loginResult.getErrorData().toString());
                         break;
                 }
             }
@@ -53,6 +61,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     public LineLogin(ReactApplicationContext reactContext) {
         super(reactContext);
+        lineApiClient = new LineApiClientBuilder(getCurrentActivity().getApplicationContext(), CHANNEL_ID).build();
         reactContext.addActivityEventListener(mActivityEventListener);
     }
 
@@ -64,7 +73,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     @ReactMethod
     public void login(final Promise promise) {
         try {
-            loginPromise = promise;
+            currentPromise = promise;
             Intent intent = LineLoginApi.getLoginIntent(getCurrentActivity().getApplicationContext(), CHANNEL_ID);
             getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
@@ -79,33 +88,26 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void currentAccessToken(final Promise promise) {
-        if (loginResult != null) {
-            promise.resolve(parseAccessToken(loginResult.getLineCredential()));
-        } else {
-            promise.reject(ERROR, "No user logged in");
-        }
+        currentPromise = promise;
+        new GetAccessTokenTask().execute();
     }
 
     @ReactMethod
     public void getUserProfile(final Promise promise) {
-        if (loginResult != null) {
-            LineProfile profile = loginResult.getLineProfile();
-            promise.resolve(parseProfile(profile));
-        } else {
-            promise.reject(ERROR, "No user logged in");
-        }
+        currentPromise = promise;
+        new GetProfileTask().execute();
     }
 
     @ReactMethod
     public void logout(final Promise promise) {
-        loginResult = null;
-        promise.resolve(new Object());
+        currentPromise = promise;
+        new LogoutTask().execute();
     }
 
     private WritableMap parseLoginResult(LineLoginResult loginResult) {
         WritableMap result = Arguments.createMap();
         result.putMap("profile", parseProfile(loginResult.getLineProfile()));
-        result.putMap("accessToken", parseAccessToken(loginResult.getLineCredential()));
+        result.putMap("accessToken", parseAccessToken(loginResult.getLineCredential().getAccessToken()));
         return result;
     }
 
@@ -118,10 +120,62 @@ public class LineLogin extends ReactContextBaseJavaModule {
         return result;
     }
 
-    private WritableMap parseAccessToken(LineCredential credentials) {
+    private WritableMap parseAccessToken(LineAccessToken accessToken) {
         WritableMap result = Arguments.createMap();
-        result.putString("accessToken", credentials.getAccessToken().getAccessToken());
-        result.putString("expirationDate", Long.toString(credentials.getAccessToken().getExpiresInMillis()));
+        result.putString("accessToken", accessToken.getAccessToken());
+        result.putString("expirationDate", Long.toString(accessToken.getExpiresInMillis()));
         return result;
+    }
+
+    public class LogoutTask extends AsyncTask<Void, Void, LineApiResponse> {
+
+        final static String TAG = "LogoutTask";
+
+        @Override
+        protected LineApiResponse doInBackground(Void... voids) {
+            return lineApiClient.getProfile();
+        }
+
+        @Override
+        protected void onPostExecute(LineApiResponse lineApiResponse) {
+            if (lineApiResponse.isSuccess()) {
+                currentPromise.resolve(new Object());
+            } else {
+                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            }
+        }
+    }
+
+    public class GetProfileTask extends AsyncTask<Void, Void, LineApiResponse<LineProfile>> {
+        final static String TAG = "GetProfileTask";
+
+        protected LineApiResponse<LineProfile> doInBackground(Void... params) {
+            return lineApiClient.getProfile();
+        }
+
+        protected void onPostExecute(LineApiResponse<LineProfile> lineApiResponse) {
+            if (lineApiResponse.isSuccess()) {
+                currentPromise.resolve(parseProfile(lineApiResponse.getResponseData()));
+            } else {
+                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            }
+        }
+    }
+
+    public class GetAccessTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineAccessToken>> {
+        final static String TAG = "GetAccessTokenTask";
+
+        protected LineApiResponse<LineAccessToken> doInBackground(Void... params) {
+            return lineApiClient.getCurrentAccessToken();
+        }
+
+        @Override
+        protected void onPostExecute(LineApiResponse<LineAccessToken> lineApiResponse) {
+            if (lineApiResponse.isSuccess()) {
+                currentPromise.resolve(parseAccessToken(lineApiResponse.getResponseData()));
+            } else {
+                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            }
+        }
     }
 }
