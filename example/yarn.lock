@@ -3445,7 +3445,7 @@ react-devtools-core@^2.5.0:
 
 "react-native-line@git+https://github.com/xmartlabs/react-native-line.git#feature/androidSupport":
   version "0.0.1"
-  resolved "git+https://github.com/xmartlabs/react-native-line.git#57054a7517d7b263ef571eabf55b22c965b83559"
+  resolved "git+https://github.com/xmartlabs/react-native-line.git#559ddd0e2dacadf4c0a32809942782eca50de37b"
 
 react-native@0.48.2:
   version "0.48.2"

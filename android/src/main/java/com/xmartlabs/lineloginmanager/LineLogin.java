@@ -13,53 +13,87 @@ import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 
 public class LineLogin extends ReactContextBaseJavaModule {
-  private static final String MODULE_NAME = "LineLogin";
-  private static final String CHANNEL_ID = "CHANGE_ME";
-  private static final int REQUEST_CODE = 1;
+    private static final String MODULE_NAME = "LineLoginManager";
+    private static final String ERROR = "ERROR";
+    private static final String CHANNEL_ID = "1544017747";
+    private static final int REQUEST_CODE = 1;
 
-  private Promise loginPromise;
-
-  public LineLogin(ReactApplicationContext reactContext) {
-    super(reactContext);
-  }
-
+    private Promise loginPromise;
+    private LineLoginResult loginResult;
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
+        @Override
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(activity, requestCode, resultCode, data);
+            if (requestCode != REQUEST_CODE) {
+                loginPromise.reject(ERROR, "Unsupported request");
+                return;
+            }
+            if (loginPromise != null) {
+                loginResult = LineLoginApi.getLoginResultFromIntent(data);
+                switch (loginResult.getResponseCode()) {
+                    case SUCCESS:
+                        loginPromise.resolve(loginResult.getLineCredential().getAccessToken().getAccessToken());
+                        break;
+                    case CANCEL:
+                        loginResult = null;
+                        loginPromise.reject(ERROR, "Line login canceled by user");
+                        break;
+                    default:
+                        loginResult = null;
+                        loginPromise.reject(ERROR, loginResult.getErrorData().toString());
+                        break;
+                }
+            }
+        }
+    };
+
+    public LineLogin(ReactApplicationContext reactContext) {
+        super(reactContext);
+        reactContext.addActivityEventListener(mActivityEventListener);
+    }
 
     @Override
-    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-      super.onActivityResult(activity, requestCode, resultCode, data);
-      if(resultCode != REQUEST_CODE) {
-        loginPromise.reject("Unsupported request");
-        loginPromise = null;
-        return;
-      }
-      if (loginPromise != null) {
-        LineLoginResult result = LineLoginApi.getLoginResultFromIntent(data);
-        switch(result.getResponseCode()) {
-          case SUCCESS:
-            loginPromise.resolve(result.getLineProfile());
-          case CANCEL:
-            loginPromise.reject("Line login canceled by user");
-          default:
-            loginPromise.reject(result.getErrorData().toString());
+    public String getName() {
+        return MODULE_NAME;
+    }
+
+    @ReactMethod
+    public void login(final Promise promise) {
+        try {
+            loginPromise = promise;
+            Intent intent = LineLoginApi.getLoginIntent(getCurrentActivity().getApplicationContext(), CHANNEL_ID);
+            getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
+        } catch (Exception e) {
+            promise.reject(ERROR, e.toString());
         }
-      }
     }
-  };
 
-  @Override
-  public String getName() {
-    return MODULE_NAME;
-  }
-
-  @ReactMethod
-  public void login(final Promise promise) {
-    try {
-        loginPromise = promise;
-        Intent intent = LineLoginApi.getLoginIntent(getCurrentActivity().getApplicationContext(), CHANNEL_ID);
-        getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
-    } catch(Exception e) {
-      promise.reject(e.toString());
+    @ReactMethod
+    public void loginWithPermissions(final Promise promise) {
+        login(promise);
     }
-  }
+
+    @ReactMethod
+    public void currentAccessToken(final Promise promise) {
+        if (loginResult != null) {
+            promise.resolve(loginResult.getLineCredential().getAccessToken().getAccessToken());
+        } else {
+            promise.reject(ERROR, "No user logged in");
+        }
+    }
+
+    @ReactMethod
+    public void getUserProfile(final Promise promise) {
+        if (loginResult != null) {
+            promise.resolve(loginResult.getLineProfile());
+        } else {
+            promise.reject(ERROR, "No user logged in");
+        }
+    }
+
+    @ReactMethod
+    public void logout(final Promise promise) {
+        loginResult = null;
+        promise.resolve(new Object());
+    }
 }
