@@ -27,7 +27,7 @@ class example extends Component {
   }
 
   _handleClickLogout () {
-    // LoginManager.logout()
+    LoginManager.logout()
   }
 
   render() {

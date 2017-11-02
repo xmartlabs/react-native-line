@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.WritableMap;
+import com.linecorp.linesdk.LineCredential;
+import com.linecorp.linesdk.LineProfile;
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 
@@ -32,7 +36,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
                 loginResult = LineLoginApi.getLoginResultFromIntent(data);
                 switch (loginResult.getResponseCode()) {
                     case SUCCESS:
-                        loginPromise.resolve(loginResult.getLineCredential().getAccessToken().getAccessToken());
+                        loginPromise.resolve(parseLoginResult(loginResult));
                         break;
                     case CANCEL:
                         loginResult = null;
@@ -76,7 +80,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     @ReactMethod
     public void currentAccessToken(final Promise promise) {
         if (loginResult != null) {
-            promise.resolve(loginResult.getLineCredential().getAccessToken().getAccessToken());
+            promise.resolve(parseAccessToken(loginResult.getLineCredential()));
         } else {
             promise.reject(ERROR, "No user logged in");
         }
@@ -86,12 +90,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     public void getUserProfile(final Promise promise) {
         if (loginResult != null) {
             LineProfile profile = loginResult.getLineProfile();
-            WritableMap result = Arguments.createMap();
-            result.putString("displayName", profile.getDisplayName());
-            result.putString("userId", profile.getUserId());
-            result.putString("statusMessage", profile.getStatusMessage());
-            result.putString("pictureUrl", profile.getPictureUrl().toString());
-            promise.resolve(result);
+            promise.resolve(parseProfile(profile));
         } else {
             promise.reject(ERROR, "No user logged in");
         }
@@ -101,5 +100,28 @@ public class LineLogin extends ReactContextBaseJavaModule {
     public void logout(final Promise promise) {
         loginResult = null;
         promise.resolve(new Object());
+    }
+
+    private WritableMap parseLoginResult(LineLoginResult loginResult) {
+        WritableMap result = Arguments.createMap();
+        result.putMap("profile", parseProfile(loginResult.getLineProfile()));
+        result.putMap("accessToken", parseAccessToken(loginResult.getLineCredential()));
+        return result;
+    }
+
+    private WritableMap parseProfile(LineProfile profile) {
+        WritableMap result = Arguments.createMap();
+        result.putString("displayName", profile.getDisplayName());
+        result.putString("userID", profile.getUserId());
+        result.putString("statusMessage", profile.getStatusMessage());
+        result.putString("pictureURL", profile.getPictureUrl().toString());
+        return result;
+    }
+
+    private WritableMap parseAccessToken(LineCredential credentials) {
+        WritableMap result = Arguments.createMap();
+        result.putString("accessToken", credentials.getAccessToken().getAccessToken());
+        result.putString("expirationDate", Long.toString(credentials.getAccessToken().getExpiresInMillis()));
+        return result;
     }
 }
