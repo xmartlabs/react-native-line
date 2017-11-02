@@ -1,11 +1,9 @@
 package com.xmartlabs.lineloginmanager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
@@ -16,7 +14,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
 import com.linecorp.linesdk.LineAccessToken;
 import com.linecorp.linesdk.LineApiResponse;
-import com.linecorp.linesdk.LineCredential;
 import com.linecorp.linesdk.LineProfile;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
@@ -26,7 +23,6 @@ import com.linecorp.linesdk.auth.LineLoginResult;
 public class LineLogin extends ReactContextBaseJavaModule {
     private static final String MODULE_NAME = "LineLoginManager";
     private static final String ERROR = "ERROR";
-    private static final String CHANNEL_ID = "1544017747";
     private static final int REQUEST_CODE = 1;
 
     private LineApiClient lineApiClient;
@@ -61,7 +57,6 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     public LineLogin(ReactApplicationContext reactContext) {
         super(reactContext);
-        lineApiClient = new LineApiClientBuilder(getCurrentActivity().getApplicationContext(), CHANNEL_ID).build();
         reactContext.addActivityEventListener(mActivityEventListener);
     }
 
@@ -74,7 +69,9 @@ public class LineLogin extends ReactContextBaseJavaModule {
     public void login(final Promise promise) {
         try {
             currentPromise = promise;
-            Intent intent = LineLoginApi.getLoginIntent(getCurrentActivity().getApplicationContext(), CHANNEL_ID);
+            Context context= getCurrentActivity().getApplicationContext();
+            String channelId = context.getString(R.string.line_channel_id);
+            Intent intent = LineLoginApi.getLoginIntent(context, channelId);
             getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
             promise.reject(ERROR, e.toString());
@@ -83,7 +80,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void loginWithPermissions(final Promise promise) {
-        login(promise);
+        promise.reject(ERROR, "Login with permissions is not supported on Android.");
     }
 
     @ReactMethod
@@ -104,6 +101,15 @@ public class LineLogin extends ReactContextBaseJavaModule {
         new LogoutTask().execute();
     }
 
+    private LineApiClient getLineApiClient() {
+        if(lineApiClient == null) {
+            Context context= getCurrentActivity().getApplicationContext();
+            String channelId = context.getString(R.string.line_channel_id);
+            lineApiClient = new LineApiClientBuilder(context, channelId).build();
+        }
+        return lineApiClient;
+    }
+
     private WritableMap parseLoginResult(LineLoginResult loginResult) {
         WritableMap result = Arguments.createMap();
         result.putMap("profile", parseProfile(loginResult.getLineProfile()));
@@ -116,7 +122,9 @@ public class LineLogin extends ReactContextBaseJavaModule {
         result.putString("displayName", profile.getDisplayName());
         result.putString("userID", profile.getUserId());
         result.putString("statusMessage", profile.getStatusMessage());
-        result.putString("pictureURL", profile.getPictureUrl().toString());
+        if (profile.getPictureUrl() != null) {
+            result.putString("pictureURL", profile.getPictureUrl().toString());
+        }
         return result;
     }
 
@@ -133,7 +141,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
         @Override
         protected LineApiResponse doInBackground(Void... voids) {
-            return lineApiClient.getProfile();
+            return getLineApiClient().getProfile();
         }
 
         @Override
@@ -150,7 +158,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
         final static String TAG = "GetProfileTask";
 
         protected LineApiResponse<LineProfile> doInBackground(Void... params) {
-            return lineApiClient.getProfile();
+            return getLineApiClient().getProfile();
         }
 
         protected void onPostExecute(LineApiResponse<LineProfile> lineApiResponse) {
@@ -166,7 +174,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
         final static String TAG = "GetAccessTokenTask";
 
         protected LineApiResponse<LineAccessToken> doInBackground(Void... params) {
-            return lineApiClient.getCurrentAccessToken();
+            return getLineApiClient().getCurrentAccessToken();
         }
 
         @Override
