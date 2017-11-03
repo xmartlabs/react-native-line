@@ -32,11 +32,11 @@ public class LineLogin extends ReactContextBaseJavaModule {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
             super.onActivityResult(activity, requestCode, resultCode, data);
-            if (requestCode != REQUEST_CODE) {
-                currentPromise.reject(ERROR, "Unsupported request");
-                return;
-            }
             if (currentPromise != null) {
+                if (requestCode != REQUEST_CODE) {
+                    currentPromise.reject(ERROR, "Unsupported request");
+                    return;
+                }
                 loginResult = LineLoginApi.getLoginResultFromIntent(data);
                 switch (loginResult.getResponseCode()) {
                     case SUCCESS:
@@ -69,7 +69,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     public void login(final Promise promise) {
         try {
             currentPromise = promise;
-            Context context= getCurrentActivity().getApplicationContext();
+            Context context = getCurrentActivity().getApplicationContext();
             String channelId = context.getString(R.string.line_channel_id);
             Intent intent = LineLoginApi.getLoginIntent(context, channelId);
             getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
@@ -102,7 +102,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     }
 
     private LineApiClient getLineApiClient() {
-        if(lineApiClient == null) {
+        if (lineApiClient == null) {
             Context context= getCurrentActivity().getApplicationContext();
             String channelId = context.getString(R.string.line_channel_id);
             lineApiClient = new LineApiClientBuilder(context, channelId).build();
@@ -136,9 +136,6 @@ public class LineLogin extends ReactContextBaseJavaModule {
     }
 
     public class LogoutTask extends AsyncTask<Void, Void, LineApiResponse> {
-
-        final static String TAG = "LogoutTask";
-
         @Override
         protected LineApiResponse doInBackground(Void... voids) {
             return getLineApiClient().getProfile();
@@ -155,8 +152,6 @@ public class LineLogin extends ReactContextBaseJavaModule {
     }
 
     public class GetProfileTask extends AsyncTask<Void, Void, LineApiResponse<LineProfile>> {
-        final static String TAG = "GetProfileTask";
-
         protected LineApiResponse<LineProfile> doInBackground(Void... params) {
             return getLineApiClient().getProfile();
         }
@@ -171,8 +166,6 @@ public class LineLogin extends ReactContextBaseJavaModule {
     }
 
     public class GetAccessTokenTask extends AsyncTask<Void, Void, LineApiResponse<LineAccessToken>> {
-        final static String TAG = "GetAccessTokenTask";
-
         protected LineApiResponse<LineAccessToken> doInBackground(Void... params) {
             return getLineApiClient().getCurrentAccessToken();
         }
