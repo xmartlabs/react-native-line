@@ -10,14 +10,14 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableNativeFeedback 
+  TouchableNativeFeedback
 } from 'react-native';
 
-import { LoginManager } from 'react-native-line-login'
+import LineLogin from 'react-native-line'
 
 class example extends Component {
   _handleClickLogin () {
-    LoginManager.login()
+    LineLogin.login()
     .then((user) => {
       console.log(user)
     })
@@ -50,7 +50,7 @@ class example extends Component {
           <View>
             <Text>Login</Text>
           </View>
-        </TouchableNativeFeedback> 
+        </TouchableNativeFeedback>
 
         <TouchableNativeFeedback
           style={styles.button}
@@ -58,7 +58,7 @@ class example extends Component {
           <View>
             <Text>Logout</Text>
           </View>
-        </TouchableNativeFeedback> 
+        </TouchableNativeFeedback>
       </View>
     );
   }

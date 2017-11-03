@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">example</string>
+    <string name="line_channel_id" translatable="false">YOUR_CHANNEL_ID</string>
 </resources>
