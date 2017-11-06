@@ -8,8 +8,8 @@ iOS and Android Native wrapper for Line's MobileSDK.
 ## Installation
 First, install the npm package and link it to your Android and iOS projects with react-native link.
 ```bash
-  npm install react-native-line
-  react-native link react-native-line
+  npm install react-native-line-sdk
+  react-native link react-native-line-sdk
 ```
 ### iOS Setup
 Follow all the configuration steps in [Line's iOS integration guide](https://developers.line.me/en/docs/line-login/ios/integrate-line-login/)
@@ -33,7 +33,7 @@ repositories {
 ## Usage
 First, require the `LineLogin` module:
 ```javascript
-import LineLogin from 'react-native-line'
+import LineLogin from 'react-native-line-sdk'
 ```
 Then, you can start using all the functions that are available:
 
@@ -78,11 +78,11 @@ The following objects are returned on the methods described above:
 ```
 
 ## Example
-To see more of `react-native-line` in action you can check out the source in the `example` folder.
+To see more of `react-native-line-sdk` in action you can check out the source in the `example` folder.
 
 ## Authors
 - [Santiago Fernandez](https://github.com/santiagofm)
 - [Mauricio Cousillas](https://github.com/mcousillas6)
 
 ## License
-`react-native-line` is available under the MIT license. See the LICENCE file for more info.
+`react-native-line-sdk` is available under the MIT license. See the LICENCE file for more info.
