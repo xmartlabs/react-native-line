@@ -138,7 +138,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
     public class LogoutTask extends AsyncTask<Void, Void, LineApiResponse> {
         @Override
         protected LineApiResponse doInBackground(Void... voids) {
-            return getLineApiClient().getProfile();
+            return getLineApiClient().logout();
         }
 
         @Override
