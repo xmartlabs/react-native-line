@@ -112,11 +112,10 @@ RCT_EXPORT_METHOD(getProfile:(RCTPromiseResolveBlock)resolve
     } else
     {
         if (permissions && [permissions count] > 0) {
-            [shared startWebLoginWithSafariViewController:YES];
+            [shared startWebLoginWithPermissions:permissions];
         } else
         {
-            [shared startWebLoginWithSafariViewController:YES
-                                              permissions:permissions];
+            [shared startWebLogin];
         }
     }
 }

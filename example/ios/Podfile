@@ -2,7 +2,7 @@ platform :ios, '9.0'
 
 target 'example' do
   # Pods for example
-  pod 'LineSDK', '~> 4.0.3'
+  pod 'LineSDK', '~> 4.1.0'
 
   target 'exampleTests' do
     inherit! :search_paths
