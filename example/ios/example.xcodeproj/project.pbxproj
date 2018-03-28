@@ -40,7 +40,6 @@
 		CBB2F4D41F672B3E00BDA0ED /* libPods-example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 448D058F968600E0147CFEDE /* libPods-example.a */; };
 		CBB2F4D61F672B4A00BDA0ED /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB2F4D51F672B4A00BDA0ED /* Security.framework */; };
 		CBB2F4D81F672B4F00BDA0ED /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB2F4D71F672B4F00BDA0ED /* CoreTelephony.framework */; };
-		CBB2F5671F686B7400BDA0ED /* libLineLoginManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB2F5421F685D4C00BDA0ED /* libLineLoginManager.a */; };
 		D00AD036A447885A51552843 /* libPods-exampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F43D475A5CC5B33E0B73741A /* libPods-exampleTests.a */; };
 /* End PBXBuildFile section */
 
@@ -276,9 +275,9 @@
 			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
 			remoteInfo = "double-conversion-tvOS";
 		};
-		CBB2F5411F685D4C00BDA0ED /* PBXContainerItemProxy */ = {
+		CBBE0F9A206C1BC2005D0E9E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CBB2F53D1F685D4C00BDA0ED /* LineLoginManager.xcodeproj */;
+			containerPortal = CBBE0F96206C1BC2005D0E9E /* LineLoginManager.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = LineLoginManager;
@@ -318,7 +317,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		CBB2F4D51F672B4A00BDA0ED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CBB2F4D71F672B4F00BDA0ED /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		CBB2F53D1F685D4C00BDA0ED /* LineLoginManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LineLoginManager.xcodeproj; path = "../node_modules/react-native-line/ios/LineLoginManager.xcodeproj"; sourceTree = "<group>"; };
+		CBBE0F96206C1BC2005D0E9E /* LineLoginManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LineLoginManager.xcodeproj; path = ../../ios/LineLoginManager.xcodeproj; sourceTree = "<group>"; };
 		F43D475A5CC5B33E0B73741A /* libPods-exampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-exampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -336,7 +335,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBB2F5671F686B7400BDA0ED /* libLineLoginManager.a in Frameworks */,
 				CBB2F4D81F672B4F00BDA0ED /* CoreTelephony.framework in Frameworks */,
 				CBB2F4D61F672B4A00BDA0ED /* Security.framework in Frameworks */,
 				CBB2F4D41F672B3E00BDA0ED /* libPods-example.a in Frameworks */,
@@ -534,7 +532,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				CBB2F53D1F685D4C00BDA0ED /* LineLoginManager.xcodeproj */,
+				CBBE0F96206C1BC2005D0E9E /* LineLoginManager.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -595,10 +593,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CBB2F53E1F685D4C00BDA0ED /* Products */ = {
+		CBBE0F97206C1BC2005D0E9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CBB2F5421F685D4C00BDA0ED /* libLineLoginManager.a */,
+				CBBE0F9B206C1BC2005D0E9E /* libLineLoginManager.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -726,8 +724,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = CBB2F53E1F685D4C00BDA0ED /* Products */;
-					ProjectRef = CBB2F53D1F685D4C00BDA0ED /* LineLoginManager.xcodeproj */;
+					ProductGroup = CBBE0F97206C1BC2005D0E9E /* Products */;
+					ProjectRef = CBBE0F96206C1BC2005D0E9E /* LineLoginManager.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -1006,11 +1004,11 @@
 			remoteRef = CBB2F50B1F672DDF00BDA0ED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CBB2F5421F685D4C00BDA0ED /* libLineLoginManager.a */ = {
+		CBBE0F9B206C1BC2005D0E9E /* libLineLoginManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libLineLoginManager.a;
-			remoteRef = CBB2F5411F685D4C00BDA0ED /* PBXContainerItemProxy */;
+			remoteRef = CBBE0F9A206C1BC2005D0E9E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
