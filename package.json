@@ -1,6 +1,6 @@
 {
   "name": "react-native-line-sdk",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "react native line",
   "main": "index.js",
   "scripts": {
