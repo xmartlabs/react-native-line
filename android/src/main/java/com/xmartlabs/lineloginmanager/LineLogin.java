@@ -33,22 +33,24 @@ public class LineLogin extends ReactContextBaseJavaModule {
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
             super.onActivityResult(activity, requestCode, resultCode, data);
             if (currentPromise != null) {
+                final Promise promise = currentPromise;
+                currentPromise = null;
                 if (requestCode != REQUEST_CODE) {
-                    currentPromise.reject(ERROR, "Unsupported request");
+                    promise.reject(ERROR, "Unsupported request");
                     return;
                 }
                 loginResult = LineLoginApi.getLoginResultFromIntent(data);
                 switch (loginResult.getResponseCode()) {
                     case SUCCESS:
-                        currentPromise.resolve(parseLoginResult(loginResult));
+                        promise.resolve(parseLoginResult(loginResult));
                         break;
                     case CANCEL:
                         loginResult = null;
-                        currentPromise.reject(ERROR, "Line login canceled by user");
+                        promise.reject(ERROR, "Line login canceled by user");
                         break;
                     default:
                         loginResult = null;
-                        currentPromise.reject(ERROR, loginResult.getErrorData().toString());
+                        promise.reject(ERROR, loginResult.getErrorData().toString());
                         break;
                 }
             }
@@ -143,10 +145,14 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
         @Override
         protected void onPostExecute(LineApiResponse lineApiResponse) {
-            if (lineApiResponse.isSuccess()) {
-                currentPromise.resolve(new Object());
-            } else {
-                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            if (currentPromise != null) {
+                final Promise promise = currentPromise;
+                currentPromise = null;
+                if (lineApiResponse.isSuccess()) {
+                    promise.resolve(null);
+                } else {
+                    promise.reject(ERROR, lineApiResponse.getErrorData().toString());
+                }
             }
         }
     }
@@ -157,10 +163,14 @@ public class LineLogin extends ReactContextBaseJavaModule {
         }
 
         protected void onPostExecute(LineApiResponse<LineProfile> lineApiResponse) {
-            if (lineApiResponse.isSuccess()) {
-                currentPromise.resolve(parseProfile(lineApiResponse.getResponseData()));
-            } else {
-                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            if (currentPromise != null) {
+                final Promise promise = currentPromise;
+                currentPromise = null;
+                if (lineApiResponse.isSuccess()) {
+                    promise.resolve(parseProfile(lineApiResponse.getResponseData()));
+                } else {
+                    promise.reject(ERROR, lineApiResponse.getErrorData().toString());
+                }
             }
         }
     }
@@ -172,10 +182,14 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
         @Override
         protected void onPostExecute(LineApiResponse<LineAccessToken> lineApiResponse) {
-            if (lineApiResponse.isSuccess()) {
-                currentPromise.resolve(parseAccessToken(lineApiResponse.getResponseData()));
-            } else {
-                currentPromise.reject(ERROR, lineApiResponse.getErrorData().toString());
+            if (currentPromise != null) {
+                final Promise promise = currentPromise;
+                currentPromise = null;
+                if (lineApiResponse.isSuccess()) {
+                    promise.resolve(parseAccessToken(lineApiResponse.getResponseData()));
+                } else {
+                    promise.reject(ERROR, lineApiResponse.getErrorData().toString());
+                }
             }
         }
     }
