@@ -27,7 +27,6 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     private LineApiClient lineApiClient;
     private Promise currentPromise;
-    private LineLoginResult loginResult;
     private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
@@ -39,17 +38,18 @@ public class LineLogin extends ReactContextBaseJavaModule {
                     promise.reject(ERROR, "Unsupported request");
                     return;
                 }
-                loginResult = LineLoginApi.getLoginResultFromIntent(data);
+                final LineLoginResult loginResult = LineLoginApi.getLoginResultFromIntent(data);
                 switch (loginResult.getResponseCode()) {
                     case SUCCESS:
                         promise.resolve(parseLoginResult(loginResult));
                         break;
                     case CANCEL:
-                        loginResult = null;
                         promise.reject(ERROR, "Line login canceled by user");
                         break;
+                    case AUTHENTICATION_AGENT_ERROR:
+                        promise.reject(ERROR, "The user has denied the approval");
+                        break;
                     default:
-                        loginResult = null;
                         promise.reject(ERROR, loginResult.getErrorData().toString());
                         break;
                 }
