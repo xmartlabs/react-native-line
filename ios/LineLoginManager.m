@@ -67,8 +67,8 @@ RCT_EXPORT_METHOD(logout:(RCTPromiseResolveBlock)resolve
     }];
 }
 
-RCT_EXPORT_METHOD(getProfile:(RCTPromiseResolveBlock)resolve
-                    rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
+                        rejecter:(RCTPromiseRejectBlock)reject)
 {
     [apiClient getProfileWithCompletion:^(LineSDKProfile * _Nullable profile, NSError * _Nullable error) {
         if (error)
@@ -99,8 +99,8 @@ RCT_EXPORT_METHOD(getProfile:(RCTPromiseResolveBlock)resolve
     
     if ([shared isAuthorized])
     {
-        [self getProfile:loginResolver
-                rejecter:loginRejecter];
+        [self getUserProfile:loginResolver
+                    rejecter:loginRejecter];
     } else if ([shared canLoginWithLineApp])
     {
         if (permissions && [permissions count] > 0) {
