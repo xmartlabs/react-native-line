@@ -3,7 +3,7 @@ iOS and Android Native wrapper for Line's MobileSDK.
 
 ## Requirements
 - React native `0.48.+`.
-- LineSDK iOS `4.1.0` and Android `4.0.8`.
+- LineSDK iOS `5.0.0` and Android `4.0.8`.
 
 ## Installation
 First, install the npm package and link it to your Android and iOS projects with react-native link.
