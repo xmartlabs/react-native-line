@@ -17,6 +17,7 @@ import com.linecorp.linesdk.LineApiResponse;
 import com.linecorp.linesdk.LineProfile;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
+import com.linecorp.linesdk.auth.LineAuthenticationParams;
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 
@@ -73,7 +74,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
             currentPromise = promise;
             Context context = getCurrentActivity().getApplicationContext();
             String channelId = context.getString(R.string.line_channel_id);
-            Intent intent = LineLoginApi.getLoginIntent(context, channelId);
+            Intent intent = LineLoginApi.getLoginIntent(context, channelId, new LineAuthenticationParams.Builder().build());
             getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {
             promise.reject(ERROR, e.toString());
@@ -132,7 +133,7 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     private WritableMap parseAccessToken(LineAccessToken accessToken) {
         WritableMap result = Arguments.createMap();
-        result.putString("accessToken", accessToken.getAccessToken());
+        result.putString("accessToken", accessToken.getTokenString());
         result.putString("expirationDate", Long.toString(accessToken.getExpiresInMillis()));
         return result;
     }
