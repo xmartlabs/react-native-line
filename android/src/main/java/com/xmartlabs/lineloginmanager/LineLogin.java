@@ -21,6 +21,7 @@ import com.linecorp.linesdk.api.LineApiClientBuilder;
 import com.linecorp.linesdk.auth.LineAuthenticationParams;
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
+import com.facebook.react.bridge.ReadableArray;
 
 import java.util.ArrayList;
 import java.util.Arrays;
