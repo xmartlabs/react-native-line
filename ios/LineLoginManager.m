@@ -97,11 +97,7 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
 {
     LineSDKLogin *shared = [LineSDKLogin sharedInstance];
     
-    if ([shared isAuthorized])
-    {
-        [self getUserProfile:loginResolver
-                    rejecter:loginRejecter];
-    } else if ([shared canLoginWithLineApp])
+    if ([shared canLoginWithLineApp])
     {
         if (permissions && [permissions count] > 0) {
             [shared startLoginWithPermissions:permissions];
