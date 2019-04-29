@@ -1,5 +1,19 @@
 apply plugin: "com.android.library"
 
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+    }
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -9,6 +23,10 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     buildTypes {
@@ -23,11 +41,15 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
 
 dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile(name:'line-sdk-5.0.0', ext:'aar') { transitive = true }
+    compile(name:'line-sdk-5.0.1', ext:'aar') { transitive = true }
     compile "com.android.support:appcompat-v7:26.0.1"
     compile "com.android.support:customtabs:26.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules

@@ -135,7 +135,7 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
         
         [result setValue:parsedAccessToken forKey:@"accessToken"];
         [result setValue:parsedProfile forKey:@"profile"];
-        
+        [result setValue:credential.IDToken.email forKey:@"email"];
         loginResolver(result);
     }
 }
