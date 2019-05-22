@@ -19,6 +19,7 @@ import com.linecorp.linesdk.Scope;
 import com.linecorp.linesdk.api.LineApiClient;
 import com.linecorp.linesdk.api.LineApiClientBuilder;
 import com.linecorp.linesdk.auth.LineAuthenticationParams;
+import com.linecorp.linesdk.auth.LineAuthenticationParams.BotPrompt;
 import com.linecorp.linesdk.auth.LineLoginApi;
 import com.linecorp.linesdk.auth.LineLoginResult;
 import com.facebook.react.bridge.ReadableArray;
@@ -76,11 +77,16 @@ public class LineLogin extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void login(final Promise promise) {
-        this.loginWithPermissions(null, promise);
+        this.loginWithOptions(null, null, promise);
     }
 
     @ReactMethod
     public void loginWithPermissions(ReadableArray permissions, final Promise promise) {
+        this.loginWithOptions(permissions, null, promise);
+    }
+
+    @ReactMethod
+    public void loginWithOptions(ReadableArray permissions, String botPrompt, final Promise promise) {
         try {
             currentPromise = promise;
             Context context = getCurrentActivity().getApplicationContext();
@@ -99,11 +105,17 @@ public class LineLogin extends ReactContextBaseJavaModule {
                 scopes = Scope.convertToScopeList(new ArrayList());
             }
 
+            BotPrompt botPromptValue = null;
+            if (botPrompt != null) {
+                botPromptValue = BotPrompt.valueOf(botPrompt);
+            }
+
             Intent intent = LineLoginApi.getLoginIntent(
                     context,
                     channelId,
                     new LineAuthenticationParams.Builder()
                             .scopes(scopes)
+                            .botPrompt(botPromptValue)
                             .build());
             getCurrentActivity().startActivityForResult(intent, REQUEST_CODE);
         } catch (Exception e) {

@@ -5,7 +5,7 @@ static NSString *errorDomain = @"LineLogin";
 @implementation LineLoginManager
 {
     LineSDKAPI *apiClient;
-    
+
     RCTPromiseResolveBlock loginResolver;
     RCTPromiseRejectBlock loginRejecter;
 }
@@ -24,8 +24,8 @@ RCT_EXPORT_METHOD(login:(RCTPromiseResolveBlock)resolve
 {
     loginResolver = resolve;
     loginRejecter = reject;
-    
-    [self loginWithPermissions:nil];
+
+    [self loginWithOptions:nil botPrompt:nil];
 }
 
 
@@ -35,8 +35,19 @@ RCT_EXPORT_METHOD(loginWithPermissions:(NSArray *)permissions
 {
     loginResolver = resolve;
     loginRejecter = reject;
-    
-    [self loginWithPermissions:permissions];
+
+    [self loginWithOptions:permissions botPrompt:nil];
+}
+
+RCT_EXPORT_METHOD(loginWithOptions:(NSArray *)permissions
+                         botPrompt:(NSString *)botPrompt
+                         resolver:(RCTPromiseResolveBlock)resolve
+                         rejecter:(RCTPromiseRejectBlock)reject)
+{
+    loginResolver = resolve;
+    loginRejecter = reject;
+
+    [self loginWithOptions:permissions botPrompt:botPrompt];
 }
 
 RCT_EXPORT_METHOD(currentAccessToken:(RCTPromiseResolveBlock)resolve
@@ -93,15 +104,26 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
     return self;
 }
 
-- (void)loginWithPermissions:(NSArray *)permissions
+- (void)loginWithOptions:(NSArray *)permissions
+               botPrompt:(NSString *)botPrompt
 {
     LineSDKLogin *shared = [LineSDKLogin sharedInstance];
-    
-    if ([shared isAuthorized])
+
+    if (botPrompt != nil)
     {
-        [self getUserProfile:loginResolver
-                    rejecter:loginRejecter];
-    } else if ([shared canLoginWithLineApp])
+      if ([botPrompt isEqualToString:@"aggressive"] == YES)
+      {
+        [LineSDKLogin sharedInstance].botPrompt = LineSDKBotPromptAggressive;
+      } else if ([botPrompt isEqualToString:@"normal"] == YES)
+      {
+        [LineSDKLogin sharedInstance].botPrompt = LineSDKBotPromptNormal;
+      } else
+      {
+        [LineSDKLogin sharedInstance].botPrompt = LineSDKBotPromptNone;
+      }
+    }
+
+    if ([shared canLoginWithLineApp])
     {
         if (permissions && [permissions count] > 0) {
             [shared startLoginWithPermissions:permissions];
@@ -133,13 +155,13 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
     } else
     {
         NSMutableDictionary *result = [NSMutableDictionary new];
-        
+
         NSDictionary *parsedAccessToken = [self parseAccessToken:[credential accessToken]];
         NSDictionary *parsedProfile = [self parseProfile:profile];
-        
+
         [result setValue:parsedAccessToken forKey:@"accessToken"];
         [result setValue:parsedProfile forKey:@"profile"];
-        
+
         loginResolver(result);
     }
 }
@@ -149,7 +171,7 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
 - (NSDictionary *)parseProfile:(LineSDKProfile *)profile
 {
     NSMutableDictionary *result = [NSMutableDictionary new];
-    
+
     [result setValue:[profile userID] forKey:@"userID"];
     [result setValue:[profile displayName] forKey:@"displayName"];
     [result setValue:[profile statusMessage] forKey:@"statusMessage"];
@@ -157,19 +179,19 @@ RCT_EXPORT_METHOD(getUserProfile:(RCTPromiseResolveBlock)resolve
     {
         [result setValue:[[profile pictureURL] absoluteString] forKey:@"pictureURL"];
     }
-    
+
     return result;
 }
 
 - (NSDictionary *)parseAccessToken:(LineSDKAccessToken *)accessToken
 {
     NSMutableDictionary *result = [NSMutableDictionary new];
-    
+
     [result setValue:[accessToken accessToken] forKey:@"accessToken"];
     [result setValue:[accessToken estimatedExpiredDate] forKey:@"expirationDate"];
-    
+
     return result;
 }
 
 @end
-  
+

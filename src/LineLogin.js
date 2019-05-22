@@ -18,6 +18,15 @@ class LineLogin {
   }
 
   /**
+   * Logs the user in with options.
+   * @param {Array} permissions Requested permissions
+   * @param {String} botPrompt Requested bot link
+   */
+  loginWithOptions = (permissions, botPrompt) => {
+    return LineLoginManager.loginWithOptions(permissions, botPrompt);
+  }
+
+  /**
    * Get the current access token.
    */
   currentAccessToken = () => {
