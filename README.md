@@ -15,7 +15,7 @@ First, install the npm package and link it to your Android and iOS projects with
 1. Follow all the configuration steps in [LINE Login iOS integration guide](https://developers.line.biz/en/docs/ios-sdk/objective-c/setting-up-project/)
 2. In the `Downloading the SDK` section of the official integration guide:
 - If you download the Line SDK via Cocoapods, this npm package should be integrated fine after you follow the integration guide
-- If you manual download the Line SDK ( according the sub section `Download from the "Downloads" page` ), before linking the SDK via Xcode, you should place the SDK files `LineSDKResource.bundle` and `LineSDK.framework` inside the folder path `${YOUR_RN_PROJECT}/ios/Frameworks`
+- If you manual download the Line SDK ( according the sub section `Download from the "Downloads" page` ), before linking the SDK files via Xcode, be sure place the SDK files `LineSDKResource.bundle` and `LineSDK.framework` inside the folder path `${YOUR_RN_PROJECT}/ios/Frameworks`
 
 ### Android Setup
 1. Follow all the configuration steps in [LINE Login Android integration guide](https://developers.line.biz/en/docs/android-sdk/integrate-line-login/)
