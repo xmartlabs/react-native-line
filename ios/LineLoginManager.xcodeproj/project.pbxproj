@@ -199,7 +199,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
-					"$(PROJECT_DIR)/../../../ios/Pods/LineSDK/Frameworks",
+					"$(PROJECT_DIR)/../../../ios/Pods/LineSDK/LineSDK",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -220,7 +220,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../ios/Frameworks",
-					"$(PROJECT_DIR)/../../../ios/Pods/LineSDK/Frameworks",
+					"$(PROJECT_DIR)/../../../ios/Pods/LineSDK/LineSDK",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
