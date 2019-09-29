@@ -15,6 +15,11 @@ static NSString *errorDomain = @"LineLogin";
     return dispatch_get_main_queue();
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+  return YES;
+}
+
 # pragma mark - Module
 
 RCT_EXPORT_MODULE()
