@@ -9,7 +9,7 @@ import {
   authClearState,
   clearError,
 } from './actions'
-import { LoginResult } from 'react-native-line'
+import { LoginResult } from '@xmartlabs/react-native-line'
 import { AuthState, AuthActions } from './types'
 import AsyncStorage from '@react-native-community/async-storage'
 import { PersistedKeys } from 'src/context/persistedKeys'

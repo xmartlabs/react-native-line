@@ -1,5 +1,5 @@
 {
-  "name": "react-native-line",
+  "name": "@xmartlabs/react-native-line",
   "description": "React Native Line wrapper",
   "main": "index.js",
   "typings": "index.d.ts",

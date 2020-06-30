@@ -1087,6 +1087,11 @@
   dependencies:
     "@types/yargs-parser" "*"
 
+"@xmartlabs/react-native-line@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@xmartlabs/react-native-line/-/react-native-line-2.0.0.tgz#d8e8834b65f88f10875bf16c6a20360aa67753d5"
+  integrity sha512-zCixb3o75hxEqqdUmA7lyS708btT0sz06Pz7MorndoAxPDr8EhzcytoutitW5k4Sl+bIXq3LiBvrCsEQ/KGtRA==
+
 abab@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/abab/-/abab-2.0.3.tgz#623e2075e02eb2d3f2475e49f99c91846467907a"
@@ -5392,10 +5397,6 @@ react-native-gesture-handler@^1.4.1:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
-
-react-native-line@eb16/react-native-line#master:
-  version "2.0.4"
-  resolved "git+ssh://git@github.com/eb16/react-native-line.git#3596f555b631fba3087588e3738ef965224f902f"
 
 react-native-localization@^2.1.6:
   version "2.1.6"

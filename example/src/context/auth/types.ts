@@ -1,4 +1,4 @@
-import { LoginResult } from 'react-native-line'
+import { LoginResult } from '@xmartlabs/react-native-line'
 import { actionTypes } from './actionTypes'
 
 export interface AuthState {

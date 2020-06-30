@@ -1,4 +1,4 @@
-import Line from 'react-native-line'
+import Line from '@xmartlabs/react-native-line'
 import { AuthProps } from 'src/context/auth/provider'
 
 interface LoginActionProps extends AuthProps {

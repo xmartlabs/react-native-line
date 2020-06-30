@@ -1,4 +1,4 @@
-import Line from 'react-native-line'
+import Line from '@xmartlabs/react-native-line'
 import { InfoList } from 'src/scenes/Authenticated/API/InfoList'
 
 export const VerifyAccessToken = () =>

@@ -11,7 +11,7 @@ This library includes:
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
-[![NPM Version](https://img.shields.io/npm/v/react-native-line-sdk.svg?style=flat-square)](https://www.npmjs.com/package/react-native-line-sdk)
+[![NPM Version](https://img.shields.io/npm/v/@xmartlabs/react-native-line.svg?style=flat-square)](https://www.npmjs.com/package/@xmartlabs/react-native-line)
 
 ## Requirements
 
@@ -23,7 +23,7 @@ This library includes:
 First, install the npm package with yarn. _Autolink_ is automatic.
 
 ```bash
-  yarn add react-native-line-sdk
+  yarn add @xmartlabs/react-native-line
 ```
 
 ### iOS Setup
@@ -73,7 +73,7 @@ Don't forget to add `application` function, as line's instructions indicate.
 First, require the `LineLogin` module:
 
 ```javascript
-import LineLogin from 'react-native-line-sdk'
+import LineLogin from '@xmartlabs/react-native-line'
 ```
 
 Then, you can start using all the functions that are available:
@@ -277,7 +277,7 @@ The following objects are returned on the methods described above:
 
 ## Example
 
-If you want to see `react-native-line-sdk` in action, just move into the [example](/example) folder and run `yarn ios`/`yarn android`. By seeing its source code, you will have a better understanding of the library usage.
+If you want to see `@xmartlabs/react-native-line` in action, just move into the [example](/example) folder and run `yarn ios`/`yarn android`. By seeing its source code, you will have a better understanding of the library usage.
 
 ## Contributors
 
@@ -301,4 +301,4 @@ If you want to see `react-native-line-sdk` in action, just move into the [exampl
 
 ## License
 
-`react-native-line-sdk` is available under the MIT license. See the LICENCE file for more info.
+`@xmartlabs/react-native-line` is available under the MIT license. See the LICENCE file for more info.

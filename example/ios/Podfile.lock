@@ -226,7 +226,7 @@ PODS:
     - React
   - RNGestureHandler (1.5.2):
     - React
-  - RNLine (2.0.4):
+  - RNLine (2.0.0):
     - LineSDKSwift (~> 5.0)
     - React
   - RNReanimated (1.4.0):
@@ -268,7 +268,7 @@ DEPENDENCIES:
   - ReactNativeLocalization (from `../node_modules/react-native-localization`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNLine (from `../node_modules/react-native-line`)
+  - "RNLine (from `../node_modules/@xmartlabs/react-native-line`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -335,7 +335,7 @@ EXTERNAL SOURCES:
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNLine:
-    :path: "../node_modules/react-native-line"
+    :path: "../node_modules/@xmartlabs/react-native-line"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -375,7 +375,7 @@ SPEC CHECKSUMS:
   ReactNativeLocalization: dbb269b27d8a84bb22b9c2cdec38ba780b51dd72
   RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
-  RNLine: 8ef3a20ae8f36b1f40debdd3bb714649c73b8857
+  RNLine: cd30f81208647017750cbfcf0223f57946652efe
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 36f8c83e5e23b6bfd5b912148453d81e335573eb
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e

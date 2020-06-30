@@ -6,7 +6,7 @@ import {
   AuthClearError,
   AuthClearState,
 } from './types'
-import { LoginResult } from 'react-native-line'
+import { LoginResult } from '@xmartlabs/react-native-line'
 
 export const clearError = (): AuthClearError => ({
   type: actionTypes.AUTH_CLEAR_ERROR,
