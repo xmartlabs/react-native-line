@@ -18,6 +18,30 @@ This library includes:
 - React native `>=0.61.1`
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
 
+## Migration from v1.x.x
+
+If you are currently using `react-native-line-sdk` (v1.x.x):
+
+1. Unlink the old library:
+
+```
+  react-native unlink react-native-line-sdk
+```
+
+2. Remove it from the `package.json`
+3. Remove any line sdk's `*.aar` from `android/libs`
+4. Remove from `android/app/build.gradle`:
+
+```
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+```
+
+Finally, follow the installation steps for the new version.
+
 ## Installation
 
 First, install the npm package with yarn. _Autolink_ is automatic.
@@ -281,7 +305,6 @@ If you want to see `@xmartlabs/react-native-line` in action, just move into the 
 
 ## Contributors
 
-<!-- TODO: Add contributors by using "All contributors bot"  -->
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->

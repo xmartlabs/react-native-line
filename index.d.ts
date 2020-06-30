@@ -1,4 +1,4 @@
-export function getBotFriendshipStatus(): Promise<any> // TODO: Add response type when tested
+export function getBotFriendshipStatus(): Promise<any>
 export function getCurrentAccessToken(): Promise<AccessToken>
 export function getProfile(): Promise<UserProfile>
 export function login(args?: LoginArguments): Promise<LoginResult>
