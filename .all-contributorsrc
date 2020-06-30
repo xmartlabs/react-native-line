@@ -1,0 +1,53 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "eb16",
+      "name": "Emiliano Botti",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/20881388?v=4",
+      "profile": "https://github.com/eb16",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Joaguirrem",
+      "name": "Joaquín Aguirre",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/17858453?v=4",
+      "profile": "https://github.com/Joaguirrem",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "santiagofm",
+      "name": "Santiago Fernández",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6749415?v=4",
+      "profile": "https://github.com/santiagofm",
+      "contributions": [
+        "code",
+        "projectManagement",
+        "review"
+      ]
+    },
+    {
+      "login": "matir91",
+      "name": "Matías Irland",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/8472881?v=4",
+      "profile": "https://github.com/matir91",
+      "contributions": [
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "react-native-line",
+  "projectOwner": "eb16",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
