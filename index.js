@@ -1,6 +1,18 @@
-import {NativeModules} from 'react-native'
+import { NativeModules } from 'react-native'
 
-const {LineLogin} = NativeModules
+const { LineLogin } = NativeModules
+
+const BotPrompt = {
+  agressive: 'agressive',
+  normal: 'normal',
+}
+const LoginPermission = {
+  email: 'email',
+  openID: 'openID',
+  profile: 'profile',
+}
+
+export { LoginPermission, BotPrompt }
 
 export default {
   getBotFriendshipStatus() {
