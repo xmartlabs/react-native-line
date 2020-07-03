@@ -23,7 +23,7 @@ import com.linecorp.linesdk.LineProfile
 enum class LoginArguments(val key: String) {
     SCOPES("scopes"),
     ONLY_WEB_LOGIN("onlyWebLogin"),
-    BOT_PROMPT("onlyWebLogin")
+    BOT_PROMPT("botPrompt")
 }
 
 class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -56,8 +56,10 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
+        println(args)
         val scopes = if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!.toArrayList() as List<String> else listOf("profile")
         val onlyWebLogin = args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
+        println(onlyWebLogin)
         val botPromptString = if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
         login(
                 scopes,
@@ -113,7 +115,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                         null
                 )
             } else {
-                promise.resolve(parseProfile(lineApiResponse.responseData))
+                promise.resolve(parseProfile(lineApiResponse.responseData, lineIdToken = null))
             }
         }
     }
@@ -222,8 +224,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     private fun parseAccessToken(accessToken: LineAccessToken): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "access_token" to accessToken.tokenString,
-                    "expires_in" to accessToken.expiresInMillis,
-                    "id_token" to ""
+                    "expires_in" to accessToken.expiresInMillis
             )
     )
 
@@ -242,18 +243,20 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     )
 
 
-    private fun parseProfile(profile: LineProfile): WritableMap = Arguments.makeNativeMap(
+    private fun parseProfile(profile: LineProfile, lineIdToken: LineIdToken?): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "displayName" to profile.displayName,
                     "userID" to profile.userId,
                     "statusMessage" to profile.statusMessage,
-                    "pictureURL" to profile.pictureUrl?.toString()
+                    "pictureURL" to profile.pictureUrl?.toString(),
+                    "email" to lineIdToken?.email
             )
     )
 
     private fun parseLoginResult(loginResult: LineLoginResult): WritableMap = Arguments.makeNativeMap(
             mapOf(
-                    "userProfile" to parseProfile(loginResult.lineProfile!!),
+                    "userProfile" to parseProfile(loginResult.lineProfile!!, loginResult.lineIdToken),
+                    "lineIdToken" to loginResult.lineIdToken?.rawString,
                     "accessToken" to parseAccessToken(loginResult.lineCredential!!.accessToken),
                     "scope" to loginResult.lineCredential?.scopes?.let {
                         Scope.join(it)
