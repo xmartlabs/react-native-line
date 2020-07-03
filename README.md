@@ -142,6 +142,9 @@ The following objects are returned on the methods described above:
   /// The user ID of the current authorized user.
   userID: String
 
+  /// The email of the current authorized user.
+  email?: String
+
   /// The display name of the current authorized user.
   displayName: String
 

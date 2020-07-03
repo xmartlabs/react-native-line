@@ -76,6 +76,9 @@ export interface UserProfile {
   /// The display name of the current authorized user.
   displayName: String
 
+  /// The email of the current authorized user.
+  email?: String
+
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.
   pictureURL?: URL
