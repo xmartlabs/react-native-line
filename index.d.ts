@@ -19,10 +19,6 @@ export interface AccessToken {
   /// access token.
   createdAt: String
 
-  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
-  /// is obtained with the `.openID` permission.
-  id_token?: String
-
   /// The refresh token bound to the access token.
   /// `refreshToken` is not publicly provided anymore. You should not access or store it yourself.
   refresh_token: String
@@ -58,7 +54,7 @@ export interface LoginArguments {
 export enum LoginPermission {
   email = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openID',
+  openID = 'openid',
 
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
@@ -81,6 +77,9 @@ export interface LoginResult {
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
   IDTokenNonce?: String
+  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
+  /// is obtained with the `.openID` permission.
+  lineIdToken?: String
 }
 
 export interface UserProfile {
@@ -89,6 +88,9 @@ export interface UserProfile {
 
   /// The display name of the current authorized user.
   displayName: String
+
+  /// The email of the current authorized user.
+  email?: String
 
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.
