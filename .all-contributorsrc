@@ -42,7 +42,16 @@
       "contributions": [
         "review"
       ]
-    }
+    },
+    {
+      "login": "MarcoF09",
+      "name": "Marco Fiorito",
+      "avatar_url": "https://avatars.githubusercontent.com/MarcoF09",
+      "profile": "https://github.com/MarcoF09",
+      "contributions": [
+        "code",
+      ]
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "react-native-line",
