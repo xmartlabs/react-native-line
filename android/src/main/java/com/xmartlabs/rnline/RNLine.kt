@@ -56,10 +56,8 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
-        println(args)
         val scopes = if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!.toArrayList() as List<String> else listOf("profile")
         val onlyWebLogin = args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
-        println(onlyWebLogin)
         val botPromptString = if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
         login(
                 scopes,
