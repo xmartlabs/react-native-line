@@ -56,8 +56,10 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
+        println(args)
         val scopes = if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!.toArrayList() as List<String> else listOf("profile")
         val onlyWebLogin = args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
+        println(onlyWebLogin)
         val botPromptString = if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
         login(
                 scopes,
@@ -175,7 +177,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
             promise = promise,
             serviceCallable = { lineApiClient.currentAccessToken },
-            parser = { parseAccessToken(it) }
+            parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
@@ -189,7 +191,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     fun refreshToken(promise: Promise) = invokeLineServiceMethod(
             promise = promise,
             serviceCallable = { lineApiClient.refreshAccessToken() },
-            parser = { parseAccessToken(it) }
+            parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
@@ -219,10 +221,11 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     }
 
     // Parsers
-    private fun parseAccessToken(accessToken: LineAccessToken): WritableMap = Arguments.makeNativeMap(
+    private fun parseAccessToken(accessToken: LineAccessToken, lineIdToken: LineIdToken?): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "access_token" to accessToken.tokenString,
-                    "expires_in" to accessToken.expiresInMillis
+                    "expires_in" to accessToken.expiresInMillis,
+                    "id_token" to lineIdToken?.rawString
             )
     )
 
@@ -232,7 +235,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
             )
     )
 
-    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
+    private fun parseVerifyAccessToken( verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "client_id" to channelId,
                     "scope" to Scope.join(verifyAccessToken.scopes),
@@ -253,11 +256,10 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     private fun parseLoginResult(loginResult: LineLoginResult): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "userProfile" to parseProfile(loginResult.lineProfile!!),
-                    "accessToken" to parseAccessToken(loginResult.lineCredential!!.accessToken),
+                    "accessToken" to parseAccessToken(loginResult.lineCredential!!.accessToken, loginResult.lineIdToken),
                     "scope" to loginResult.lineCredential?.scopes?.let {
                         Scope.join(it)
                     },
-                    "lineIdToken" to loginResult.lineIdToken?.rawString,
                     "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
                     "IDTokenNonce" to loginResult.lineIdToken?.nonce
             )

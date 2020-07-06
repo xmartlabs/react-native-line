@@ -235,13 +235,13 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  email = 'email',
+  EMAIL = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openid',
+  OPEN_ID = 'openid',
 
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
-  profile = 'profile',
+  PROFILE = 'profile',
 }
 ```
 
@@ -249,7 +249,7 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  agressive = 'agressive',
+  aggressive = 'aggressive',
   normal = 'normal',
 }
 ```
