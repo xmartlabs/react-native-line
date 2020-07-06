@@ -14,19 +14,6 @@ export interface AccessToken {
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
   expires_in: String
-
-  /// The creation time of the access token. It is the system time of the device that receives the current
-  /// access token.
-  createdAt: String
-
-  /// The refresh token bound to the access token.
-  /// `refreshToken` is not publicly provided anymore. You should not access or store it yourself.
-  refresh_token: String
-
-  token_type: String
-
-  /// Permissions separated by spaces
-  scope: String
 }
 
 export interface AccessTokenVerifyResult {
@@ -88,9 +75,6 @@ export interface UserProfile {
 
   /// The display name of the current authorized user.
   displayName: String
-
-  /// The email of the current authorized user.
-  email?: String
 
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.

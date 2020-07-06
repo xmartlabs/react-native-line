@@ -115,7 +115,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                         null
                 )
             } else {
-                promise.resolve(parseProfile(lineApiResponse.responseData, lineIdToken = null))
+                promise.resolve(parseProfile(lineApiResponse.responseData))
             }
         }
     }
@@ -234,7 +234,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
             )
     )
 
-    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
+    private fun parseVerifyAccessToken( verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "client_id" to channelId,
                     "scope" to Scope.join(verifyAccessToken.scopes),
@@ -243,25 +243,25 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     )
 
 
-    private fun parseProfile(profile: LineProfile, lineIdToken: LineIdToken?): WritableMap = Arguments.makeNativeMap(
+    private fun parseProfile(profile: LineProfile): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "displayName" to profile.displayName,
                     "userID" to profile.userId,
                     "statusMessage" to profile.statusMessage,
-                    "pictureURL" to profile.pictureUrl?.toString(),
-                    "email" to lineIdToken?.email
+                    "pictureURL" to profile.pictureUrl?.toString()
             )
     )
 
     private fun parseLoginResult(loginResult: LineLoginResult): WritableMap = Arguments.makeNativeMap(
             mapOf(
-                    "userProfile" to parseProfile(loginResult.lineProfile!!, loginResult.lineIdToken),
-                    "lineIdToken" to loginResult.lineIdToken?.rawString,
+                    "userProfile" to parseProfile(loginResult.lineProfile!!),
                     "accessToken" to parseAccessToken(loginResult.lineCredential!!.accessToken),
                     "scope" to loginResult.lineCredential?.scopes?.let {
                         Scope.join(it)
                     },
-                    "friendshipStatusChanged" to loginResult.friendshipStatusChanged
+                    "lineIdToken" to loginResult.lineIdToken?.rawString,
+                    "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
+                    "IDTokenNonce" to loginResult.lineIdToken?.nonce
             )
     )
 
