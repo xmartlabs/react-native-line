@@ -23,7 +23,7 @@ import com.linecorp.linesdk.LineProfile
 enum class LoginArguments(val key: String) {
     SCOPES("scopes"),
     ONLY_WEB_LOGIN("onlyWebLogin"),
-    BOT_PROMPT("onlyWebLogin")
+    BOT_PROMPT("botPrompt")
 }
 
 class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -222,8 +222,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     private fun parseAccessToken(accessToken: LineAccessToken): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "access_token" to accessToken.tokenString,
-                    "expires_in" to accessToken.expiresInMillis,
-                    "id_token" to ""
+                    "expires_in" to accessToken.expiresInMillis
             )
     )
 
@@ -258,7 +257,9 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                     "scope" to loginResult.lineCredential?.scopes?.let {
                         Scope.join(it)
                     },
-                    "friendshipStatusChanged" to loginResult.friendshipStatusChanged
+                    "lineIdToken" to loginResult.lineIdToken?.rawString,
+                    "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
+                    "IDTokenNonce" to loginResult.lineIdToken?.nonce
             )
     )
 

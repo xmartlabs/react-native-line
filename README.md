@@ -16,6 +16,8 @@ This library includes:
 ## Requirements
 
 - React native `>=0.61.1`
+- iOS 10.0 or later as the development target
+- Android `minSdkVersion` set to 17 or higher
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
 
 ## Migration from v1.x.x
@@ -56,13 +58,27 @@ First, install the npm package with yarn. _Autolink_ is automatic.
 
 Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtained.
 
+1. Add `platform :ios, '10.0'` in `Podfile` line:1
+2. Enable `use_frameworks!` in `Podfile` line:3
+3. Comment the code related to flipper, flipper doesn't support `use_frameworks!` !
+4. Add this code to your `AppDelegate.m`
+
 ```objc
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     ...
     [LineLogin setupWithChannelID:@"YOUR_CHANNELL_ID" universalLinkURL:nil];
-```
 
-Copy `openURL` and `continueUserActivity` functions from the [example app](#example). They don't need any further modification.
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+{
+  return [LineLogin application:app open:url options:options];
+}
+
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler
+{
+  BOOL handledLine = [LineLogin application:application continue:userActivity restorationHandler:restorationHandler];
+  return handledLine;
+}
+```
 
 #### Using Swift
 
@@ -85,12 +101,15 @@ Don't forget to add `application` function, as line's instructions indicate.
 
 ### Android Setup
 
-1. Follow all the configuration steps in [Line's Android integration guide](https://developers.line.me/en/docs/line-login/android/integrate-line-login/)
+1. Follow all the configuration steps in [Line's Android integration guide](https://developers.line.biz/en/docs/android-sdk/integrate-line-login/)
 2. Add the string `line_channel_id` to your strings file with the the channel id that you have on your line console.
 
 ```xml
 <string name="line_channel_id" translatable="false">Your channel id here</string>
 ```
+
+3. Add `minSdkVersion = 17` in `android/build.gradle`
+4. In your manifest add `xmlns:tools="http://schemas.android.com/tools"` in your `manifest` tag and also `tools:replace="android:allowBackup"` in your `application` tag
 
 ## API
 
@@ -154,23 +173,6 @@ The following objects are returned on the methods described above:
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
   expires_in: String
-
-  /// The creation time of the access token. It is the system time of the device that receives the current
-  /// access token.
-  createdAt: String
-
-  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
-  /// is obtained with the `.openID` permission.
-  id_token?: String
-
-  /// The refresh token bound to the access token.
-  /// `refreshToken` is not publicly provided anymore. You should not access or store it yourself.
-  refresh_token: String
-
-  token_type: String
-
-  /// Permissions separated by spaces
-  scope: String
 }
 ```
 
@@ -205,6 +207,9 @@ The following objects are returned on the methods described above:
   /// `LoginManagerOption` object when the user logs in. For more information, see Linking a bot with your LINE
   /// Login channel at https://developers.line.me/en/docs/line-login/web/link-a-bot/.
   friendshipStatusChanged?: boolean
+  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
+  /// is obtained with the `.openID` permission.
+  lineIdToken?: String
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
   IDTokenNonce?: String
@@ -229,7 +234,7 @@ The following objects are returned on the methods described above:
 {
   email = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openID',
+  openID = 'openid',
 
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
@@ -312,6 +317,7 @@ If you want to see `@xmartlabs/react-native-line` in action, just move into the 
   <tr>
     <td align="center"><a href="https://github.com/eb16"><img src="https://avatars0.githubusercontent.com/u/20881388?v=4" width="100px;" alt=""/><br /><sub><b>Emiliano Botti</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=eb16" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Joaguirrem"><img src="https://avatars2.githubusercontent.com/u/17858453?v=4" width="100px;" alt=""/><br /><sub><b>Joaquín Aguirre</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=Joaguirrem" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/nicoache1"><img src="https://avatars0.githubusercontent.com/u/26419582?v=4" width="100px;" alt=""/><br /><sub><b>Nicolas Hernandez</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=nicoache1" title="Code">💻</a> <a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Anicoache1" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://github.com/santiagofm"><img src="https://avatars0.githubusercontent.com/u/6749415?v=4" width="100px;" alt=""/><br /><sub><b>Santiago Fernández</b></sub></a><br /><a href="#projectManagement-santiagofm" title="Project Management">📆</a> <a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Asantiagofm" title="Reviewed Pull Requests">👀</a><a href="https://github.com/eb16/react-native-line/commits?author=santiagofm" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/matir91"><img src="https://avatars2.githubusercontent.com/u/8472881?v=4" width="100px;" alt=""/><br /><sub><b>Matías Irland</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Amatir91" title="Reviewed Pull Requests">👀</a></td>
   </tr>

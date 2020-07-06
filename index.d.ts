@@ -14,23 +14,6 @@ export interface AccessToken {
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
   expires_in: String
-
-  /// The creation time of the access token. It is the system time of the device that receives the current
-  /// access token.
-  createdAt: String
-
-  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
-  /// is obtained with the `.openID` permission.
-  id_token?: String
-
-  /// The refresh token bound to the access token.
-  /// `refreshToken` is not publicly provided anymore. You should not access or store it yourself.
-  refresh_token: String
-
-  token_type: String
-
-  /// Permissions separated by spaces
-  scope: String
 }
 
 export interface AccessTokenVerifyResult {
@@ -58,7 +41,7 @@ export interface LoginArguments {
 export enum LoginPermission {
   email = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openID',
+  openID = 'openid',
 
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
@@ -81,6 +64,9 @@ export interface LoginResult {
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
   IDTokenNonce?: String
+  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
+  /// is obtained with the `.openID` permission.
+  lineIdToken?: String
 }
 
 export interface UserProfile {
