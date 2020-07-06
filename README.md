@@ -101,7 +101,7 @@ Don't forget to add `application` function, as line's instructions indicate.
 
 ### Android Setup
 
-1. Follow all the configuration steps in [Line's Android integration guide](https://developers.line.me/en/docs/line-login/android/integrate-line-login/)
+1. Follow all the configuration steps in [Line's Android integration guide](https://developers.line.biz/en/docs/android-sdk/integrate-line-login/)
 2. Add the string `line_channel_id` to your strings file with the the channel id that you have on your line console.
 
 ```xml

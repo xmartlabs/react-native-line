@@ -232,7 +232,7 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
             )
     )
 
-    private fun parseVerifyAccessToken( verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
+    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
             mapOf(
                     "client_id" to channelId,
                     "scope" to Scope.join(verifyAccessToken.scopes),

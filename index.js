@@ -8,7 +8,7 @@ const BotPrompt = {
 }
 const LoginPermission = {
   email: 'email',
-  openID: 'openID',
+  openID: 'openid',
   profile: 'profile',
 }
 
