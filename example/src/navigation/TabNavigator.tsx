@@ -10,7 +10,7 @@ export const TabNavigator = createBottomTabNavigator(
   {
     [Route.UserTab]: {
       navigationOptions: {
-        tabBarLabel: ({ tintColor }) => (
+        tabBarIcon: ({ tintColor }) => (
           <Text style={{ color: tintColor }}>User</Text>
         ),
       },
@@ -18,7 +18,7 @@ export const TabNavigator = createBottomTabNavigator(
     },
     [Route.API]: {
       navigationOptions: {
-        tabBarLabel: ({ tintColor }) => (
+        tabBarIcon: ({ tintColor }) => (
           <Text style={{ color: tintColor }}>API</Text>
         ),
       },
@@ -27,6 +27,9 @@ export const TabNavigator = createBottomTabNavigator(
   },
   {
     initialRouteName: Route.UserTab,
+    tabBarOptions: {
+      showLabel: false,
+    },
     lazy: false,
   },
 )

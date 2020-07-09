@@ -1087,10 +1087,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@xmartlabs/react-native-line@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@xmartlabs/react-native-line/-/react-native-line-2.0.0.tgz#d8e8834b65f88f10875bf16c6a20360aa67753d5"
-  integrity sha512-zCixb3o75hxEqqdUmA7lyS708btT0sz06Pz7MorndoAxPDr8EhzcytoutitW5k4Sl+bIXq3LiBvrCsEQ/KGtRA==
+"@xmartlabs/react-native-line@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@xmartlabs/react-native-line/-/react-native-line-2.0.1.tgz#1b9879406aa7c5e1ebf7cde5bfa18939afb0ecd0"
+  integrity sha512-KD4+svfYw1jSAmc6bn0GirPc02UtVkz8ULnaLgVphkEKhHQcCqf56ZoLYXUwSVLvvNK2lV0EdegYu12ourCtSg==
 
 abab@^2.0.0:
   version "2.0.3"

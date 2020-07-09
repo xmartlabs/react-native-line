@@ -7,6 +7,7 @@ import {
   refreshToken as LineSDKRefreshToken,
   verifyAccessToken as LineSDKVerifyAccessToken,
 } from './lineSDKWrapper'
+import { LoginArguments } from './types'
 
 export {
   BotFriendshipStatus,
@@ -29,7 +30,7 @@ export default {
   getProfile() {
     return LineSDKGetProfile()
   },
-  login(args = {}) {
+  login(args: LoginArguments = {}) {
     return LineSDKLogin(args)
   },
   logout() {
