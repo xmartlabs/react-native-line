@@ -226,7 +226,7 @@ PODS:
     - React
   - RNGestureHandler (1.5.2):
     - React
-  - RNLine (2.0.0):
+  - RNLine (2.0.1):
     - LineSDKSwift (~> 5.0)
     - React
   - RNReanimated (1.4.0):
@@ -375,7 +375,7 @@ SPEC CHECKSUMS:
   ReactNativeLocalization: dbb269b27d8a84bb22b9c2cdec38ba780b51dd72
   RNCAsyncStorage: 44395cb9c7c1523104c2b499eb426ef7aff82bca
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
-  RNLine: cd30f81208647017750cbfcf0223f57946652efe
+  RNLine: 677e5a14ab348c2085452cdad1a2ac68795717d9
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNScreens: 36f8c83e5e23b6bfd5b912148453d81e335573eb
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e

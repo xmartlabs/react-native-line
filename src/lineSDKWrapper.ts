@@ -13,13 +13,12 @@ import {
   BotFriendshipStatus,
   LoginResult,
   UserProfile,
+  LoginArguments,
 } from './types'
 
 const { LineLogin } = NativeModules
 
-export const getBotFriendshipStatus = async (): Promise<
-  BotFriendshipStatus
-> => {
+export const getBotFriendshipStatus = async (): Promise<BotFriendshipStatus> => {
   const result = await LineLogin.getBotFriendshipStatus()
   const deserializedResult = deserializeBotFriendshipStatus(result)
   return deserializedResult
@@ -37,7 +36,9 @@ export const getProfile = async (): Promise<UserProfile> => {
   return deserializedResult
 }
 
-export const login = async (args: any = {}): Promise<LoginResult> => {
+export const login = async (
+  args: LoginArguments = {},
+): Promise<LoginResult> => {
   const result = await LineLogin.login(args)
   const deserializedResult = deserializeLoginResult(result)
   return deserializedResult

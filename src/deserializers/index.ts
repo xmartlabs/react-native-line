@@ -11,7 +11,7 @@ export const deserializeLoginResult = (data: any): LoginResult => ({
   accessToken: deserializeAccessToken(data.accessToken),
   friendshipStatusChanged: data.friendshipStatusChanged,
   scope: data.scope,
-  userProfile: data.userProfile,
+  userProfile: deserializeUserProfile(data.userProfile),
 })
 
 export const deserializeAccessToken = (data: any): AccessToken => ({
@@ -24,7 +24,7 @@ export const deserializeUserProfile = (data: any): UserProfile => ({
   displayName: data.displayName,
   pictureURL: data.pictureURL ?? undefined,
   statusMessage: data.statusMessage ?? undefined,
-  userID: data.userID,
+  userID: data.userId ?? data.userID,
 })
 
 export const deserializeVerifyAccessToken = (
