@@ -1,12 +1,5 @@
 ## PR Title
 
-
-#### :link: Trello board reference:
-
-- [Title of the card](https://link-to-trello-card)
-
----
-
 #### 🔄 Type of change:
 
 - [ ] ✨Feature/chore
