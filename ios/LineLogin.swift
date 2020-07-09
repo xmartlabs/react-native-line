@@ -40,31 +40,32 @@ import LineSDK
       LineLogin.nilArgument(reject)
       return
     }
-    print(args)
+
     let scopes = (args["scopes"] as? [String])?.map { LoginPermission(rawValue: $0) } ?? [.profile]
     let onlyWebLogin = (args["onlyWebLogin"] as? Bool) ?? false
-
-    var options: LoginManagerOptions = []
-    if onlyWebLogin { options = .onlyWebLogin }
+    var parameters: LoginManager.Parameters = LoginManager.Parameters.init()
+    
+    if onlyWebLogin { parameters.onlyWebLogin = onlyWebLogin }
 
     if let botPrompt = args["botPrompt"] as? String {
       switch botPrompt {
-      case "aggressive": options.insert(.botPromptAggressive)
-      case "normal": options.insert(.botPromptNormal)
+      case "aggressive": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "aggresive")
+      case "normal": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "normal")
       default: break
       }
     }
-
-    LoginManager.shared.login(
-      permissions: Set(scopes),
-      in: nil,
-      options: options) { result in
-        switch result {
-        case .success(let value): value.resolver(resolve, reject, name: "login")
-        case .failure(let error): error.rejecter(reject)
+    
+    DispatchQueue.main.async {
+        LoginManager.shared.login(
+          permissions: Set(scopes),
+          in: nil,
+          parameters: parameters) { result in
+            switch result {
+            case .success(let value): value.resolver(resolve, reject, name: "login")
+            case .failure(let error): error.rejecter(reject)
+            }
         }
     }
-
   }
 
   @objc func logout(_ resolve: @escaping RCTPromiseResolveBlock,
@@ -100,7 +101,7 @@ import LineSDK
 
   @objc func refreshToken(_ resolve: @escaping RCTPromiseResolveBlock,
                           rejecter reject: @escaping RCTPromiseRejectBlock) {
-    API.refreshAccessToken { result in
+    API.Auth.refreshAccessToken { result in
       switch result {
       case .success(let token): token.resolver(resolve, reject, name: "refresh token")
       case .failure(let error): error.rejecter(reject)
@@ -110,7 +111,7 @@ import LineSDK
 
   @objc func verifyAccessToken(_ resolve: @escaping RCTPromiseResolveBlock,
                                rejecter reject: @escaping RCTPromiseRejectBlock) {
-    API.verifyAccessToken { result in
+    API.Auth.verifyAccessToken { result in
       switch result {
       case .success(let token): token.resolver(resolve, reject, name: "verify token")
       case .failure(let error): error.rejecter(reject)

@@ -61,7 +61,8 @@ Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtain
 1. Add `platform :ios, '10.0'` in `Podfile` line:1
 2. Enable `use_frameworks!` in `Podfile` line:3
 3. Comment the code related to flipper, flipper doesn't support `use_frameworks!` !
-4. Add this code to your `AppDelegate.m`
+4. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/ios-sdk/swift/setting-up-project/#configuring-the-info-plist-file)
+5. Add this code to your `AppDelegate.m`
 
 ```objc
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -121,15 +122,15 @@ import LineLogin from '@xmartlabs/react-native-line'
 
 Then, you can start using all the functions that are available:
 
-| Function                                                | Description                                                                                                                                                                                                                        |
-| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `login(args?: LoginArguments): Promise<LoginResult>`    | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
-| `getCurrentAccessToken(): Promise<AccessToken>`         | Returns the current access token for the currently logged in user.                                                                                                                                                                 |
-| `getProfile(): Promise<UserProfile>`                    | Returns the profile of the currently logged in user.                                                                                                                                                                               |
-| `logout(): Promise<void>`                               | Logs out the currently logged in user.                                                                                                                                                                                             |
-| `refreshToken(): Promise<AccessToken>`                  | Refreshes the access token and returns it.                                                                                                                                                                                         |
-| `verifyAccessToken(): Promise<AccessTokenVerifyResult>` | Verifies the access token and returns it.                                                                                                                                                                                          |
-| `getBotFriendshipStatus(): Promise<any>`                | Gets bot friendship status if [configured](https://developers.line.biz/en/docs/ios-sdk/swift/link-a-bot/).                                                                                                                         |
+| Function                                                 | Description                                                                                                                                                                                                                        |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `login(args?: LoginArguments): Promise<LoginResult>`     | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
+| `getCurrentAccessToken(): Promise<AccessToken>`          | Returns the current access token for the currently logged in user.                                                                                                                                                                 |
+| `getProfile(): Promise<UserProfile>`                     | Returns the profile of the currently logged in user.                                                                                                                                                                               |
+| `logout(): Promise<void>`                                | Logs out the currently logged in user.                                                                                                                                                                                             |
+| `refreshToken(): Promise<AccessToken>`                   | Refreshes the access token and returns it.                                                                                                                                                                                         |
+| `verifyAccessToken(): Promise<AccessTokenVerifyResult>`  | Verifies the access token and returns it.                                                                                                                                                                                          |
+| `getBotFriendshipStatus(): Promise<BotFriendshipStatus>` | Gets bot friendship status if [configured](https://developers.line.biz/en/docs/ios-sdk/swift/link-a-bot/).                                                                                                                         |
 
 ### Return values
 
@@ -139,26 +140,18 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  /// The user ID of the current authorized user.
+   /// The user ID of the current authorized user.
   userID: String
 
   /// The display name of the current authorized user.
-  displayName: String
+  displayName: string
 
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.
-  pictureURL?: URL
-
-  /// The large profile image URL of the current authorized user. `null` if the user has not set a profile
-  /// image.
-  pictureURLLarge?: URL
-
-  /// The small profile image URL of the current authorized user. `null` if the user has not set a profile
-  /// image.
-  pictureURLSmall?: URL
+  pictureURL?: string
 
   /// The status message of the current authorized user. `null` if the user has not set a status message.
-  statusMessage?: String
+  statusMessage?: string
 }
 ```
 
@@ -166,13 +159,15 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  /// The value of the access token.
+   /// The value of the access token.
   access_token: String
-
   /// The expiration time of the access token. It is calculated using `createdAt` and the validity period
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
   expires_in: String
+  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
+  /// is obtained with the `.openID` permission.
+  id_token?: String
 }
 ```
 
@@ -195,7 +190,7 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  /// The access token obtained by the login process.
+   /// The access token obtained by the login process.
   accessToken: AccessToken
   /// The permissions bound to the `accessToken` object by the authorization process. Scope has them separated by spaces
   scope: String
@@ -207,12 +202,17 @@ The following objects are returned on the methods described above:
   /// `LoginManagerOption` object when the user logs in. For more information, see Linking a bot with your LINE
   /// Login channel at https://developers.line.me/en/docs/line-login/web/link-a-bot/.
   friendshipStatusChanged?: boolean
-  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
-  /// is obtained with the `.openID` permission.
-  lineIdToken?: String
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
   IDTokenNonce?: String
+}
+```
+
+5. BotFriendshipStatus
+
+```typescript
+{
+  friendFlag: boolean
 }
 ```
 
@@ -232,13 +232,13 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  email = 'email',
+  EMAIL = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openid',
+  OPEN_ID = 'openid',
 
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
-  profile = 'profile',
+  PROFILE = 'profile',
 }
 ```
 
@@ -246,7 +246,7 @@ The following objects are returned on the methods described above:
 
 ```typescript
 {
-  agressive = 'agressive',
+  aggressive = 'aggressive',
   normal = 'normal',
 }
 ```

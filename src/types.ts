@@ -1,19 +1,17 @@
-export function getBotFriendshipStatus(): Promise<any>
-export function getCurrentAccessToken(): Promise<AccessToken>
-export function getProfile(): Promise<UserProfile>
-export function login(args?: LoginArguments): Promise<LoginResult>
-export function logout(): Promise<void>
-export function refreshToken(): Promise<AccessToken>
-export function verifyAccessToken(): Promise<AccessTokenVerifyResult>
-
 export interface AccessToken {
   /// The value of the access token.
   access_token: String
-
   /// The expiration time of the access token. It is calculated using `createdAt` and the validity period
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
   expires_in: String
+  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
+  /// is obtained with the `.openID` permission.
+  id_token?: String
+}
+
+export interface BotFriendshipStatus {
+  friendFlag: boolean
 }
 
 export interface AccessTokenVerifyResult {
@@ -28,8 +26,8 @@ export interface AccessTokenVerifyResult {
 }
 
 export enum BotPrompt {
-  agressive = 'agressive',
-  normal = 'normal',
+  AGGRESSIVE = 'aggressive',
+  NORMAL = 'normal',
 }
 
 export interface LoginArguments {
@@ -39,13 +37,12 @@ export interface LoginArguments {
 }
 
 export enum LoginPermission {
-  email = 'email',
+  EMAIL = 'email',
   /// The permission to get an ID token in the login response.
-  openID = 'openid',
-
+  OPEN_ID = 'openid',
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
-  profile = 'profile',
+  PROFILE = 'profile',
 }
 
 export interface LoginResult {
@@ -64,9 +61,6 @@ export interface LoginResult {
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
   IDTokenNonce?: String
-  /// The raw string value of the ID token bound to the access token. The value exists only if the access token
-  /// is obtained with the `.openID` permission.
-  lineIdToken?: String
 }
 
 export interface UserProfile {
@@ -74,20 +68,12 @@ export interface UserProfile {
   userID: String
 
   /// The display name of the current authorized user.
-  displayName: String
+  displayName: string
 
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.
-  pictureURL?: URL
-
-  /// The large profile image URL of the current authorized user. `null` if the user has not set a profile
-  /// image.
-  pictureURLLarge?: URL
-
-  /// The small profile image URL of the current authorized user. `null` if the user has not set a profile
-  /// image.
-  pictureURLSmall?: URL
+  pictureURL?: string
 
   /// The status message of the current authorized user. `null` if the user has not set a status message.
-  statusMessage?: String
+  statusMessage?: string
 }
