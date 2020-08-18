@@ -62,13 +62,27 @@ Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtain
 2. Enable `use_frameworks!` in `Podfile` line:3
 3. Comment the code related to flipper, flipper doesn't support `use_frameworks!` !
 4. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/ios-sdk/swift/setting-up-project/#configuring-the-info-plist-file)
-5. Add this code to your `AppDelegate.m`
+5. Change your `AppDelegate.m` to match the following:
 
 ```objc
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-    ...
-    [LineLogin setupWithChannelID:@"YOUR_CHANNELL_ID" universalLinkURL:nil];
+// AppDelegate.m
 
+//
+// Import the Library
+//
+#import "RNLine-Swift.h"
+
+//
+// Setup the plugin using your CHANNEL_ID when the app finishes launching
+//
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    [LineLogin setupWithChannelID:@"YOUR_CHANNEL_ID" universalLinkURL:nil];
+}
+
+//
+// Handle redirection back to the app from Line
+//
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
   return [LineLogin application:app open:url options:options];
@@ -84,17 +98,30 @@ Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtain
 #### Using Swift
 
 1. Follow instructions in [Integrating LINE Login with your iOS app](https://developers.line.biz/en/docs/ios-sdk/swift/integrate-line-login/).
-2. At the top of the `AppDelegate.swift` file, import the LineSDK framework as this: `import LineLogin`.
-3. Substitute `LoginManager.shared` to `LineLogin`.
-
-As this:
+2. Change your `AppDelegate.m` to match the following:
 
 ```swift
+// AppDelegate.swift
+
+//
+// Import the Library
+//
+import LineLogin
+
+//
+// Setup the plugin using your CHANNEL_ID when the app finishes launching
+//
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Add this to your "didFinishLaunching" delegate method.
     LineLogin.setup(channelID: "YOUR_CHANNEL_ID", universalLinkURL: nil)
 
     return true
+}
+
+//
+// Handle redirection back to the app from Line
+//
+func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    return LineLogin.application(app, open: url, options: options)
 }
 ```
 
