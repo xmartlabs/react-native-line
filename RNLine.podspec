@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "" }
   s.source_files  = "ios/**/*.{h,m,swift}"
 
-  s.dependency 'React'
+  s.dependency 'React-Core'
   s.dependency 'LineSDKSwift', '~> 5.8.1'
 end
