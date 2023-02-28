@@ -11,11 +11,11 @@ Pod::Spec.new do |s|
   s.authors      = package['author']
   s.homepage     = package['homepage']
   s.platform     = :ios, "10.0"
-  s.swift_version = '5.0'
+  s.swift_version = '5.8.1'
 
   s.source       = { :git => "" }
   s.source_files  = "ios/**/*.{h,m,swift}"
 
-  s.dependency 'React'
-  s.dependency 'LineSDKSwift', '~> 5.0'
+  s.dependency 'React-Core'
+  s.dependency 'LineSDKSwift', '~> 5.8.1'
 end
