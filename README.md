@@ -68,7 +68,7 @@ Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtain
 //
 // Import the Library
 //
-@import RNLine;
+#import "RNLine-Swift.h"
 
 //
 // Setup the plugin using your CHANNEL_ID when the app finishes launching
@@ -135,22 +135,7 @@ Don't forget to add `application` function, as line's instructions indicate.
 ```
 
 3. Add `minSdkVersion = 17` in `android/build.gradle`
-4. Add LineSDK as a dependency in `android/build.gradle`
-```gradle
-android {
-  // Enable Java 1.8 support.
-  compileOptions { // <- add this block if didn't setup
-      sourceCompatibility JavaVersion.VERSION_1_8
-      targetCompatibility JavaVersion.VERSION_1_8
-  }
-  ...
-  dependencies {
-    ...
-    implementation 'com.linecorp.linesdk:linesdk:5.7.0' // <- add this line
-  }
-}
-```
-5. In your manifest add `xmlns:tools="http://schemas.android.com/tools"` in your `manifest` tag and also `tools:replace="android:allowBackup"` in your `application` tag
+4. In your manifest add `xmlns:tools="http://schemas.android.com/tools"` in your `manifest` tag and also `tools:replace="android:allowBackup"` in your `application` tag
 
 ## API
 
