@@ -49,7 +49,7 @@ import LineSDK
 
     if let botPrompt = args["botPrompt"] as? String {
       switch botPrompt {
-      case "aggressive": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "aggresive")
+      case "aggressive": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "aggressive")
       case "normal": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "normal")
       default: break
       }
