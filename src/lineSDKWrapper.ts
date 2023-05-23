@@ -11,9 +11,9 @@ import {
   AccessToken,
   AccessTokenVerifyResult,
   BotFriendshipStatus,
+  LoginArguments,
   LoginResult,
   UserProfile,
-  LoginArguments,
 } from './types'
 
 const { LineLogin } = NativeModules
