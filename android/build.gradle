@@ -1,18 +1,7 @@
 buildscript {
     //Buildscript is evaluated before everything else so we can't use getExtOrDefault
     ext {
-        kotlinVersion = rootProject.ext.has('kotlinVersion')
-                ? rootProject.ext.get('kotlinVersion')
-                : project.properties['ReactNativeLine_kotlinVersion']
-
-        buildToolsVersion = project.properties['ReactNativeLine_buildToolsVersion']
-        minSdkVersion = project.properties['ReactNativeLine_minSdkVersion']
-        compileSdkVersion = project.properties['ReactNativeLine_compileSdkVersion']
-        targetSdkVersion = project.properties['ReactNativeLine_targetSdkVersion']
-        coroutinesAndroidVersion = "1.0.1"
-        coroutinesCoreVersion = "1.0.1"
-        gsonVersion = "2.8.6"
-        linesdkVersion = project.properties['ReactNativeLine_lineSdkVersion']
+        kotlinVersion = '1.7.21'
     }
     repositories {
         google()
@@ -28,8 +17,7 @@ buildscript {
 
 repositories {
     google()
-
-    jcenter()
+    mavenCentral()
 }
 
 apply plugin: "com.android.library"
@@ -63,6 +51,6 @@ dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "com.linecorp.linesdk:linesdk:5.8.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroidVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCoreVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
 }
