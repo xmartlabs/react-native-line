@@ -10,6 +10,11 @@ export interface AccessToken {
   id_token?: String
 }
 
+export interface ConfigureArguments {
+  channelId: string
+  universalLinkUrl?: string
+}
+
 export interface BotFriendshipStatus {
   friendFlag: boolean
 }

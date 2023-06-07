@@ -6,14 +6,15 @@ import {
   logout as LineSDKLogout,
   refreshToken as LineSDKRefreshToken,
   verifyAccessToken as LineSDKVerifyAccessToken,
+  configure as LineSDKConfigure,
 } from './lineSDKWrapper'
-import { LoginArguments } from './types'
 
-export {
+import {
+  LoginArguments,
+  ConfigureArguments,
   BotFriendshipStatus,
   AccessToken,
   AccessTokenVerifyResult,
-  LoginArguments,
   LoginPermission,
   LoginResult,
   BotPrompt,
@@ -41,5 +42,8 @@ export default {
   },
   verifyAccessToken() {
     return LineSDKVerifyAccessToken()
+  },
+  configure(args: ConfigureArguments) {
+    return LineSDKConfigure(args)
   },
 }
