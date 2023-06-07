@@ -33,17 +33,17 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
     }
 
 
-    private val lineApiClient: LineApiClient
-    private val channelId: String
+    private var lineApiClient: LineApiClient
+    private var channelId: String
     private var LOGIN_REQUEST_CODE: Int = 0
     private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+    private val context: Context = reactContext.applicationContext
 
     private var loginResult: Promise? = null
 
     override fun getName() = MODULE_NAME
 
     init {
-        val context: Context = reactContext.applicationContext
         channelId = context.getString(R.string.line_channel_id)
         lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
@@ -52,6 +52,12 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
             override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) =
                     handleActivityResult(requestCode, resultCode, data)
         })
+    }
+
+    @ReactMethod
+    fun configure(args: ReadableMap, promise: Promise) {
+        channelId = if (args.hasKey(ConfigureArguments.CHANNEL_ID.key)) args.getString(ConfigureArguments.CHANNEL_ID.key)!!.toString() else context.getString(R.string.line_channel_id)
+        lineApiClient = LineApiClientBuilder(context, channelId).build()
     }
 
     @ReactMethod

@@ -34,4 +34,9 @@
                   verifyAccessToken: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject
                   )
+  RCT_EXTERN_METHOD(
+                  configure: (NSDictionary *)arguments
+                  resolver: (RCTPromiseResolveBlock)resolve
+                  rejecter: (RCTPromiseRejectBlock)reject
+                  )
 @end
