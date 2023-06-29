@@ -59,7 +59,7 @@ First, install the npm package with yarn. _Autolink_ is automatic.
 Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtained.
 
 1. Add `platform :ios, '11.0'` in `Podfile` line:1
-2. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/ios-sdk/swift/setting-up-project/#configuring-the-info-plist-file)
+2. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file)
 3. Change your `AppDelegate.m` to match the following:
 
 ```objc
