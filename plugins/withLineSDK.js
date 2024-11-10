@@ -2,18 +2,18 @@ const {
   withDangerousMod,
   withPlugins,
   IOSConfig,
-  withAppBuildGradle,
-  WarningAggregator,
   withInfoPlist,
-  withStringsXml,
-  withAndroidManifest,
 } = require('@expo/config-plugins')
 const { resolve } = require('path')
 const { readFileSync, writeFileSync, promises } = require('fs')
 const { withLineLogin } = require('./ios/withLinePluginConfig')
 
 // Android
-const { lineImplementation, compileOptions } = require('./android/constants')
+const withApplyLineImplementation = require('./android/withApplyLineImplementation')
+const withApplyMaven = require('./android/withApplyMaven')
+const withLineManifest = require('./android/withLineManifest')
+const withApplyAndroidCompileOptions = require('./android/withApplyAndroidCompileOptions')
+const withLineChannelId = require('./android/withLineChannelId')
 
 // iOS
 const lineCFBundleURLSchemes = {
@@ -121,132 +121,6 @@ function withLinePod(config) {
       return cfg
     },
   ])
-}
-
-// Android mods
-// https://developers.line.biz/en/docs/android-sdk/integrate-line-login/#import-library-into-your-project
-function applyLineImplementation(appBuildGradle) {
-  // TODO: Find a more stable solution for this
-  if (!appBuildGradle.includes(lineImplementation)) {
-    return appBuildGradle.replace(
-      /dependencies\s?{/,
-      `dependencies {
-    ${lineImplementation}`,
-    )
-  } else {
-    return appBuildGradle
-  }
-}
-
-function applyMavenRepositories(appBuildGradle) {
-  // TODO: Find a more stable solution for this
-  if (
-    appBuildGradle.includes(`repositories {
-    mavenCentral()`)
-  ) {
-    return appBuildGradle
-  } else {
-    return appBuildGradle + `\nrepositories {\nmavenCentral()\n}`
-  }
-}
-
-// https://developers.line.biz/en/docs/android-sdk/integrate-line-login/#add-android-compilation-options
-function applyCompileOptions(appBuildGradle) {
-  // TODO: Find a more stable solution for this
-  if (!appBuildGradle.includes(compileOptions)) {
-    return appBuildGradle.replace(
-      /android\s?{/,
-      `android {
-    ${compileOptions}`,
-    )
-  } else {
-    return appBuildGradle
-  }
-}
-
-function withApplyLineImplementation(config) {
-  return withAppBuildGradle(config, config => {
-    if (config.modResults.language === 'groovy') {
-      config.modResults.contents = applyLineImplementation(
-        config.modResults.contents,
-      )
-    } else {
-      WarningAggregator.addWarningAndroid(
-        'react-native-line',
-        `Cannot automatically configure app build.gradle if it's not groovy`,
-      )
-    }
-    return config
-  })
-}
-
-function withApplyMaven(config) {
-  return withAppBuildGradle(config, config => {
-    if (config.modResults.language === 'groovy') {
-      config.modResults.contents = applyMavenRepositories(
-        config.modResults.contents,
-      )
-    } else {
-      WarningAggregator.addWarningAndroid(
-        'react-native-line',
-        `Cannot automatically configure app build.gradle if it's not groovy`,
-      )
-    }
-    return config
-  })
-}
-
-function withApplyAndroidCompileOptions(config) {
-  return withAppBuildGradle(config, config => {
-    if (config.modResults.language === 'groovy') {
-      config.modResults.contents = applyCompileOptions(
-        config.modResults.contents,
-      )
-    } else {
-      WarningAggregator.addWarningAndroid(
-        'react-native-line',
-        `Cannot automatically configure app build.gradle if it's not groovy`,
-      )
-    }
-    return config
-  })
-}
-
-function withLineChannelId(config, { channelId }) {
-  return withStringsXml(config, config => {
-    let strings = config.modResults.resources.string
-
-    let line_channel_id = strings.findIndex(
-      value => value.$.name === 'line_channel_id',
-    )
-
-    if (line_channel_id !== -1) {
-      // Dp nothing
-      return config
-    } else {
-      strings.push({
-        $: {
-          name: 'line_channel_id',
-          translatable: 'false',
-        },
-        _: channelId.toString(),
-      })
-    }
-
-    return config
-  })
-}
-
-function withLineManifest(config) {
-  return withAndroidManifest(config, config => {
-    let manifest = config.modResults.manifest
-    let application = manifest.application
-
-    manifest.$['xmlns:tools'] = 'http://schemas.android.com/tools'
-    application[0].$['tools:replace'] = 'android:allowBackup'
-
-    return config
-  })
 }
 
 function withLineSDK(config, props) {
