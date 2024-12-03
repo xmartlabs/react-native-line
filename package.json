@@ -9,7 +9,7 @@
     "Nicolás Hernández <nicolas@xmartlabs.com>",
     "Marco Fiorito <marco@xmartlabs.com>"
   ],
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "types": "dist/index.d.ts",
   "version": "2.2.0",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
@@ -22,7 +22,6 @@
     "auth"
   ],
   "license": "MIT",
-  "private": false,
   "scripts": {
     "prepare": "yarn run build",
     "android": "react-native run-android",
@@ -61,8 +60,9 @@
     "ios",
     "RNLine.podspec",
     "README.md"
-  ], 
+  ],
   "engines": {
-      "node": ">=18"
-    }
+    "node": ">=18"
+  },
+  "packageManager": "yarn@3.6.4"
 }
