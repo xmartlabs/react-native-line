@@ -68,6 +68,21 @@ import LineSDK
     }
   }
 
+  @objc func configure(_ arguments: NSDictionary?, resolver resolve: @escaping RCTPromiseResolveBlock,
+                                          rejecter reject: @escaping RCTPromiseRejectBlock) {
+    guard let args = arguments else {
+      LineLogin.nilArgument(reject)
+      return
+    }
+    guard let channelID = args["channelId"] as? String else { return }
+    Swift.print("[LineSDK] configure \(channelID)")
+    let universalLinkURL = args["universalLinkUrl"] as? URL
+
+    DispatchQueue.main.async {
+      LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
+    }
+  }
+
   @objc func logout(_ resolve: @escaping RCTPromiseResolveBlock,
                     rejecter reject: @escaping RCTPromiseRejectBlock) {
     LoginManager.shared.logout { result in
