@@ -14,6 +14,7 @@ import {
   LoginArguments,
   LoginResult,
   UserProfile,
+  ConfigureArguments,
 } from './types'
 
 const { LineLogin } = NativeModules
@@ -58,4 +59,8 @@ export const verifyAccessToken = async (): Promise<AccessTokenVerifyResult> => {
   const result = await LineLogin.verifyAccessToken()
   const deserializedResult = deserializeVerifyAccessToken(result)
   return deserializedResult
+}
+
+export const configure = (args: ConfigureArguments) => {
+  return LineLogin.configure(args)
 }
