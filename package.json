@@ -29,8 +29,7 @@
     "dev": "tsc --watch",
     "ios": "react-native run-ios",
     "prepare": "yarn run build",
-    "start": "react-native start",
-    "test:ts": "tsc --noEmit"
+    "start": "react-native start"
   },
   "devDependencies": {
     "@expo/config-plugins": "^9.0.13",
