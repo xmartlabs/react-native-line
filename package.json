@@ -14,57 +14,48 @@
   "version": "2.2.1",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
   "keywords": [
-    "react-native",
-    "react",
-    "simple",
+    "auth",
     "line",
-    "social login",
-    "auth"
+    "login",
+    "react",
+    "react-native",
+    "react-native-line",
+    "social"
   ],
   "license": "MIT",
   "scripts": {
-    "prepare": "yarn run build",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
     "build": "tsc",
     "dev": "tsc --watch",
+    "ios": "react-native run-ios",
+    "prepare": "yarn run build",
+    "start": "react-native start",
     "test:ts": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "@expo/config-plugins": "^8.0.10",
-    "react": "^16.0",
-    "react-native": ">=0.61.1"
-  },
   "devDependencies": {
-    "@expo/config-plugins": "^8.0.10",
-    "@react-native/eslint-config": "0.76.3",
-    "@types/react-native": "0.73.0",
-    "@typescript-eslint/eslint-plugin": "8.17.0",
-    "@typescript-eslint/parser": "8.17.0",
-    "eslint": "9.16.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-prettier": "5.2.1",
-    "eslint-plugin-simple-import-sort": "12.1.1",
-    "eslint-plugin-sort-keys-fix": "1.1.2",
-    "prettier": "2.8.8",
-    "typescript": "5.0.4"
+    "@expo/config-plugins": "^9.0.13",
+    "@typescript-eslint/eslint-plugin": "^8.19.1",
+    "@typescript-eslint/parser": "^8.19.1",
+    "eslint": "^9.17.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "react-native": "*"
   },
   "repository": {
     "type": "git",
     "url": "ssh:git@github.com:xmartlabs/react-native-line.git"
   },
   "files": [
-    "dist/",
-    "src/",
     "android",
+    "dist",
     "ios",
-    "RNLine.podspec",
-    "README.md"
-  ],
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "yarn@3.6.4"
+    "plugins",
+    "src",
+    "app.plugin.js",
+    "expo-module.config.json"
+  ]
 }

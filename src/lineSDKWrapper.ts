@@ -18,11 +18,12 @@ import {
 
 const { LineLogin } = NativeModules
 
-export const getBotFriendshipStatus = async (): Promise<BotFriendshipStatus> => {
-  const result = await LineLogin.getBotFriendshipStatus()
-  const deserializedResult = deserializeBotFriendshipStatus(result)
-  return deserializedResult
-}
+export const getBotFriendshipStatus =
+  async (): Promise<BotFriendshipStatus> => {
+    const result = await LineLogin.getBotFriendshipStatus()
+    const deserializedResult = deserializeBotFriendshipStatus(result)
+    return deserializedResult
+  }
 
 export const getCurrentAccessToken = async (): Promise<AccessToken> => {
   const result = await LineLogin.getCurrentAccessToken()

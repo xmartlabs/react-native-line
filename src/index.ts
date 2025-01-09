@@ -7,7 +7,16 @@ import {
   refreshToken as LineSDKRefreshToken,
   verifyAccessToken as LineSDKVerifyAccessToken,
 } from './lineSDKWrapper'
-import { LoginArguments } from './types'
+import {
+  AccessToken,
+  AccessTokenVerifyResult,
+  BotFriendshipStatus,
+  BotPrompt,
+  LoginArguments,
+  LoginPermission,
+  LoginResult,
+  UserProfile,
+} from './types'
 
 export {
   BotFriendshipStatus,
@@ -18,7 +27,7 @@ export {
   LoginResult,
   BotPrompt,
   UserProfile,
-} from './types'
+}
 
 export default {
   getBotFriendshipStatus() {

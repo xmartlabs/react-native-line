@@ -1,2 +1,6 @@
-package.json
+android
 ios
+node_modules
+
+README.md
+yarn.lock
