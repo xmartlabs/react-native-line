@@ -16,7 +16,7 @@ function withLinePod(config) {
         podfile,
         [
           ...lines.slice(0, index),
-          `  pod 'LineSDKSwift', '~> 5.0'`,
+          `  pod 'LineSDKSwift', '~> 5.8.1'`,
           ...lines.slice(index),
         ].join('\n'),
       )
