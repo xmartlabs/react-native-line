@@ -329,6 +329,33 @@ The following objects are returned on the methods described above:
     }
 ```
 
+## Expo Support
+
+If you're using expo you can add this plugins
+
+```
+    "plugins": [
+    ...
+      // This is required, please add `expo-build-properties` to your project
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "@xmartlabs/react-native-line",
+        {
+          "channelId": "YOUR_CHANNEL_ID"
+        }
+      ]
+    ],
+```
+
+⚠️ [iOS] if you're using other plugins it might cause conflict on `appDelegate.mm` file, please implement your own appDelegate mod if conflict occur 
+
 ## Example
 
 If you want to see `@xmartlabs/react-native-line` in action, just move into the [example](/example) folder and run `yarn ios`/`yarn android`. By seeing its source code, you will have a better understanding of the library usage.
