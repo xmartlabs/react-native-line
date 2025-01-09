@@ -1,7 +1,8 @@
 buildscript {
     //Buildscript is evaluated before everything else so we can't use getExtOrDefault
     ext {
-        kotlinVersion = '1.7.21'
+        kotlinVersion = '1.9.24'
+        ndkVersion = "26.1.10909125"
     }
     repositories {
         google()
@@ -9,9 +10,10 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.4"
+        classpath "com.android.tools.build:gradle"
         //noinspection DifferentKotlinGradleVersion
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
 
@@ -22,6 +24,7 @@ repositories {
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
+apply plugin: "com.facebook.react.rootproject"
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
