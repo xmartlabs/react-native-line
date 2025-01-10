@@ -1,9 +1,8 @@
 buildscript {
-    //Buildscript is evaluated before everything else so we can't use getExtOrDefault
     ext {
         kotlinVersion = '1.9.24'
-        ndkVersion = "26.1.10909125"
     }
+
     repositories {
         google()
         mavenCentral()
@@ -11,9 +10,8 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle"
-        //noinspection DifferentKotlinGradleVersion
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath "com.facebook.react:react-native-gradle-plugin"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin"
     }
 }
 
