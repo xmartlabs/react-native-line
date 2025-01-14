@@ -1,1 +1,1 @@
-module.exports = require('./plugins/withLineSDK')
+module.exports = require('./plugin/withLineSDK')

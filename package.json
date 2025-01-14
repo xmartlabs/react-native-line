@@ -52,7 +52,7 @@
     "android",
     "dist",
     "ios",
-    "plugins",
+    "plugin",
     "app.plugin.js",
     "expo-module.config.json"
   ]
