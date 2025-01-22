@@ -21,12 +21,12 @@ import com.linecorp.linesdk.*
 import com.linecorp.linesdk.LineProfile
 
 enum class LoginArguments(val key: String) {
-    SCOPES("scopes"),
+    BOT_PROMPT("botPrompt"),
     ONLY_WEB_LOGIN("onlyWebLogin"),
-    BOT_PROMPT("botPrompt")
+    SCOPES("scopes")
 }
 
-class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
     companion object {
         private const val MODULE_NAME: String = "LineLogin"
         private const val ERROR_MESSAGE: String = "ERROR"
