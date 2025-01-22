@@ -3,7 +3,6 @@ const { withPlugins } = require('@expo/config-plugins')
 const withAppDelegateMod = require('./ios/withAppDelegateMod')
 const withCustomPlist = require('./ios/withCustomPlist')
 const withLineChannelId = require('./android/withLineChannelId')
-const withLinePod = require('./ios/withLinePod')
 
 function withLineSDK(config, props) {
   if (!props?.channelId) {
@@ -15,7 +14,6 @@ function withLineSDK(config, props) {
     [withLineChannelId, props],
 
     // iOS
-    withLinePod,
     [withCustomPlist, props],
     [withAppDelegateMod, props],
   ])

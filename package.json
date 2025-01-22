@@ -1,7 +1,7 @@
 {
   "name": "@xmartlabs/react-native-line",
   "description": "React Native Line wrapper",
-  "author": "XmartLabs <hi@xmartlabs.com>",
+  "author": "Xmartlabs <hi@xmartlabs.com>",
   "contributors": [
     "Emiliano Botti <emiliano@xmartlabs.com>",
     "Joaquin Aguirre <joaquin.aguirre@xmartlabs.com>",
@@ -33,8 +33,8 @@
   },
   "devDependencies": {
     "@expo/config-plugins": "^9.0.14",
-    "@typescript-eslint/eslint-plugin": "^8.20.0",
-    "@typescript-eslint/parser": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "eslint": "^9.18.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
@@ -47,13 +47,14 @@
   "packageManager": "yarn@4.6.0",
   "repository": {
     "type": "git",
-    "url": "ssh:git@github.com:xmartlabs/react-native-line.git"
+    "url": "https://github.com/xmartlabs/react-native-line.git"
   },
   "files": [
     "android",
     "dist",
     "ios",
     "plugin",
-    "app.plugin.js"
+    "app.plugin.js",
+    "RNLine.podspec"
   ]
 }
