@@ -9,7 +9,7 @@
     "Nicolás Hernández <nicolas@xmartlabs.com>",
     "Marco Fiorito <marco@xmartlabs.com>"
   ],
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "version": "2.2.1",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
@@ -53,7 +53,7 @@
     "dist",
     "ios",
     "plugin",
-    "app.plugin.js",
-    "expo-module.config.json"
-  ]
+    "app.plugin.js"
+  ],
+  "packageManager": "yarn@4.6.0"
 }

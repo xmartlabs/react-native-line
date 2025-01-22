@@ -49,54 +49,66 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
 
-            override fun onActivityResult(activity: Activity?, requestCode: Int, resultCode: Int, data: Intent?) =
-                    handleActivityResult(requestCode, resultCode, data)
+            override fun onActivityResult(
+                activity: Activity?,
+                requestCode: Int,
+                resultCode: Int,
+                data: Intent?
+            ) =
+                handleActivityResult(requestCode, resultCode, data)
         })
     }
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
-        val scopes = if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!.toArrayList() as List<String> else listOf("profile")
-        val onlyWebLogin = args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
-        val botPromptString = if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
+        val scopes =
+            if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!
+                .toArrayList() as List<String> else listOf("profile")
+        val onlyWebLogin =
+            args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
+        val botPromptString =
+            if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
         login(
-                scopes,
-                onlyWebLogin,
-                botPromptString,
-                promise
+            scopes,
+            onlyWebLogin,
+            botPromptString,
+            promise
         )
     }
 
     private fun login(
-            scopes: List<String>,
-            onlyWebLogin: Boolean,
-            botPromptString: String,
-            promise: Promise
+        scopes: List<String>,
+        onlyWebLogin: Boolean,
+        botPromptString: String,
+        promise: Promise
     ) {
 
         val lineAuthenticationParams = LineAuthenticationParams.Builder()
-                .scopes(Scope.convertToScopeList(scopes))
-                .apply {
-                    botPrompt(LineAuthenticationParams.BotPrompt.valueOf(botPromptString))
-                }
-                .build()
+            .scopes(Scope.convertToScopeList(scopes))
+            .apply {
+                botPrompt(LineAuthenticationParams.BotPrompt.valueOf(botPromptString))
+            }
+            .build()
 
         val lineAuthenticationConfig: LineAuthenticationConfig? =
-                createLineAuthenticationConfig(channelId, onlyWebLogin)
+            createLineAuthenticationConfig(channelId, onlyWebLogin)
 
         val activity: Activity = currentActivity!!
 
         val loginIntent =
-                when {
-                    lineAuthenticationConfig != null -> LineLoginApi.getLoginIntent(
-                            activity,
-                            lineAuthenticationConfig,
-                            lineAuthenticationParams
-                    )
-                    onlyWebLogin -> LineLoginApi.getLoginIntentWithoutLineAppAuth(
-                            activity, channelId, lineAuthenticationParams)
-                    else -> LineLoginApi.getLoginIntent(activity, channelId, lineAuthenticationParams)
-                }
+            when {
+                lineAuthenticationConfig != null -> LineLoginApi.getLoginIntent(
+                    activity,
+                    lineAuthenticationConfig,
+                    lineAuthenticationParams
+                )
+
+                onlyWebLogin -> LineLoginApi.getLoginIntentWithoutLineAppAuth(
+                    activity, channelId, lineAuthenticationParams
+                )
+
+                else -> LineLoginApi.getLoginIntent(activity, channelId, lineAuthenticationParams)
+            }
 
         activity.startActivityForResult(loginIntent, LOGIN_REQUEST_CODE)
         this.loginResult = promise
@@ -108,9 +120,9 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
             val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.profile }
             if (!lineApiResponse.isSuccess) {
                 promise.reject(
-                        lineApiResponse.responseCode.name,
-                        lineApiResponse.errorData.message,
-                        null
+                    lineApiResponse.responseCode.name,
+                    lineApiResponse.errorData.message,
+                    null
                 )
             } else {
                 promise.resolve(parseProfile(lineApiResponse.responseData))
@@ -123,9 +135,9 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
 
         if (resultCode != Activity.RESULT_OK || intent == null) {
             loginResult?.reject(
-                    resultCode.toString(),
-                    ERROR_MESSAGE,
-                    null
+                resultCode.toString(),
+                ERROR_MESSAGE,
+                null
             )
         }
 
@@ -136,18 +148,20 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                 loginResult?.resolve(parseLoginResult(result))
                 loginResult = null
             }
+
             LineApiResponseCode.CANCEL -> {
                 loginResult?.reject(
-                        result.responseCode.name,
-                        result.errorData.message,
-                        null
+                    result.responseCode.name,
+                    result.errorData.message,
+                    null
                 )
             }
+
             else -> {
                 loginResult?.reject(
-                        result.responseCode.name,
-                        result.errorData.message,
-                        null
+                    result.responseCode.name,
+                    result.errorData.message,
+                    null
                 )
             }
         }
@@ -163,9 +177,9 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                 promise.resolve(null)
             } else {
                 promise.reject(
-                        lineApiResponse.responseCode.name,
-                        lineApiResponse.errorData.message,
-                        null
+                    lineApiResponse.responseCode.name,
+                    lineApiResponse.errorData.message,
+                    null
                 )
             }
         }
@@ -173,36 +187,36 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
 
     @ReactMethod
     fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
-            promise = promise,
-            serviceCallable = { lineApiClient.currentAccessToken },
-            parser = { parseAccessToken(it, lineIdToken = null) }
+        promise = promise,
+        serviceCallable = { lineApiClient.currentAccessToken },
+        parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
     fun getBotFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
-            promise = promise,
-            serviceCallable = { lineApiClient.friendshipStatus },
-            parser = { parseFriendshipStatus(it) }
+        promise = promise,
+        serviceCallable = { lineApiClient.friendshipStatus },
+        parser = { parseFriendshipStatus(it) }
     )
 
     @ReactMethod
     fun refreshToken(promise: Promise) = invokeLineServiceMethod(
-            promise = promise,
-            serviceCallable = { lineApiClient.refreshAccessToken() },
-            parser = { parseAccessToken(it, lineIdToken = null) }
+        promise = promise,
+        serviceCallable = { lineApiClient.refreshAccessToken() },
+        parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
     fun verifyAccessToken(promise: Promise) = invokeLineServiceMethod(
-            promise = promise,
-            serviceCallable = { lineApiClient.verifyToken() },
-            parser = { parseVerifyAccessToken(it) }
+        promise = promise,
+        serviceCallable = { lineApiClient.verifyToken() },
+        parser = { parseVerifyAccessToken(it) }
     )
 
     private fun <T> invokeLineServiceMethod(
-            promise: Promise,
-            serviceCallable: () -> LineApiResponse<T>,
-            parser: (T) -> WritableMap
+        promise: Promise,
+        serviceCallable: () -> LineApiResponse<T>,
+        parser: (T) -> WritableMap
     ) {
         uiCoroutineScope.launch {
             val lineApiResponse = withContext(Dispatchers.IO) { serviceCallable.invoke() }
@@ -210,74 +224,83 @@ class RNLine(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule
                 promise.resolve(parser.invoke(lineApiResponse.responseData))
             } else {
                 promise.reject(
-                        lineApiResponse.responseCode.name,
-                        lineApiResponse.errorData.message,
-                        null
+                    lineApiResponse.responseCode.name,
+                    lineApiResponse.errorData.message,
+                    null
                 )
             }
         }
     }
 
     // Parsers
-    private fun parseAccessToken(accessToken: LineAccessToken, lineIdToken: LineIdToken?): WritableMap = Arguments.makeNativeMap(
-            mapOf(
-                    "access_token" to accessToken.tokenString,
-                    "expires_in" to accessToken.expiresInMillis,
-                    "id_token" to lineIdToken?.rawString
-            )
+    private fun parseAccessToken(
+        accessToken: LineAccessToken,
+        lineIdToken: LineIdToken?
+    ): WritableMap = Arguments.makeNativeMap(
+        mapOf(
+            "access_token" to accessToken.tokenString,
+            "expires_in" to accessToken.expiresInMillis,
+            "id_token" to lineIdToken?.rawString
+        )
     )
 
-    private fun parseFriendshipStatus(friendshipStatus: LineFriendshipStatus): WritableMap = Arguments.makeNativeMap(
+    private fun parseFriendshipStatus(friendshipStatus: LineFriendshipStatus): WritableMap =
+        Arguments.makeNativeMap(
             mapOf(
-                    "friendFlag" to friendshipStatus.isFriend
+                "friendFlag" to friendshipStatus.isFriend
             )
-    )
+        )
 
-    private fun parseVerifyAccessToken( verifyAccessToken: LineCredential): WritableMap = Arguments.makeNativeMap(
+    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap =
+        Arguments.makeNativeMap(
             mapOf(
-                    "client_id" to channelId,
-                    "scope" to Scope.join(verifyAccessToken.scopes),
-                    "expires_in" to verifyAccessToken.accessToken.expiresInMillis
+                "client_id" to channelId,
+                "scope" to Scope.join(verifyAccessToken.scopes),
+                "expires_in" to verifyAccessToken.accessToken.expiresInMillis
             )
-    )
+        )
 
 
     private fun parseProfile(profile: LineProfile): WritableMap = Arguments.makeNativeMap(
-            mapOf(
-                    "displayName" to profile.displayName,
-                    "userID" to profile.userId,
-                    "statusMessage" to profile.statusMessage,
-                    "pictureURL" to profile.pictureUrl?.toString()
-            )
+        mapOf(
+            "displayName" to profile.displayName,
+            "userID" to profile.userId,
+            "statusMessage" to profile.statusMessage,
+            "pictureURL" to profile.pictureUrl?.toString()
+        )
     )
 
-    private fun parseLoginResult(loginResult: LineLoginResult): WritableMap = Arguments.makeNativeMap(
+    private fun parseLoginResult(loginResult: LineLoginResult): WritableMap =
+        Arguments.makeNativeMap(
             mapOf(
-                    "userProfile" to parseProfile(loginResult.lineProfile!!),
-                    "accessToken" to parseAccessToken(loginResult.lineCredential!!.accessToken, loginResult.lineIdToken),
-                    "scope" to loginResult.lineCredential?.scopes?.let {
-                        Scope.join(it)
-                    },
-                    "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
-                    "IDTokenNonce" to loginResult.lineIdToken?.nonce
+                "userProfile" to parseProfile(loginResult.lineProfile!!),
+                "accessToken" to parseAccessToken(
+                    loginResult.lineCredential!!.accessToken,
+                    loginResult.lineIdToken
+                ),
+                "scope" to loginResult.lineCredential?.scopes?.let {
+                    Scope.join(it)
+                },
+                "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
+                "IDTokenNonce" to loginResult.lineIdToken?.nonce
             )
-    )
+        )
 
 
     // Helpers
     private fun createLineAuthenticationConfig(
-            channelId: String,
-            onlyWebLogin: Boolean
+        channelId: String,
+        onlyWebLogin: Boolean
     ): LineAuthenticationConfig? {
         return createConfig(
-                channelId,
-                onlyWebLogin
+            channelId,
+            onlyWebLogin
         )
     }
 
     private fun createConfig(
-            channelId: String,
-            isLineAppAuthDisabled: Boolean
+        channelId: String,
+        isLineAppAuthDisabled: Boolean
     ): LineAuthenticationConfig {
         val configBuilder = LineAuthenticationConfig.Builder(channelId)
 

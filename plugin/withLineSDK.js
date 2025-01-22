@@ -1,10 +1,6 @@
 const { withPlugins } = require('@expo/config-plugins')
 
 // Android
-const withApplyLineImplementation = require('./android/withApplyLineImplementation')
-const withApplyMaven = require('./android/withApplyMaven')
-const withLineManifest = require('./android/withLineManifest')
-const withApplyAndroidCompileOptions = require('./android/withApplyAndroidCompileOptions')
 const withLineChannelId = require('./android/withLineChannelId')
 
 // iOS
@@ -23,10 +19,6 @@ function withLineSDK(config, props) {
     [withAppDelegateMod, props],
 
     // Android
-    withApplyLineImplementation,
-    withApplyMaven,
-    withLineManifest,
-    withApplyAndroidCompileOptions,
     [withLineChannelId, props],
   ])
 }
