@@ -44,6 +44,7 @@
   "peerDependencies": {
     "react-native": "*"
   },
+  "packageManager": "yarn@4.6.0",
   "repository": {
     "type": "git",
     "url": "ssh:git@github.com:xmartlabs/react-native-line.git"
@@ -54,6 +55,5 @@
     "ios",
     "plugin",
     "app.plugin.js"
-  ],
-  "packageManager": "yarn@4.6.0"
+  ]
 }

@@ -1,21 +1,13 @@
-//
-//  LineLogin.swift
-//  RNLine
-//
-//  Created by Emiliano Botti on 9/25/19.
-//  Copyright © 2019 XmartLabs S.R.L.. All rights reserved.
-//
-
 import Foundation
 import LineSDK
 
 @objc(LineLogin) public class LineLogin: NSObject {
-  
+
   // Setup to be called in AppDelegate
   @objc public static func setup(channelID: String, universalLinkURL: URL?) {
     return LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
   }
-  
+
   @objc public static func application(
     _ application: UIApplication,
     open url: URL,
@@ -23,7 +15,7 @@ import LineSDK
   {
     return LoginManager.shared.application(application, open: url, options: options)
   }
-  
+
   @objc public static func application(
     _ application: UIApplication,
     continue userActivity: NSUserActivity,
@@ -54,7 +46,7 @@ import LineSDK
       default: break
       }
     }
-    
+
     DispatchQueue.main.async {
         LoginManager.shared.login(
           permissions: Set(scopes),
