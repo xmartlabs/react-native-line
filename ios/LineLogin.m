@@ -1,11 +1,3 @@
-//
-//  LineLogin.m
-//  RNLine
-//
-//  Created by Emiliano Botti on 9/25/19.
-//  Copyright © 2019 XmartLabs S.R.L.. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import "React/RCTBridgeModule.h"
 

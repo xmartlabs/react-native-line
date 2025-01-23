@@ -1,13 +1,13 @@
 export interface AccessToken {
   /// The value of the access token.
-  access_token: String
+  access_token: string
   /// The expiration time of the access token. It is calculated using `createdAt` and the validity period
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
-  expires_in: String
+  expires_in: string
   /// The raw string value of the ID token bound to the access token. The value exists only if the access token
   /// is obtained with the `.openID` permission.
-  id_token?: String
+  id_token?: string
 }
 
 export interface BotFriendshipStatus {
@@ -16,13 +16,13 @@ export interface BotFriendshipStatus {
 
 export interface AccessTokenVerifyResult {
   // The channel ID bound to the access token.
-  client_id: String
+  client_id: string
 
   /// The amount of time until the access token expires.
-  expires_in: String
+  expires_in: string
 
   /// Valid permissions of the access token separated by spaces
-  scope: String
+  scope: string
 }
 
 export enum BotPrompt {
@@ -49,7 +49,7 @@ export interface LoginResult {
   /// The access token obtained by the login process.
   accessToken: AccessToken
   /// The permissions bound to the `accessToken` object by the authorization process. Scope has them separated by spaces
-  scope: String
+  scope: string
   /// Contains the user profile including the user ID, display name, and so on. The value exists only when the
   /// `.profile` permission is set in the authorization request.
   userProfile?: UserProfile
@@ -60,12 +60,12 @@ export interface LoginResult {
   friendshipStatusChanged?: boolean
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
-  IDTokenNonce?: String
+  IDTokenNonce?: string
 }
 
 export interface UserProfile {
   /// The user ID of the current authorized user.
-  userID: String
+  userID: string
 
   /// The display name of the current authorized user.
   displayName: string

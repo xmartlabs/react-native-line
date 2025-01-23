@@ -1,7 +1,5 @@
 {
-  "files": [
-    "README.md"
-  ],
+  "files": ["README.md"],
   "imageSize": 100,
   "commit": false,
   "contributors": [
@@ -10,58 +8,43 @@
       "name": "Emiliano Botti",
       "avatar_url": "https://avatars0.githubusercontent.com/u/20881388?v=4",
       "profile": "https://github.com/eb16",
-      "contributions": [
-        "code"
-      ]
+      "contributions": ["code"]
     },
     {
-      "login": "Joaguirrem",
-      "name": "Joaquín Aguirre",
+      "login": "joaguirrem",
+      "name": "Joaquin Aguirre",
       "avatar_url": "https://avatars2.githubusercontent.com/u/17858453?v=4",
-      "profile": "https://github.com/Joaguirrem",
-      "contributions": [
-        "code"
-      ]
+      "profile": "https://github.com/joaguirrem",
+      "contributions": ["code"]
     },
     {
       "login": "nicoache1",
       "name": "Nicolas Hernandez",
       "avatar_url": "https://avatars0.githubusercontent.com/u/26419582?v=4",
       "profile": "https://github.com/nicoache1",
-      "contributions": [
-        "code",
-        "review"
-      ]
+      "contributions": ["code", "review"]
     },
     {
       "login": "santiagofm",
       "name": "Santiago Fernández",
       "avatar_url": "https://avatars0.githubusercontent.com/u/6749415?v=4",
       "profile": "https://github.com/santiagofm",
-      "contributions": [
-        "code",
-        "projectManagement",
-        "review"
-      ]
+      "contributions": ["code", "projectManagement", "review"]
     },
     {
       "login": "matir91",
       "name": "Matías Irland",
       "avatar_url": "https://avatars2.githubusercontent.com/u/8472881?v=4",
       "profile": "https://github.com/matir91",
-      "contributions": [
-        "review"
-      ]
+      "contributions": ["review"]
     },
     {
       "login": "MarcoF09",
       "name": "Marco Fiorito",
       "avatar_url": "https://avatars.githubusercontent.com/MarcoF09",
       "profile": "https://github.com/MarcoF09",
-      "contributions": [
-        "code",
-      ]
-    },
+      "contributions": ["code"]
+    }
   ],
   "contributorsPerLine": 7,
   "projectName": "react-native-line",
