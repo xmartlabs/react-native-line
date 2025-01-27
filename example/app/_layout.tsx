@@ -32,8 +32,9 @@ export default function () {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(app)/index" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(app)/login" />
+        <Stack.Screen name="(app)/home" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
