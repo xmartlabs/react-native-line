@@ -9,13 +9,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.xmartlabs.rnline.exampleapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.xmartlabs.rnline.exampleapp"
     },
     "web": {
       "bundler": "metro",
@@ -23,6 +25,14 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",
@@ -36,7 +46,7 @@
       [
         "@xmartlabs/react-native-line",
         {
-          "channelId": 1626112874
+          "channelId": 2006826760
         }
       ]
     ],
