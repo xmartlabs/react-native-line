@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "example-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "ios": {
@@ -31,6 +31,12 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
+        }
+      ],
+      [
+        "@xmartlabs/react-native-line",
+        {
+          "channelId": 1626112874
         }
       ]
     ],
