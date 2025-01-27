@@ -1,64 +1,63 @@
-# ![React Native LINE](/assets/github-banner.png)
-
-<p align="center">
-  Line SDK wrapper for React Native 🚀
-</p>
-
-This library includes:
-
-- [LINE SDK v5 for iOS Swift](https://developers.line.biz/en/docs/ios-sdk/swift/overview/), wrapped with [Swift](https://developer.apple.com/swift/).
-- [LINE SDK v5 for Android](https://developers.line.biz/en/docs/android-sdk/overview/), wrapped with [Kotlin](https://kotlinlang.org/).
-
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![NPM Version](https://img.shields.io/npm/v/@xmartlabs/react-native-line.svg?style=flat-square)](https://www.npmjs.com/package/@xmartlabs/react-native-line)
 
+# ![React Native LINE](/assets/github-banner.png)
+
+Line SDK wrapper for React Native 🚀
+
+- [LINE SDK v5 for iOS Swift](https://developers.line.biz/en/reference/ios-sdk-swift/), wrapped with [Swift](https://developer.apple.com/swift/).
+- [LINE SDK v5 for Android](https://developers.line.biz/en/reference/android-sdk/), wrapped with [Kotlin](https://kotlinlang.org/).
+
 ## Requirements
 
-- React native `>=0.61.1`
-- iOS 10.0 or later as the development target
-- Android `minSdkVersion` set to 17 or higher
+- Android `minSdkVersion` 24 or higher
+- iOS minimum development target 13.0 or higher
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
-
-## Migration from v1.x.x
-
-If you are currently using `react-native-line-sdk` (v1.x.x):
-
-1. Unlink the old library:
-
-```
-  react-native unlink react-native-line-sdk
-```
-
-2. Remove it from the `package.json`
-3. Remove any line sdk's `*.aar` from `android/libs`
-4. Remove from `android/app/build.gradle`:
-
-```
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-```
-
-Finally, follow the installation steps for the new version.
 
 ## Installation
 
-First, install the npm package with yarn. _Autolink_ is automatic.
-
 ```bash
-  yarn add @xmartlabs/react-native-line
+$ npm install --save @xmartlabs/react-native-line
+
+# --- or ---
+
+$ yarn add @xmartlabs/react-native-line
 ```
 
-### iOS Setup
+## Expo Support
 
-#### Using Objective-C
+If you're using Expo you need to add this plugins
+
+```json
+    "plugins": [
+      ...
+      [
+        "expo-build-properties", // This is required
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      [
+        "@xmartlabs/react-native-line",
+        {
+          "channelId": "YOUR_CHANNEL_ID"
+        }
+      ]
+    ],
+```
+
+⚠️ [iOS] if you're using other plugins it might cause conflict on `appDelegate.mm` file, please implement your own appDelegate mod if conflict occur
+
+### Setup
+
+#### iOS using Objective-C
 
 Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtained.
 
-1. Add `platform :ios, '11.0'` in `Podfile` line:1
+1. Add `platform :ios, '13.0'` in `Podfile` line:1
 2. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file)
 3. Change your `AppDelegate.m` to match the following:
 
@@ -93,7 +92,7 @@ Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtain
 }
 ```
 
-#### Using Swift
+#### iOS using Swift
 
 1. Follow instructions in [Integrating LINE Login with your iOS app](https://developers.line.biz/en/docs/ios-sdk/swift/integrate-line-login/).
 2. Change your `AppDelegate.m` to match the following:
@@ -125,7 +124,7 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
 
 Don't forget to add `application` function, as line's instructions indicate.
 
-### Android Setup
+#### Android
 
 1. Follow all the configuration steps in [Line's Android integration guide](https://developers.line.biz/en/docs/android-sdk/integrate-line-login/)
 2. Add the string `line_channel_id` to your strings file with the the channel id that you have on your line console.
@@ -134,8 +133,7 @@ Don't forget to add `application` function, as line's instructions indicate.
 <string name="line_channel_id" translatable="false">Your channel id here</string>
 ```
 
-3. Add `minSdkVersion = 17` in `android/build.gradle`
-4. In your manifest add `xmlns:tools="http://schemas.android.com/tools"` in your `manifest` tag and also `tools:replace="android:allowBackup"` in your `application` tag
+3. In your manifest add `xmlns:tools="http://schemas.android.com/tools"` in your `manifest` tag and also `tools:replace="android:allowBackup"` in your `application` tag
 
 ## API
 
@@ -166,15 +164,12 @@ The following objects are returned on the methods described above:
 ```typescript
 {
    /// The user ID of the current authorized user.
-  userID: String
-
+  userID: string
   /// The display name of the current authorized user.
   displayName: string
-
   /// The profile image URL of the current authorized user. `null` if the user has not set a profile
   /// image.
   pictureURL?: string
-
   /// The status message of the current authorized user. `null` if the user has not set a status message.
   statusMessage?: string
 }
@@ -185,14 +180,14 @@ The following objects are returned on the methods described above:
 ```typescript
 {
    /// The value of the access token.
-  access_token: String
+  access_token: string
   /// The expiration time of the access token. It is calculated using `createdAt` and the validity period
   /// of the access token. This value might not be the actual expiration time because this value depends
   /// on the system time of the device when `createdAt` is determined.
-  expires_in: String
+  expires_in: string
   /// The raw string value of the ID token bound to the access token. The value exists only if the access token
   /// is obtained with the `.openID` permission.
-  id_token?: String
+  id_token?: string
 }
 ```
 
@@ -201,13 +196,11 @@ The following objects are returned on the methods described above:
 ```typescript
 {
   // The channel ID bound to the access token.
-  client_id: String
-
+  client_id: string
   /// The amount of time until the access token expires.
-  expires_in: String
-
+  expires_in: string
   /// Valid permissions of the access token separated by spaces
-  scope: String
+  scope: string
 }
 ```
 
@@ -218,7 +211,7 @@ The following objects are returned on the methods described above:
    /// The access token obtained by the login process.
   accessToken: AccessToken
   /// The permissions bound to the `accessToken` object by the authorization process. Scope has them separated by spaces
-  scope: String
+  scope: string
   /// Contains the user profile including the user ID, display name, and so on. The value exists only when the
   /// `.profile` permission is set in the authorization request.
   userProfile?: UserProfile
@@ -229,7 +222,7 @@ The following objects are returned on the methods described above:
   friendshipStatusChanged?: boolean
   /// The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
   /// verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested.
-  IDTokenNonce?: String
+  IDTokenNonce?: string
 }
 ```
 
@@ -260,7 +253,6 @@ The following objects are returned on the methods described above:
   EMAIL = 'email',
   /// The permission to get an ID token in the login response.
   OPEN_ID = 'openid',
-
   /// The permission to get the user's profile including the user ID, display name, and the profile image
   /// URL in the login response.
   PROFILE = 'profile',
@@ -328,33 +320,6 @@ The following objects are returned on the methods described above:
         ...
     }
 ```
-
-## Expo Support
-
-If you're using expo you can add this plugins
-
-```
-    "plugins": [
-    ...
-      // This is required, please add `expo-build-properties` to your project
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static"
-          }
-        }
-      ],
-      [
-        "@xmartlabs/react-native-line",
-        {
-          "channelId": "YOUR_CHANNEL_ID"
-        }
-      ]
-    ],
-```
-
-⚠️ [iOS] if you're using other plugins it might cause conflict on `appDelegate.mm` file, please implement your own appDelegate mod if conflict occur 
 
 ## Example
 
