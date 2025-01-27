@@ -11,7 +11,7 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
   "keywords": [
     "auth",
@@ -35,7 +35,7 @@
     "@expo/config-plugins": "^9.0.14",
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
-    "eslint": "^9.18.0",
+    "eslint": "^9.19.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "prettier": "^3.4.2",
