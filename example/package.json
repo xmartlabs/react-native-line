@@ -5,7 +5,7 @@
   "scripts": {
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "lint": "expo lint",
+    "lint": "tsc --noEmit && eslint",
     "reset-project": "node ./scripts/reset-project.js",
     "start": "expo start",
     "web": "expo start --web"
