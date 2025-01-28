@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { NativeModules } from 'react-native'
 
 import {
@@ -18,44 +20,36 @@ import {
 
 const { LineLogin } = NativeModules
 
-export const getBotFriendshipStatus = async (): Promise<BotFriendshipStatus> => {
+export async function getBotFriendshipStatus(): Promise<BotFriendshipStatus> {
   const result = await LineLogin.getBotFriendshipStatus()
-  const deserializedResult = deserializeBotFriendshipStatus(result)
-  return deserializedResult
+  return deserializeBotFriendshipStatus(result)
 }
 
-export const getCurrentAccessToken = async (): Promise<AccessToken> => {
+export async function getCurrentAccessToken(): Promise<AccessToken> {
   const result = await LineLogin.getCurrentAccessToken()
-  const deserializedResult = deserializeAccessToken(result)
-  return deserializedResult
+  return deserializeAccessToken(result)
 }
 
-export const getProfile = async (): Promise<UserProfile> => {
+export async function getProfile(): Promise<UserProfile> {
   const result = await LineLogin.getProfile()
-  const deserializedResult = deserializeUserProfile(result)
-  return deserializedResult
+  return deserializeUserProfile(result)
 }
 
-export const login = async (
-  args: LoginArguments = {},
-): Promise<LoginResult> => {
+export async function login(args: LoginArguments = {}): Promise<LoginResult> {
   const result = await LineLogin.login(args)
-  const deserializedResult = deserializeLoginResult(result)
-  return deserializedResult
+  return deserializeLoginResult(result)
 }
 
-export const logout = () => {
+export async function logout() {
   return LineLogin.logout()
 }
 
-export const refreshToken = async (): Promise<AccessToken> => {
+export async function refreshToken(): Promise<AccessToken> {
   const result = await LineLogin.refreshToken()
-  const deserializedResult = deserializeAccessToken(result)
-  return deserializedResult
+  return deserializeAccessToken(result)
 }
 
-export const verifyAccessToken = async (): Promise<AccessTokenVerifyResult> => {
+export async function verifyAccessToken(): Promise<AccessTokenVerifyResult> {
   const result = await LineLogin.verifyAccessToken()
-  const deserializedResult = deserializeVerifyAccessToken(result)
-  return deserializedResult
+  return deserializeVerifyAccessToken(result)
 }

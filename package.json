@@ -1,7 +1,7 @@
 {
   "name": "@xmartlabs/react-native-line",
   "description": "React Native Line wrapper",
-  "author": "XmartLabs <hi@xmartlabs.com>",
+  "author": "Xmartlabs <hi@xmartlabs.com>",
   "contributors": [
     "Emiliano Botti <emiliano@xmartlabs.com>",
     "Joaquin Aguirre <joaquin.aguirre@xmartlabs.com>",
@@ -11,57 +11,50 @@
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
   "keywords": [
-    "react-native",
-    "react",
-    "simple",
+    "auth",
     "line",
-    "social login",
-    "auth"
+    "login",
+    "react",
+    "react-native",
+    "react-native-line",
+    "social"
   ],
   "license": "MIT",
-  "private": false,
   "scripts": {
-    "prepare": "yarn run build",
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest",
     "build": "tsc",
     "dev": "tsc --watch",
-    "test:ts": "tsc --noEmit"
-  },
-  "peerDependencies": {
-    "@expo/config-plugins": "^8.0.10",
-    "react": "^16.0",
-    "react-native": ">=0.61.1"
+    "ios": "react-native run-ios",
+    "prepare": "yarn run build",
+    "start": "react-native start"
   },
   "devDependencies": {
-    "@expo/config-plugins": "^8.0.10",
-    "@react-native-community/eslint-config": "0.0.5",
-    "@types/react-native": "0.60.25",
-    "@typescript-eslint/eslint-plugin": "2.12.0",
-    "@typescript-eslint/parser": "2.12.0",
-    "eslint": "6.5.1",
-    "eslint-config-prettier": "6.10.0",
-    "eslint-plugin-prettier": "3.1.2",
-    "eslint-plugin-simple-import-sort": "5.0.1",
-    "eslint-plugin-sort-keys-fix": "1.1.0",
-    "prettier": "1.19.1",
-    "typescript": "3.9.6"
+    "@expo/config-plugins": "^9.0.14",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.3"
   },
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "packageManager": "yarn@4.6.0",
   "repository": {
     "type": "git",
-    "url": "ssh:git@github.com:xmartlabs/react-native-line.git"
+    "url": "https://github.com/xmartlabs/react-native-line.git"
   },
   "files": [
-    "dist/",
-    "src/",
     "android",
+    "dist",
     "ios",
-    "RNLine.podspec",
-    "README.md"
+    "plugin",
+    "app.plugin.js",
+    "RNLine.podspec"
   ]
 }
