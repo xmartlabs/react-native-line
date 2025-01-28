@@ -28,6 +28,7 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "ios": "react-native run-ios",
+    "lint": "tsc --noEmit && eslint",
     "prepare": "yarn run build",
     "start": "react-native start"
   },
