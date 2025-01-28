@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
     'SWIFT_COMPILATION_MODE' => 'wholemodule'
   }
 
-  s.dependency 'LineSDKSwift', '~> 5.8.1'
+  s.dependency 'LineSDKSwift', '~> 5.11.0'
   s.dependency 'React-Core'
 end
