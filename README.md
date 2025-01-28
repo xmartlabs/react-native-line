@@ -11,8 +11,8 @@ Line SDK wrapper for React Native 🚀
 
 ## Requirements
 
-- Android `minSdkVersion` 24 or higher
-- iOS minimum development target 13.0 or higher
+- Android `minSdkVersion` needs to be at least version `24`.
+- iOS `deploymentTarget` needs to be at least version `15.1`.
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
 
 ## Installation
@@ -57,9 +57,8 @@ If you're using Expo you need to add this plugins
 
 Inside your `AppDelegate.m`, setup the line sdk by passing the channel id obtained.
 
-1. Add `platform :ios, '13.0'` in `Podfile` line:1
-2. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file)
-3. Change your `AppDelegate.m` to match the following:
+1. Modify your info.plist like it says here [Configuring the Info.plist file](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file)
+2. Change your `AppDelegate.m` to match the following:
 
 ```objc
 // AppDelegate.m
