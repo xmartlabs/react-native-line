@@ -1,4 +1,5 @@
 import Line from '@xmartlabs/react-native-line'
+import * as Haptics from 'expo-haptics'
 import { useRouter } from 'expo-router'
 import { Alert, Image, StyleSheet } from 'react-native'
 
@@ -11,6 +12,7 @@ export default function () {
   const router = useRouter()
 
   function logIn() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     return Line.login()
       .then(result => {
         if (!result.accessToken.access_token) return
