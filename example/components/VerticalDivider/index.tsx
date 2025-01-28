@@ -1,9 +1,9 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
-import { BaseColors } from '@/constants/Colors'
+import { Color } from '@/constants/Colors'
 
 interface Props {
-  backgroundColor?: BaseColors
+  backgroundColor?: Color
   margin?: number
   style?: StyleProp<ViewStyle>
   width?: number

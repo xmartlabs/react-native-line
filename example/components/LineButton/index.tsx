@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text } from 'react-native'
 import Line from '@/assets/images/line.png'
 import { PressableOpacity } from '@/components/PressableOpacity'
 import { VerticalDivider } from '@/components/VerticalDivider'
-import { BaseColors } from '@/constants/Colors'
+import { Color } from '@/constants/Colors'
 
 interface Props {
   disabled?: boolean
@@ -16,10 +16,10 @@ export const LineButton: FunctionComponent<Props> = ({
   disabled = false,
   onPress,
 }) => {
-  const backgroundColor = disabled ? BaseColors.White : BaseColors.Green
-  const lineColor = disabled ? BaseColors.LightGray60PCT : BaseColors.Black8PCT
-  const textColor = disabled ? BaseColors.Gray20PCT : BaseColors.White
-  const tintColor = disabled ? BaseColors.Gray20PCT : BaseColors.White
+  const backgroundColor = disabled ? Color.White : Color.Green
+  const lineColor = disabled ? Color.LightGray60PCT : Color.Black8PCT
+  const textColor = disabled ? Color.Gray20PCT : Color.White
+  const tintColor = disabled ? Color.Gray20PCT : Color.White
 
   const borderWidth = disabled ? 1 : 0
 
@@ -42,7 +42,7 @@ const strings = {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    borderColor: BaseColors.LightGray60PCT,
+    borderColor: Color.LightGray60PCT,
     borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',

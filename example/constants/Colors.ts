@@ -1,4 +1,4 @@
-export enum BaseColors {
+export enum Color {
   Black = '#000000',
   Black8PCT = '#00000014',
   Gray = '#1E1E1E',
@@ -11,15 +11,15 @@ export enum BaseColors {
 
 export const Colors = {
   dark: {
-    background: BaseColors.Gray,
-    icon: BaseColors.Green,
-    text: BaseColors.LightGray,
-    tint: BaseColors.Green,
+    background: Color.Gray,
+    icon: Color.Green,
+    text: Color.LightGray,
+    tint: Color.Green,
   },
   light: {
-    background: BaseColors.White,
-    icon: BaseColors.Green,
-    text: BaseColors.Gray,
-    tint: BaseColors.Green,
+    background: Color.White,
+    icon: Color.Green,
+    text: Color.Gray,
+    tint: Color.Green,
   },
 }
