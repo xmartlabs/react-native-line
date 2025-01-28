@@ -16,14 +16,15 @@ import { ThemedView } from '@/components/ThemedView'
 
 export default function () {
   const router = useRouter()
+  const [loading, setLoading] = useState<boolean>(true)
   const [user, setUser] = useState<UserProfile>()
 
   useEffect(() => {
+    setLoading(true)
     Line.getProfile()
       .then(setUser)
-      .catch(() => {
-        Alert.alert(strings.errorTitle, strings.errorMessage)
-      })
+      .catch(() => Alert.alert(strings.errorTitle, strings.errorMessage))
+      .finally(() => setLoading(false))
   }, [])
 
   function logOut() {
@@ -33,7 +34,7 @@ export default function () {
     })
   }
 
-  if (!user) {
+  if (loading) {
     return (
       <ThemedView style={styles.container}>
         <ActivityIndicator size="large" />
