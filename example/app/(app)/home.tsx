@@ -1,7 +1,14 @@
 import Line, { UserProfile } from '@xmartlabs/react-native-line'
 import { useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Alert, Dimensions, Image, StyleSheet, Text } from 'react-native'
+import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+} from 'react-native'
 
 import { removeLocalStorageItem } from '@/common/localStorage'
 import { PressableOpacity } from '@/components/PressableOpacity'
@@ -24,6 +31,14 @@ export default function () {
       removeLocalStorageItem('accessToken')
       router.replace('/login')
     })
+  }
+
+  if (!user) {
+    return (
+      <ThemedView style={styles.container}>
+        <ActivityIndicator size="large" />
+      </ThemedView>
+    )
   }
 
   return (
