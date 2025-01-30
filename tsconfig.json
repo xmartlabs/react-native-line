@@ -9,10 +9,11 @@
     "moduleResolution": "node",
     "outDir": "./dist",
     "resolveJsonModule": true,
+    "skipLibCheck": true,
     "strict": true,
     "target": "ESNext"
   },
-  "exclude": ["node_modules", "babel.config.js"],
-  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "include": ["src"],
   "outDir": "./dist"
 }
