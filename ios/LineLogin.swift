@@ -51,7 +51,7 @@ import LineSDK
         in: nil,
         parameters: parameters) { result in
           switch result {
-          case .success(let value): self.parseLoginResult(value).resolver(resolve, reject, name: "login")
+          case .success(let value): resolve(self.parseLoginResult(value))
           case .failure(let error): error.rejecter(reject)
           }
         }
@@ -71,7 +71,7 @@ import LineSDK
   @objc func getCurrentAccessToken(_ resolve: @escaping RCTPromiseResolveBlock,
                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     if let token = AccessTokenStore.shared.current {
-      self.parseAccessToken(token).resolver(resolve, reject, name: "access token")
+      resolve(self.parseAccessToken(token))
     }else{
       reject("Error getting access token",
              "There isn't an access token available",
@@ -83,7 +83,7 @@ import LineSDK
                         rejecter reject: @escaping RCTPromiseRejectBlock) {
     API.getProfile { result in
       switch result {
-      case .success(let profile): self.parseProfile(profile).resolver(resolve, reject, name: "profile")
+      case .success(let profile): resolve(self.parseProfile(profile))
       case .failure(let error): error.rejecter(reject)
       }
     }
@@ -91,9 +91,9 @@ import LineSDK
   
   @objc func refreshAccessToken(_ resolve: @escaping RCTPromiseResolveBlock,
                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
-    API.Auth.refreshToken { result in
+    API.Auth.refreshAccessToken { result in
       switch result {
-      case .success(let token): self.parseAccessToken(token).resolver(resolve, reject, name: "refresh token")
+      case .success(let token): resolve(self.parseAccessToken(token))
       case .failure(let error): error.rejecter(reject)
       }
     }
@@ -103,7 +103,7 @@ import LineSDK
                                rejecter reject: @escaping RCTPromiseRejectBlock) {
     API.Auth.verifyAccessToken { result in
       switch result {
-      case .success(let token): self.parseVerifyAccessToken(token).resolver(resolve, reject, name: "verify token")
+      case .success(let token): resolve(self.parseVerifyAccessToken(token))
       case .failure(let error): error.rejecter(reject)
       }
     }
@@ -113,7 +113,7 @@ import LineSDK
                                  rejecter reject: @escaping RCTPromiseRejectBlock) {
     API.getBotFriendshipStatus { result in
       switch result {
-      case .success(let status): self.parseFriendshipStatus(status).resolver(resolve, reject, name: "bot friendship status")
+      case .success(let status): resolve(self.parseFriendshipStatus(status))
       case .failure(let error): error.rejecter(reject)
       }
     }
@@ -136,11 +136,11 @@ import LineSDK
       "accessToken": token.value,
       "createdAt": token.createdAt,
       "expiresIn": token.expiresAt,
-      "idToken": token.IDToken
+      "idToken": try? JSONSerialization.data(withJSONObject: token.IDToken ?? [:], options: [])
     ]
   }
   
-  private func parseFriendshipStatus(_ status: BotFriendshipStatus) -> NSDictionary {
+  private func parseFriendshipStatus(_ status: GetBotFriendshipStatusRequest.Response) -> NSDictionary {
     return [
       "friendFlag": status.friendFlag
     ]
@@ -161,7 +161,7 @@ import LineSDK
       "friendshipStatusChanged": loginResult.friendshipStatusChanged,
       "idTokenNonce": loginResult.IDTokenNonce,
       "scope": loginResult.permissions.map { $0.rawValue }.joined(separator: " "),
-      "userProfile": self.parseProfile(loginResult.userProfile)
+      "userProfile": loginResult.userProfile.map(self.parseProfile)
     ]
   }
   

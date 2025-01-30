@@ -187,14 +187,14 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     @ReactMethod
     fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
-        serviceCallable = { lineApiClient.currentAccessToken },
+        serviceCallable = { lineApiClient.getCurrentAccessToken() },
         parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
     fun getFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
-        serviceCallable = { lineApiClient.friendshipStatus },
+        serviceCallable = { lineApiClient.getFriendshipStatus() },
         parser = { parseFriendshipStatus(it) }
     )
 
