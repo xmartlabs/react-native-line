@@ -11,14 +11,12 @@ import {
   VerifyResult,
 } from './types'
 
-const { LineLogin } = NativeModules
-
 /**
- * Gets the access token that the SDK is using for the user.
+ * Gets the access token of the current user.
  * @returns
  */
 async function getCurrentAccessToken(): Promise<AccessToken> {
-  return await LineLogin.getCurrentAccessToken()
+  return await NativeModules.LineLogin.getCurrentAccessToken()
 }
 
 /**
@@ -26,15 +24,23 @@ async function getCurrentAccessToken(): Promise<AccessToken> {
  * @returns
  */
 async function getFriendshipStatus(): Promise<FriendshipStatus> {
-  return await LineLogin.getFriendshipStatus()
+  return await NativeModules.LineLogin.getFriendshipStatus()
 }
 
 /**
- * Gets the user profile information.
+ * Gets the current user profile information.
  * @returns
  */
 async function getProfile(): Promise<UserProfile> {
-  return await LineLogin.getProfile()
+  return await NativeModules.LineLogin.getProfile()
+}
+
+/**
+ * Initializes the Line SDK.
+ * @param channelId
+ */
+async function setup(channelId: string): Promise<void> {
+  return await NativeModules.LineLogin.setup(channelId)
 }
 
 /**
@@ -43,30 +49,30 @@ async function getProfile(): Promise<UserProfile> {
  * @returns
  */
 async function login(params: LoginParams = {}): Promise<LoginResult> {
-  return await LineLogin.login(params)
+  return await NativeModules.LineLogin.login(params)
 }
 
 /**
- * Revokes the access token.
+ * Revokes the access token of the current user.
  */
 async function logout() {
-  return await LineLogin.logout()
+  return await NativeModules.LineLogin.logout()
 }
 
 /**
- * Refreshes the access token that the SDK is using for the user.
+ * Refreshes the access token of the current user.
  * @returns
  */
 async function refreshAccessToken(): Promise<AccessToken> {
-  return await LineLogin.refreshAccessToken()
+  return await NativeModules.LineLogin.refreshAccessToken()
 }
 
 /**
- * Checks whether the access token that the SDK is using for the user is valid.
+ * Checks whether the access token of the current user is valid.
  * @returns
  */
 async function verifyAccessToken(): Promise<VerifyResult> {
-  return await LineLogin.verifyAccessToken()
+  return await NativeModules.LineLogin.verifyAccessToken()
 }
 
 export {
@@ -87,5 +93,6 @@ export default {
   login,
   logout,
   refreshAccessToken,
+  setup,
   verifyAccessToken,
 }

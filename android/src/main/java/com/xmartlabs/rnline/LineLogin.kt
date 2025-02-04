@@ -26,14 +26,15 @@ enum class LoginArguments(val key: String) {
     SCOPES("scopes")
 }
 
-class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class LineLogin(private val reactContext: ReactApplicationContext) :
+    ReactContextBaseJavaModule(reactContext) {
     companion object {
         private const val MODULE_NAME: String = "LineLogin"
         private const val ERROR_MESSAGE: String = "ERROR"
     }
 
-    private val lineApiClient: LineApiClient
-    private val channelId: String
+    private lateinit var channelId: String
+    private lateinit var lineApiClient: LineApiClient
     private var LOGIN_REQUEST_CODE: Int = 0
     private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -41,10 +42,11 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
 
     override fun getName() = MODULE_NAME
 
-    init {
+    @ReactMethod
+    fun setup(channelId: String, promise: Promise) {
         val context: Context = reactContext.applicationContext
-        channelId = context.getString(R.string.line_channel_id)
-        lineApiClient = LineApiClientBuilder(context, channelId).build()
+        this.channelId = channelId
+        this.lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
 
