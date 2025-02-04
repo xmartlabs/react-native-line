@@ -26,15 +26,15 @@ enum class LoginArguments(val key: String) {
     SCOPES("scopes")
 }
 
-class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+class LineLogin(private val reactContext: ReactApplicationContext) :
+    ReactContextBaseJavaModule(reactContext) {
     companion object {
         private const val MODULE_NAME: String = "LineLogin"
         private const val ERROR_MESSAGE: String = "ERROR"
     }
 
-
-    private val lineApiClient: LineApiClient
-    private val channelId: String
+    private lateinit var channelId: String
+    private lateinit var lineApiClient: LineApiClient
     private var LOGIN_REQUEST_CODE: Int = 0
     private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -42,10 +42,11 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
 
     override fun getName() = MODULE_NAME
 
-    init {
+    @ReactMethod
+    fun setup(channelId: String, promise: Promise) {
         val context: Context = reactContext.applicationContext
-        channelId = context.getString(R.string.line_channel_id)
-        lineApiClient = LineApiClientBuilder(context, channelId).build()
+        this.channelId = channelId
+        this.lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
 
@@ -188,19 +189,19 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
     @ReactMethod
     fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
-        serviceCallable = { lineApiClient.currentAccessToken },
+        serviceCallable = { lineApiClient.getCurrentAccessToken() },
         parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
     @ReactMethod
-    fun getBotFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
+    fun getFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
-        serviceCallable = { lineApiClient.friendshipStatus },
+        serviceCallable = { lineApiClient.getFriendshipStatus() },
         parser = { parseFriendshipStatus(it) }
     )
 
     @ReactMethod
-    fun refreshToken(promise: Promise) = invokeLineServiceMethod(
+    fun refreshAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
         serviceCallable = { lineApiClient.refreshAccessToken() },
         parser = { parseAccessToken(it, lineIdToken = null) }
@@ -232,15 +233,15 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
         }
     }
 
-    // Parsers
+
     private fun parseAccessToken(
         accessToken: LineAccessToken,
         lineIdToken: LineIdToken?
     ): WritableMap = Arguments.makeNativeMap(
         mapOf(
-            "access_token" to accessToken.tokenString,
-            "expires_in" to accessToken.expiresInMillis,
-            "id_token" to lineIdToken?.rawString
+            "accessToken" to accessToken.tokenString,
+            "expiresIn" to accessToken.expiresInMillis,
+            "idToken" to lineIdToken?.rawString
         )
     )
 
@@ -251,52 +252,40 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
             )
         )
 
-    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap =
-        Arguments.makeNativeMap(
-            mapOf(
-                "client_id" to channelId,
-                "scope" to Scope.join(verifyAccessToken.scopes),
-                "expires_in" to verifyAccessToken.accessToken.expiresInMillis
-            )
-        )
-
-
     private fun parseProfile(profile: LineProfile): WritableMap = Arguments.makeNativeMap(
         mapOf(
             "displayName" to profile.displayName,
-            "userID" to profile.userId,
+            "pictureUrl" to profile.pictureUrl?.toString(),
             "statusMessage" to profile.statusMessage,
-            "pictureURL" to profile.pictureUrl?.toString()
+            "userId" to profile.userId
         )
     )
 
     private fun parseLoginResult(loginResult: LineLoginResult): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "userProfile" to parseProfile(loginResult.lineProfile!!),
                 "accessToken" to parseAccessToken(
                     loginResult.lineCredential!!.accessToken,
                     loginResult.lineIdToken
                 ),
+                "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
+                "idTokenNonce" to loginResult.lineIdToken?.nonce,
                 "scope" to loginResult.lineCredential?.scopes?.let {
                     Scope.join(it)
                 },
-                "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
-                "IDTokenNonce" to loginResult.lineIdToken?.nonce
+                "userProfile" to parseProfile(loginResult.lineProfile!!)
             )
         )
 
-
-    // Helpers
-    private fun createLineAuthenticationConfig(
-        channelId: String,
-        onlyWebLogin: Boolean
-    ): LineAuthenticationConfig? {
-        return createConfig(
-            channelId,
-            onlyWebLogin
+    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap =
+        Arguments.makeNativeMap(
+            mapOf(
+                "clientId" to channelId,
+                "expiresIn" to verifyAccessToken.accessToken.expiresInMillis,
+                "scope" to Scope.join(verifyAccessToken.scopes)
+            )
         )
-    }
+
 
     private fun createConfig(
         channelId: String,
@@ -309,5 +298,15 @@ class LineLogin(reactContext: ReactApplicationContext) : ReactContextBaseJavaMod
         }
 
         return configBuilder.build()
+    }
+
+    private fun createLineAuthenticationConfig(
+        channelId: String,
+        onlyWebLogin: Boolean
+    ): LineAuthenticationConfig? {
+        return createConfig(
+            channelId,
+            onlyWebLogin
+        )
     }
 }

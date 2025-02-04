@@ -42,12 +42,6 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ],
-      [
-        "@xmartlabs/react-native-line",
-        {
-          "channelId": 2006826760
-        }
       ]
     ],
     "experiments": {

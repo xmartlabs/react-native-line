@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">RNLine</string>
-    <string name="line_channel_id" translatable="false"></string>
 </resources>

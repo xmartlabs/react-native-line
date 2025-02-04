@@ -15,11 +15,8 @@ export default function () {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     return Line.login()
       .then(result => {
-        if (!result.accessToken.access_token) return
-        setLocalStorageItem(
-          'accessToken',
-          result.accessToken.access_token as string,
-        )
+        if (!result.accessToken.accessToken) return
+        setLocalStorageItem('accessToken', result.accessToken.accessToken)
         router.replace('/home')
       })
       .catch(() => {
