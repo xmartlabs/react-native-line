@@ -18,7 +18,7 @@ Line SDK wrapper for React Native 🚀
 
 ### With Expo
 
-1. Install the JavaScript with:
+1. Install the JavaScript side with:
 
     ```bash
     npx expo install @xmartlabs/react-native-line

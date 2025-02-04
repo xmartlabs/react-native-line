@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import { PressableProps, StyleSheet, Text } from 'react-native'
 
-import { PressableOpacity } from '../PressableOpacity'
+import { PressableOpacity } from '@/components/PressableOpacity'
 
 interface Props extends PressableProps {
   text?: string
