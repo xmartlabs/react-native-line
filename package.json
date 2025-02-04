@@ -55,8 +55,6 @@
     "android",
     "dist",
     "ios",
-    "plugin",
-    "app.plugin.js",
     "RNLine.podspec"
   ]
 }
