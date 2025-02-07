@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
+      "@xmartlabs/react-native-line": ["./../src/index.ts"],
       "@/*": ["./*"]
     }
   },
