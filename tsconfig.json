@@ -14,6 +14,5 @@
     "target": "ESNext"
   },
   "exclude": ["node_modules"],
-  "include": ["src"],
-  "outDir": "./dist"
+  "include": ["src"]
 }

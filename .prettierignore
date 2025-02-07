@@ -2,5 +2,7 @@ android
 ios
 node_modules
 
-README.md
+LICENSE
+package-lock.json
+README.*
 yarn.lock
