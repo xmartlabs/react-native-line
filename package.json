@@ -1,14 +1,7 @@
 {
   "name": "@xmartlabs/react-native-line",
-  "description": "React Native Line wrapper",
+  "description": "React Native Line Wrapper",
   "author": "Xmartlabs <hi@xmartlabs.com>",
-  "contributors": [
-    "Emiliano Botti <emiliano@xmartlabs.com>",
-    "Joaquin Aguirre <joaquin.aguirre@xmartlabs.com>",
-    "Santiago Fernandez <santiagofm@xmartlabs.com>",
-    "Nicolás Hernández <nicolas@xmartlabs.com>",
-    "Marco Fiorito <marco@xmartlabs.com>"
-  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "version": "4.0.0",
