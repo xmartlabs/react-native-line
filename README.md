@@ -95,26 +95,14 @@ Line SDK wrapper for React Native 🚀
 
 If you want to see `@xmartlabs/react-native-line` in action, just move into the [example](/example) folder and run `npm install` and then `npm run ios`/`npm run android`. By seeing its source code, you will have a better understanding of the library usage.
 
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/eb16"><img src="https://avatars0.githubusercontent.com/u/20881388?v=4" width="100px;" alt=""/><br /><sub><b>Emiliano Botti</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=eb16" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/Joaguirrem"><img src="https://avatars2.githubusercontent.com/u/17858453?v=4" width="100px;" alt=""/><br /><sub><b>Joaquín Aguirre</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=Joaguirrem" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/nicoache1"><img src="https://avatars0.githubusercontent.com/u/26419582?v=4" width="100px;" alt=""/><br /><sub><b>Nicolas Hernandez</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/commits?author=nicoache1" title="Code">💻</a> <a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Anicoache1" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/santiagofm"><img src="https://avatars0.githubusercontent.com/u/6749415?v=4" width="100px;" alt=""/><br /><sub><b>Santiago Fernández</b></sub></a><br /><a href="#projectManagement-santiagofm" title="Project Management">📆</a> <a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Asantiagofm" title="Reviewed Pull Requests">👀</a><a href="https://github.com/eb16/react-native-line/commits?author=santiagofm" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/matir91"><img src="https://avatars2.githubusercontent.com/u/8472881?v=4" width="100px;" alt=""/><br /><sub><b>Matías Irland</b></sub></a><br /><a href="https://github.com/eb16/react-native-line/pulls?q=is%3Apr+reviewed-by%3Amatir91" title="Reviewed Pull Requests">👀</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## License
 
 `@xmartlabs/react-native-line` is available under the MIT license. See the LICENCE file for more info.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/53fab07a-54f5-4f46-a894-e3476318a68d" alt="Xmartlabs Logo" width="150" />
+</p>
+
+<p align="center">
+  <b>Created with ❤️ by <a href="https://xmartlabs.com/">Xmartlabs</a></b>
+</p>
