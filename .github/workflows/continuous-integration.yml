@@ -1,0 +1,30 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set Node version using nvm
+        shell: bash -l {0}
+        run: nvm install
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Linter
+        run: npm run lint
+
+      - name: Prettier
+        run: npm run prettify:check
+
+      - name: Build
+        run: npm run build
