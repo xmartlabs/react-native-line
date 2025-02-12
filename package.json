@@ -19,7 +19,10 @@
   "scripts": {
     "build": "tsc",
     "lint": "tsc --noEmit && eslint",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prettify": "prettier --config '.prettierrc' './**/*.ts' './**/*.tsx'",
+    "prettify:check": "npm run prettify -- --check",
+    "prettify:fix": "npm run prettify -- --write"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.24.0",
