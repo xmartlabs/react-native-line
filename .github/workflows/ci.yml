@@ -1,0 +1,40 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.1'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Build Check
+        run: npm run build
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.1'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Linter Checks
+        run: npm run lint
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.1'
+      - name: Install Dependencies
+        run: npm install
+      - name: Run Prettier Checks
+        run: npm run prettify:check
