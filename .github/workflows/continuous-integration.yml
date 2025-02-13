@@ -1,0 +1,36 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Node version using nvm
+        shell: bash -l {0}
+        run: nvm install
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install App dependencies
+        run: npm --prefix example install
+
+      - name: Linter
+        run: npm run lint
+
+      - name: Prettier
+        run: npm run prettify:check
+
+      - name: Build
+        run: npm run prepare
+
+      - name: Prepare App
+        run: npm run prepare:app

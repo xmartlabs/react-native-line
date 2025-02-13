@@ -18,8 +18,15 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "build:app:android": "npm --prefix example run android",
+    "build:app:ios": "npm --prefix example run ios",
     "lint": "tsc --noEmit && eslint",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prepare:app": "npm --prefix example run prepare",
+    "prettify": "prettier --config '.prettierrc' './**/*.ts' './**/*.tsx'",
+    "prettify:check": "npm run prettify -- --check",
+    "prettify:fix": "npm run prettify -- --write",
+    "start:app": "npm --prefix example run start"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.24.0",
