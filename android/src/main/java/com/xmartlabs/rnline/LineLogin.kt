@@ -34,7 +34,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
 
     private lateinit var channelId: String
     private lateinit var lineApiClient: LineApiClient
-    private const val LOGIN_REQUEST_CODE: Int = 0
+    private var LOGIN_REQUEST_CODE: Int = 0
     private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     private var loginResult: Promise? = null
@@ -48,26 +48,31 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
-
             override fun onActivityResult(
                 activity: Activity?,
                 requestCode: Int,
                 resultCode: Int,
                 data: Intent?
-            ) {
+            ) =
                 handleActivityResult(requestCode, resultCode, data)
-            }
         })
     }
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
-        val scopes: List<String> =
-            args.getArray(LoginArguments.SCOPES.key)?.toArrayList()?.mapNotNull { it as? String }
-                ?: listOf("profile")
-        val onlyWebLogin = args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key, false)
-        val botPromptString = args.getString(LoginArguments.BOT_PROMPT.key) ?: "normal"
-        login(scopes, onlyWebLogin, botPromptString, promise)
+        val scopes =
+            if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!
+                .toArrayList() as List<String> else listOf("profile")
+        val onlyWebLogin =
+            args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
+        val botPromptString =
+            if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
+        login(
+            scopes,
+            onlyWebLogin,
+            botPromptString,
+            promise
+        )
     }
 
     private fun login(
