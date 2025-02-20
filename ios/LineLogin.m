@@ -2,7 +2,7 @@
 #import "React/RCTBridgeModule.h"
 
 @interface RCT_EXTERN_MODULE(LineLogin, NSObject)
-RCT_EXTERN_METHOD(setup: (NSString *)channelId
+RCT_EXTERN_METHOD(setup: (NSDictionary *)arguments
                   resolver: (RCTPromiseResolveBlock)resolve
                   rejecter: (RCTPromiseRejectBlock)reject
                   )

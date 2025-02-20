@@ -30,12 +30,11 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
     companion object {
         private const val MODULE_NAME: String = "LineLogin"
-        private const val ERROR_MESSAGE: String = "ERROR"
     }
 
     private lateinit var channelId: String
     private lateinit var lineApiClient: LineApiClient
-    private var LOGIN_REQUEST_CODE: Int = 0
+    private const val LOGIN_REQUEST_CODE: Int = 0
     private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     private var loginResult: Promise? = null
@@ -43,10 +42,10 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     override fun getName() = MODULE_NAME
 
     @ReactMethod
-    fun setup(channelId: String, promise: Promise) {
+    fun setup(args: ReadableMap, promise: Promise) {
         val context: Context = reactContext.applicationContext
-        this.channelId = channelId
-        this.lineApiClient = LineApiClientBuilder(context, channelId).build()
+        channelId = args.getString("channelId")!!
+        lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
 
@@ -55,26 +54,20 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
                 requestCode: Int,
                 resultCode: Int,
                 data: Intent?
-            ) =
+            ) {
                 handleActivityResult(requestCode, resultCode, data)
+            }
         })
     }
 
     @ReactMethod
     fun login(args: ReadableMap, promise: Promise) {
-        val scopes =
-            if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!
-                .toArrayList() as List<String> else listOf("profile")
-        val onlyWebLogin =
-            args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
-        val botPromptString =
-            if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
-        login(
-            scopes,
-            onlyWebLogin,
-            botPromptString,
-            promise
-        )
+        val scopes: List<String> =
+            args.getArray(LoginArguments.SCOPES.key)?.toArrayList()?.mapNotNull { it as? String }
+                ?: listOf("profile")
+        val onlyWebLogin = args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key, false)
+        val botPromptString = args.getString(LoginArguments.BOT_PROMPT.key) ?: "normal"
+        login(scopes, onlyWebLogin, botPromptString, promise)
     }
 
     private fun login(
@@ -118,7 +111,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getProfile(promise: Promise) {
         uiCoroutineScope.launch {
-            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.profile }
+            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.getProfile() }
             if (!lineApiResponse.isSuccess) {
                 promise.reject(
                     lineApiResponse.responseCode.name,
@@ -137,7 +130,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         if (resultCode != Activity.RESULT_OK || intent == null) {
             loginResult?.reject(
                 resultCode.toString(),
-                ERROR_MESSAGE,
+                "ERROR",
                 null
             )
         }

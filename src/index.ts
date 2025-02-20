@@ -7,6 +7,7 @@ import {
   LoginParams,
   LoginPermission,
   LoginResult,
+  SetupParams,
   UserProfile,
   VerifyResult,
 } from './types'
@@ -37,10 +38,10 @@ async function getProfile(): Promise<UserProfile> {
 
 /**
  * Initializes the Line SDK.
- * @param channelId
+ * @param params
  */
-async function setup(channelId: string): Promise<void> {
-  return await NativeModules.LineLogin.setup(channelId)
+async function setup(params: SetupParams): Promise<void> {
+  return await NativeModules.LineLogin.setup(params)
 }
 
 /**

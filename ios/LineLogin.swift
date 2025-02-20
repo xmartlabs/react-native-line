@@ -19,9 +19,17 @@ import LineSDK
         return LoginManager.shared.application(application, open: userActivity.webpageURL)
     }
     
-    @objc func setup(_ channelId: String, resolver resolve: @escaping RCTPromiseResolveBlock,
+    @objc func setup(_ arguments: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock,
                      rejecter reject: @escaping RCTPromiseRejectBlock) {
-        return LoginManager.shared.setup(channelID: channelId, universalLinkURL: nil)
+        
+        guard let channelID = arguments["channelId"] as? String else {
+            reject("INVALID_ARGUMENTS", "Missing required argument: channelId", nil)
+            return
+        }
+        
+        let universalLinkURL: URL? = (arguments["universalLinkUrl"] as? String).flatMap { URL(string: $0) }
+        
+        return LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
     }
     
     @objc func login(_ arguments: NSDictionary?, resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -34,7 +42,7 @@ import LineSDK
         
         let scopes = (args["scopes"] as? [String])?.map { LoginPermission(rawValue: $0) } ?? [.profile]
         let onlyWebLogin = (args["onlyWebLogin"] as? Bool) ?? false
-        var parameters: LoginManager.Parameters = LoginManager.Parameters.init()
+        var parameters = LoginManager.Parameters.init()
         
         if onlyWebLogin { parameters.onlyWebLogin = onlyWebLogin }
         
