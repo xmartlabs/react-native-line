@@ -42,7 +42,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "@xmartlabs/react-native-line"
     ],
     "experiments": {
       "typedRoutes": true

@@ -23,7 +23,7 @@ export default function () {
 
   useEffect(() => {
     if (loaded) {
-      Line.setup('2006826760')
+      Line.setup({ channelId: '2006826760' })
       SplashScreen.hideAsync()
     }
   }, [loaded])

@@ -27,6 +27,13 @@ export interface FriendshipStatus {
   friendFlag: boolean
 }
 
+export interface SetupParams {
+  /** The channel ID of the LINE Login channel. */
+  channelId: string
+  /** The universal link URL for LINE Login. */
+  universalLinkUrl?: string
+}
+
 export interface LoginParams {
   botPrompt?: BotPrompt
   onlyWebLogin?: boolean

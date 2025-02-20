@@ -30,7 +30,6 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
     companion object {
         private const val MODULE_NAME: String = "LineLogin"
-        private const val ERROR_MESSAGE: String = "ERROR"
     }
 
     private lateinit var channelId: String
@@ -43,13 +42,12 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     override fun getName() = MODULE_NAME
 
     @ReactMethod
-    fun setup(channelId: String, promise: Promise) {
+    fun setup(args: ReadableMap, promise: Promise) {
         val context: Context = reactContext.applicationContext
-        this.channelId = channelId
-        this.lineApiClient = LineApiClientBuilder(context, channelId).build()
+        channelId = args.getString("channelId")!!
+        lineApiClient = LineApiClientBuilder(context, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
-
             override fun onActivityResult(
                 activity: Activity?,
                 requestCode: Int,
@@ -118,7 +116,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
     @ReactMethod
     fun getProfile(promise: Promise) {
         uiCoroutineScope.launch {
-            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.profile }
+            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.getProfile() }
             if (!lineApiResponse.isSuccess) {
                 promise.reject(
                     lineApiResponse.responseCode.name,
@@ -137,7 +135,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         if (resultCode != Activity.RESULT_OK || intent == null) {
             loginResult?.reject(
                 resultCode.toString(),
-                ERROR_MESSAGE,
+                "ERROR",
                 null
             )
         }

@@ -35,7 +35,8 @@ Line SDK wrapper for React Native 🚀
             "useFrameworks": "static" // This is required
           }
         }
-      ]
+      ],
+      "@xmartlabs/react-native-line"
     ]
     ```
 
@@ -57,6 +58,39 @@ Line SDK wrapper for React Native 🚀
     cd ios && pod install
     ```
 
+3. Change your `AppDelegate.m` to match the following:
+
+    ```objectivec
+    #import "RNLine-Swift.h"
+
+    ...
+
+    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+    {
+      return [LineLogin application:application open:url options:options];
+    }
+    ```
+
+4. Insert the following snippet in your `Info.plist` to match the [LINE documentation](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file):
+
+    ```xml
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>line3rdp.$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+            </array>
+        </dict>
+    </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>lineauth2</string>
+    </array>
+    ```
+
 ## Usage
 
 1. Import the `LineLogin` module:
@@ -69,14 +103,14 @@ Line SDK wrapper for React Native 🚀
 
     ```typescript
     useEffect(() => {
-      LineLogin.setup('YOUR_CHANNEL_ID')
+      LineLogin.setup({ channelId: 'YOUR_CHANNEL_ID' })
     }, [])
     ```
 
 3. Login with the `login` method:
 
     ```typescript
-    LineLogin.login({})
+    LineLogin.login()
     ```
 
 ## API
