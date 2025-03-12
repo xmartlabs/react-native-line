@@ -1,18 +1,13 @@
 import Line, { AccessToken, UserProfile } from '@xmartlabs/react-native-line'
 import { useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
-import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-  Image,
-  StyleSheet,
-} from 'react-native'
+import { Fragment, useEffect, useState } from 'react'
+import { Alert, Dimensions, Image, StyleSheet } from 'react-native'
 
 import {
   removeLocalStorageItem,
   setLocalStorageItem,
 } from '@/common/localStorage'
+import { ActivityBanner } from '@/components/ActivityBanner'
 import { Bullet } from '@/components/Bullet'
 import { Button } from '@/components/Button'
 import { ThemedView } from '@/components/ThemedView'
@@ -39,56 +34,60 @@ export default function () {
   }, [])
 
   function logOut() {
-    return Line.logout().then(() => {
-      removeLocalStorageItem('accessToken')
-      router.replace('/login')
-    })
+    setLoading(true)
+    return Line.logout()
+      .then(() => {
+        removeLocalStorageItem('accessToken')
+        router.replace('/login')
+      })
+      .finally(() => setLoading(false))
   }
 
   function getFriendshipStatus() {
+    setLoading(true)
     return Line.getFriendshipStatus()
       .then(result => Alert.alert(strings.isFriend, String(result.friendFlag)))
       .catch(handleError)
+      .finally(() => setLoading(false))
   }
 
   function refreshAccessToken() {
+    setLoading(true)
     return Line.refreshAccessToken()
       .then(accessToken => {
         setLocalStorageItem('accessToken', accessToken.accessToken)
         setToken(accessToken)
       })
       .catch(handleError)
+      .finally(() => setLoading(false))
   }
 
   function verifyAccessToken() {
+    setLoading(true)
     return Line.verifyAccessToken()
       .then(result => Alert.alert(result.clientId, result.expiresIn.toString()))
       .catch(handleError)
-  }
-
-  if (loading) {
-    return (
-      <ThemedView style={styles.container}>
-        <ActivityIndicator size="large" />
-      </ThemedView>
-    )
+      .finally(() => setLoading(false))
   }
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedView style={styles.contentContainer}>
-        <Image source={{ uri: user?.pictureUrl }} style={styles.image} />
-        <Bullet header={strings.name} text={user?.displayName} />
-        <Bullet header={strings.userId} text={user?.userId} />
-        <Bullet header={strings.accessToken} text={token?.accessToken} />
+    <Fragment>
+      <ThemedView style={styles.container}>
+        <ThemedView style={styles.contentContainer}>
+          <Image source={{ uri: user?.pictureUrl }} style={styles.image} />
+          <Bullet header={strings.name} text={user?.displayName} />
+          <Bullet header={strings.userId} text={user?.userId} />
+          <Bullet header={strings.accessToken} text={token?.accessToken} />
+        </ThemedView>
+        <Button onPress={getFriendshipStatus} text={strings.isFriend} />
+        <ThemedView style={styles.row}>
+          <Button onPress={verifyAccessToken} text={strings.verifyToken} />
+          <Button onPress={refreshAccessToken} text={strings.refreshToken} />
+        </ThemedView>
+        <Button onPress={logOut} text={strings.logOut} />
       </ThemedView>
-      <Button onPress={getFriendshipStatus} text={strings.isFriend} />
-      <ThemedView style={styles.row}>
-        <Button onPress={verifyAccessToken} text={strings.verifyToken} />
-        <Button onPress={refreshAccessToken} text={strings.refreshToken} />
-      </ThemedView>
-      <Button onPress={logOut} text={strings.logOut} />
-    </ThemedView>
+      {loading && <ActivityBanner />}
+    </Fragment>
   )
 }
 
