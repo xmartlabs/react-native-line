@@ -58,7 +58,21 @@ Line SDK wrapper for React Native 🚀
     cd ios && pod install
     ```
 
-3. Change your `AppDelegate.m` to match the following:
+3. Change your `AppDelegate` to match the following:
+
+    #### With Swift
+
+    ```swift
+    import RNLine
+
+    ...
+
+    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      return LineLogin.application(application, open: url, options: options)
+    }
+    ```
+
+    #### With Objective-C
 
     ```objectivec
     #import "RNLine-Swift.h"
