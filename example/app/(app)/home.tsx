@@ -15,7 +15,7 @@ import { Bullet } from '@/components/Bullet'
 import { Button } from '@/components/Button'
 import { ThemedView } from '@/components/ThemedView'
 
-function handleError(error: any) {
+function handleError(error: Error) {
   return Alert.alert(strings.errorTitle, error?.message ?? strings.errorMessage)
 }
 
