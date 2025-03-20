@@ -40,18 +40,28 @@
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
+    "react": "*",
     "react-native": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/xmartlabs/react-native-line.git"
   },
+  "codegenConfig": {
+    "name": "RTNLineSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.xmartlabs.rtnline"
+    }
+  },
   "files": [
     "android",
     "dist",
     "ios",
     "plugin",
+    "src",
     "app.plugin.js",
-    "RNLine.podspec"
+    "RTNLine.podspec"
   ]
 }

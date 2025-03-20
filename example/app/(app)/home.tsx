@@ -1,4 +1,7 @@
-import Line, { AccessToken, UserProfile } from '@xmartlabs/react-native-line'
+import Line, {
+  type AccessToken,
+  type UserProfile,
+} from '@xmartlabs/react-native-line'
 import { useRouter } from 'expo-router'
 import { Fragment, useEffect, useState } from 'react'
 import { Alert, Dimensions, Image, StyleSheet } from 'react-native'

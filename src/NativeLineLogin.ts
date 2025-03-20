@@ -1,3 +1,5 @@
+import { TurboModule, TurboModuleRegistry } from 'react-native'
+
 export enum BotPrompt {
   /** Opens a new screen to add a LINE Official Account as a friend after the user agrees to the permissions in the consent screen. */
   Aggressive = 'aggressive',
@@ -77,3 +79,48 @@ export interface VerifyResult {
   /** Valid permissions of the access token separated by spaces */
   scope: string
 }
+
+export interface Spec extends TurboModule {
+  /**
+   * Gets the access token of the current user.
+   * @returns
+   */
+  getCurrentAccessToken(): Promise<AccessToken>
+  /**
+   * Gets the friendship status between the LINE Official Account (which is linked to the current channel) and the user.
+   * @returns
+   */
+  getFriendshipStatus(): Promise<FriendshipStatus>
+  /**
+   * Gets the current user profile information.
+   * @returns
+   */
+  getProfile(): Promise<UserProfile>
+  /**
+   * Logs in the user.
+   * @param params
+   * @returns
+   */
+  login(params: LoginParams): Promise<LoginResult>
+  /**
+   * Revokes the access token of the current user.
+   */
+  logout(): Promise<void>
+  /**
+   * Refreshes the access token of the current user.
+   * @returns
+   */
+  refreshAccessToken(): Promise<AccessToken>
+  /**
+   * Initializes the Line SDK.
+   * @param params
+   */
+  setup(params: SetupParams): Promise<void>
+  /**
+   * Checks whether the access token of the current user is valid.
+   * @returns
+   */
+  verifyAccessToken(): Promise<VerifyResult>
+}
+
+export default TurboModuleRegistry.get<Spec>('LineLogin') as Spec | null
