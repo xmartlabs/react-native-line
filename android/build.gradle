@@ -13,8 +13,16 @@ buildscript {
     }
 }
 
+def isNewArchitectureEnabled() {
+    return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+}
+
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+if (isNewArchitectureEnabled()) {
+    apply plugin: "com.facebook.react"
 }
 
 apply plugin: "com.android.library"
@@ -28,6 +36,18 @@ android {
         targetSdkVersion safeExtGet("targetSdkVersion", 35)
         versionCode 1
         versionName "4.1.0"
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+    }
+
+    sourceSets {
+        main {
+            if (isNewArchitectureEnabled()) {
+                java.srcDirs += [
+                        // This is needed to build Kotlin project with NewArch enabled
+                        "${project.buildDir}/generated/source/codegen/java"
+                ]
+            }
+        }
     }
 }
 
