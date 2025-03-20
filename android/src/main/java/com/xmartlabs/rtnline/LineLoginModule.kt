@@ -1,24 +1,27 @@
-package com.xmartlabs.rnline
+package com.xmartlabs.rtnline
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.facebook.react.bridge.*
 
+import com.facebook.react.bridge.*
+import com.facebook.react.module.annotations.ReactModule
+
+import com.linecorp.linesdk.*
 import com.linecorp.linesdk.api.LineApiClient
 import com.linecorp.linesdk.api.LineApiClientBuilder
 import com.linecorp.linesdk.auth.LineAuthenticationConfig
 import com.linecorp.linesdk.auth.LineAuthenticationParams
 import com.linecorp.linesdk.auth.LineLoginApi
 import com.linecorp.linesdk.auth.LineLoginResult
+import com.linecorp.linesdk.LineProfile
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.facebook.react.bridge.WritableMap
-import com.linecorp.linesdk.*
-import com.linecorp.linesdk.LineProfile
+
+private var LOGIN_REQUEST_CODE: Int = 0
 
 enum class LoginArguments(val key: String) {
     BOT_PROMPT("botPrompt"),
@@ -26,26 +29,22 @@ enum class LoginArguments(val key: String) {
     SCOPES("scopes")
 }
 
-class LineLogin(private val reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
+class LineLoginModule(private val reactContext: ReactApplicationContext) :
+    NativeLineLoginSpec(reactContext) {
+
     companion object {
-        private const val MODULE_NAME: String = "LineLogin"
+        const val NAME = NativeLineLoginSpec.NAME
     }
+
+    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     private lateinit var channelId: String
     private lateinit var lineApiClient: LineApiClient
-    private var LOGIN_REQUEST_CODE: Int = 0
-    private val uiCoroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-
     private var loginResult: Promise? = null
 
-    override fun getName() = MODULE_NAME
-
-    @ReactMethod
-    fun setup(args: ReadableMap, promise: Promise) {
-        val context: Context = reactContext.applicationContext
+    override fun setup(args: ReadableMap, promise: Promise) {
         channelId = args.getString("channelId")!!
-        lineApiClient = LineApiClientBuilder(context, channelId).build()
+        lineApiClient = LineApiClientBuilder(reactContext.applicationContext, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
             override fun onNewIntent(intent: Intent?) {}
             override fun onActivityResult(
@@ -58,8 +57,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         })
     }
 
-    @ReactMethod
-    fun login(args: ReadableMap, promise: Promise) {
+    override fun login(args: ReadableMap, promise: Promise) {
         val scopes =
             if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!
                 .toArrayList() as List<String> else listOf("profile")
@@ -113,9 +111,8 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         this.loginResult = promise
     }
 
-    @ReactMethod
-    fun getProfile(promise: Promise) {
-        uiCoroutineScope.launch {
+    override fun getProfile(promise: Promise) {
+        coroutineScope.launch {
             val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.getProfile() }
             if (!lineApiResponse.isSuccess) {
                 promise.reject(
@@ -168,9 +165,8 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         loginResult = null
     }
 
-    @ReactMethod
-    fun logout(promise: Promise) {
-        uiCoroutineScope.launch {
+    override fun logout(promise: Promise) {
+        coroutineScope.launch {
             val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.logout() }
             if (lineApiResponse.isSuccess) {
                 promise.resolve(null)
@@ -184,29 +180,25 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         }
     }
 
-    @ReactMethod
-    fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
+    override fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
         serviceCallable = { lineApiClient.getCurrentAccessToken() },
         parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
-    @ReactMethod
-    fun getFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
+    override fun getFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
         serviceCallable = { lineApiClient.getFriendshipStatus() },
         parser = { parseFriendshipStatus(it) }
     )
 
-    @ReactMethod
-    fun refreshAccessToken(promise: Promise) = invokeLineServiceMethod(
+    override fun refreshAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
         serviceCallable = { lineApiClient.refreshAccessToken() },
         parser = { parseAccessToken(it, lineIdToken = null) }
     )
 
-    @ReactMethod
-    fun verifyAccessToken(promise: Promise) = invokeLineServiceMethod(
+    override fun verifyAccessToken(promise: Promise) = invokeLineServiceMethod(
         promise = promise,
         serviceCallable = { lineApiClient.verifyToken() },
         parser = { parseVerifyAccessToken(it) }
@@ -217,7 +209,7 @@ class LineLogin(private val reactContext: ReactApplicationContext) :
         serviceCallable: () -> LineApiResponse<T>,
         parser: (T) -> WritableMap
     ) {
-        uiCoroutineScope.launch {
+        coroutineScope.launch {
             val lineApiResponse = withContext(Dispatchers.IO) { serviceCallable.invoke() }
             if (lineApiResponse.isSuccess) {
                 promise.resolve(parser.invoke(lineApiResponse.responseData))

@@ -17,7 +17,7 @@ export default function () {
   function logIn() {
     setLoading(true)
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-    return Line.login()
+    return Line.login({})
       .then(result => {
         if (!result.accessToken.accessToken) return
         setLocalStorageItem('accessToken', result.accessToken.accessToken)
