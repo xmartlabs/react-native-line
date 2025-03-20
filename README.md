@@ -63,7 +63,7 @@ Line SDK wrapper for React Native 🚀
     #### With Swift
 
     ```swift
-    import RNLine
+    import RTNLine
 
     ...
 
@@ -75,7 +75,7 @@ Line SDK wrapper for React Native 🚀
     #### With Objective-C
 
     ```objectivec
-    #import "RNLine-Swift.h"
+    #import "RTNLine-Swift.h"
 
     ...
 
@@ -124,7 +124,7 @@ Line SDK wrapper for React Native 🚀
 3. Login with the `login` method:
 
     ```typescript
-    LineLogin.login()
+    LineLogin.login({})
     ```
 
 ## API
