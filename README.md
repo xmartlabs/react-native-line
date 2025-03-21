@@ -1,4 +1,4 @@
-# ![React Native Line](/assets/github-banner.png)
+# ![React Native Line](/assets/banner.png)
 
 [![npm version](https://img.shields.io/npm/v/@xmartlabs/react-native-line.svg?style=flat-square)](https://www.npmjs.com/package/@xmartlabs/react-native-line)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)

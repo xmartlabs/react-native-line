@@ -57,11 +57,13 @@
   },
   "files": [
     "android",
+    "!android/build",
     "dist",
     "ios",
+    "!ios/build",
     "plugin",
     "src",
     "app.plugin.js",
-    "RTNLine.podspec"
+    "@xmartlabs/react-native-line.podspec"
   ]
 }
