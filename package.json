@@ -64,6 +64,6 @@
     "plugin",
     "src",
     "app.plugin.js",
-    "@xmartlabs/react-native-line.podspec"
+    "RTNLine.podspec"
   ]
 }
