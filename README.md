@@ -63,7 +63,7 @@ Line SDK wrapper for React Native 🚀
     #### With Swift
 
     ```swift
-    import RTNLine
+    import react_native_line
 
     ...
 
@@ -75,7 +75,7 @@ Line SDK wrapper for React Native 🚀
     #### With Objective-C
 
     ```objectivec
-    #import "RTNLine-Swift.h"
+    #import "react_native_line-Swift.h"
 
     ...
 
