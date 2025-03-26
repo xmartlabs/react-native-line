@@ -7,7 +7,7 @@ function withCustomAppDelegate(config) {
     const withImport = generateCode.mergeContents({
       comment: '//',
       anchor: /#import "AppDelegate\.h"/,
-      newSrc: '#import "RTNLine-Swift.h"',
+      newSrc: '#import "react_native_line-Swift.h"',
       offset: 1,
       src: config.modResults.contents,
       tag: 'import',

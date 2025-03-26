@@ -13,13 +13,7 @@ Pod::Spec.new do |s|
   s.authors         = package['author']
   s.source          = { :git => package["repository"]["url"] }
 
-  s.source_files  = "ios/**/*.{h,m,swift}"
-
-  # Swift/Objective-C compatibility
-  s.pod_target_xcconfig = {
-    'DEFINES_MODULE' => 'YES',
-    'SWIFT_COMPILATION_MODE' => 'wholemodule'
-  }
+  s.source_files  = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency 'LineSDKSwift', '~> 5.11.0'
 
