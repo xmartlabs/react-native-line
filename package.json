@@ -52,7 +52,7 @@
     "type": "modules",
     "jsSrcsDir": "src",
     "android": {
-      "javaPackageName": "com.xmartlabs.rtnline"
+      "javaPackageName": "com.xmartlabs.line"
     }
   },
   "files": [
@@ -64,6 +64,6 @@
     "plugin",
     "src",
     "app.plugin.js",
-    "RTNLine.podspec"
+    "react-native-line.podspec"
   ]
 }

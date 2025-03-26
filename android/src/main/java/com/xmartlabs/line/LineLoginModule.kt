@@ -1,4 +1,4 @@
-package com.xmartlabs.rtnline
+package com.xmartlabs.line
 
 import android.app.Activity
 import android.content.Context

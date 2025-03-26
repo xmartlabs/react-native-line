@@ -1,4 +1,4 @@
-package com.xmartlabs.rtnline
+package com.xmartlabs.line
 
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.bridge.ReactApplicationContext

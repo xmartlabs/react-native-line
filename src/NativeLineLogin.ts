@@ -123,4 +123,4 @@ export interface Spec extends TurboModule {
   verifyAccessToken(): Promise<VerifyResult>
 }
 
-export default TurboModuleRegistry.get<Spec>('LineLogin') as Spec | null
+export default TurboModuleRegistry.getEnforcing<Spec>('LineLogin')
