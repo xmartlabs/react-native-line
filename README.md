@@ -113,7 +113,7 @@ Line SDK wrapper for React Native 🚀
     </details>
 
     <details>
-      <summary>@xmartlabs/react-native-line v4</summary>
+      <summary>@xmartlabs/react-native-line v5</summary>
 
       ```objectivec
       #import "react_native_line-Swift.h"
@@ -148,39 +148,69 @@ Line SDK wrapper for React Native 🚀
     </array>
     ```
 
+## Migration guides
+
+### v3 → v4
+
+1. A `setup` function has been added and needs to be called before using the library.
+    ```typescript
+    Line.setup({ channelId: 'YOUR_CHANNEL_ID' })
+    ```
+
+2. The `getBotFriendshipStatus` function is now called `getFriendshipStatus`.
+
+3. The `refreshToken` function is now called `refreshAccessToken`.
+
+### v4 → v5
+
+1. The file name in the `AppDelegate` import has changed.
+    ```objectivec
+    - #import "RNLine-Swift.h"
+
+    + #import "react_native_line-Swift.h"
+    ```
+
+2. The `login` function now expects an empty object as a default value.
+    ```typescript
+    - Line.login()
+
+    + Line.login({})
+    ```
+
 ## Usage
 
-1. Import the `LineLogin` module:
+1. Import the `Line` module:
 
     ```typescript
-    import LineLogin from '@xmartlabs/react-native-line'
+    import Line from '@xmartlabs/react-native-line'
     ```
 
 2. Initialize the module with the `setup` method:
 
     ```typescript
     useEffect(() => {
-      LineLogin.setup({ channelId: 'YOUR_CHANNEL_ID' })
+      Line.setup({ channelId: 'YOUR_CHANNEL_ID' })
     }, [])
     ```
 
 3. Login with the `login` method:
 
     ```typescript
-    LineLogin.login({})
+    Line.login({})
     ```
 
 ## API
 
 | Function                                                 | Description                                                                                                                                                                                                                        |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `login(args?: LoginArguments): Promise<LoginResult>`     | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
-| `getCurrentAccessToken(): Promise<AccessToken>`          | Returns the current access token for the currently logged in user.                                                                                                                                                                 |
-| `getProfile(): Promise<UserProfile>`                     | Returns the profile of the currently logged in user.                                                                                                                                                                               |
-| `logout(): Promise<void>`                                | Logs out the currently logged in user.                                                                                                                                                                                             |
-| `refreshToken(): Promise<AccessToken>`                   | Refreshes the access token and returns it.                                                                                                                                                                                         |
-| `verifyAccessToken(): Promise<AccessTokenVerifyResult>`  | Verifies the access token and returns it.                                                                                                                                                                                          |
-| `getBotFriendshipStatus(): Promise<BotFriendshipStatus>` | Gets bot friendship status if [configured](https://developers.line.biz/en/docs/ios-sdk/swift/link-a-bot/).                                                                                                                         |
+| `login(params: LoginParams): Promise<LoginResult>` | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
+| `getCurrentAccessToken(): Promise<AccessToken>` | Returns the access token of the current user. |
+| `getProfile(): Promise<UserProfile>` | Returns the current user profile information. |
+| `logout(): Promise<void>` | Revokes the access token of the current user. |
+| `refreshAccessToken(): Promise<AccessToken>` | Refreshes the access token of the current user. |
+| `setup(params: SetupParams): Promise<void>` | Initializes the Line SDK. |
+| `verifyAccessToken(): Promise<VerifyResult>` | Checks whether the access token of the current user is valid. |
+| `getFriendshipStatus(): Promise<FriendshipStatus>` | Gets the friendship status between the LINE Official Account (which is linked to the current channel) and the user if [configured](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/link-a-bot/). |
 
 ## Example
 
