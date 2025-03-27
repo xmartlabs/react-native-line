@@ -67,28 +67,66 @@ Line SDK wrapper for React Native 🚀
 
     #### With Swift
 
-    ```swift
-    import react_native_line
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
 
-    ...
+      ```swift
+      import RNLine
 
-    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      return LineLogin.application(application, open: url, options: options)
-    }
-    ```
+      ...
+
+      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return LineLogin.application(application, open: url, options: options)
+      }
+      ```
+    </details>
+
+    <details>
+      <summary>@xmartlabs/react-native-line v5</summary>
+
+      ```swift
+      import react_native_line
+
+      ...
+
+      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return LineLogin.application(application, open: url, options: options)
+      }
+      ```
+    </details>
 
     #### With Objective-C
 
-    ```objectivec
-    #import "react_native_line-Swift.h"
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
 
-    ...
+      ```objectivec
+      #import "RNLine-Swift.h"
 
-    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-    {
-      return [LineLogin application:application open:url options:options];
-    }
-    ```
+      ...
+
+      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+      {
+        return [LineLogin application:application open:url options:options];
+      }
+      ```
+    </details>
+
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
+
+      ```objectivec
+      #import "react_native_line-Swift.h"
+
+      ...
+
+      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+      {
+        return [LineLogin application:application open:url options:options];
+      }
+      ```
+    </details>
+    <br>
 
 4. Insert the following snippet in your `Info.plist` to match the [LINE documentation](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file):
 
