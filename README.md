@@ -174,13 +174,14 @@ Line SDK wrapper for React Native 🚀
 
 | Function                                                 | Description                                                                                                                                                                                                                        |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `login(args?: LoginArguments): Promise<LoginResult>`     | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
-| `getCurrentAccessToken(): Promise<AccessToken>`          | Returns the current access token for the currently logged in user.                                                                                                                                                                 |
-| `getProfile(): Promise<UserProfile>`                     | Returns the profile of the currently logged in user.                                                                                                                                                                               |
-| `logout(): Promise<void>`                                | Logs out the currently logged in user.                                                                                                                                                                                             |
-| `refreshToken(): Promise<AccessToken>`                   | Refreshes the access token and returns it.                                                                                                                                                                                         |
-| `verifyAccessToken(): Promise<AccessTokenVerifyResult>`  | Verifies the access token and returns it.                                                                                                                                                                                          |
-| `getBotFriendshipStatus(): Promise<BotFriendshipStatus>` | Gets bot friendship status if [configured](https://developers.line.biz/en/docs/ios-sdk/swift/link-a-bot/).                                                                                                                         |
+| `login(params: LoginParams): Promise<LoginResult>` | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
+| `getCurrentAccessToken(): Promise<AccessToken>` | Returns the access token of the current user. |
+| `getProfile(): Promise<UserProfile>` | Returns the current user profile information. |
+| `logout(): Promise<void>` | Revokes the access token of the current user. |
+| `refreshAccessToken(): Promise<AccessToken>` | Refreshes the access token of the current user. |
+| `setup(params: SetupParams): Promise<void>` | Initializes the Line SDK. |
+| `verifyAccessToken(): Promise<VerifyResult>` | Checks whether the access token of the current user is valid. |
+| `getFriendshipStatus(): Promise<FriendshipStatus>` | Gets the friendship status between the LINE Official Account (which is linked to the current channel) and the user if [configured](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/link-a-bot/). |
 
 ## Example
 
