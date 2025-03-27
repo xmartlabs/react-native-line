@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "example-app",
-    "slug": "example-app",
+    "name": "example",
+    "slug": "example",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "example-app",
+    "scheme": "example",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.xmartlabs.rnline.exampleapp"
+      "bundleIdentifier": "com.xmartlabs.line.example"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.xmartlabs.rnline.exampleapp"
+      "package": "com.xmartlabs.line.example"
     },
     "web": {
       "bundler": "metro",

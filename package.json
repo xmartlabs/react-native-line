@@ -30,28 +30,40 @@
   },
   "devDependencies": {
     "@expo/config-plugins": "^9.0.17",
-    "@typescript-eslint/eslint-plugin": "^8.26.1",
-    "@typescript-eslint/parser": "^8.26.1",
-    "eslint": "^9.22.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "eslint": "^9.23.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-sort-keys-fix": "^1.1.2",
     "prettier": "^3.5.3",
     "react-native": "^0.77.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.28.0"
   },
   "peerDependencies": {
+    "react": "*",
     "react-native": "*"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/xmartlabs/react-native-line.git"
   },
+  "codegenConfig": {
+    "name": "RTNLineSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.xmartlabs.line"
+    }
+  },
   "files": [
     "android",
+    "!android/build",
     "dist",
     "ios",
+    "!ios/build",
     "plugin",
+    "src",
     "app.plugin.js",
-    "RNLine.podspec"
+    "react-native-line.podspec"
   ]
 }
