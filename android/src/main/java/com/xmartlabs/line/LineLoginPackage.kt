@@ -7,15 +7,14 @@ import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 
 class LineLoginPackage : TurboReactPackage() {
-    override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
-        return when (name) {
+    override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? =
+        when (name) {
             LineLoginModule.NAME -> LineLoginModule(reactContext)
             else -> null
         }
-    }
 
-    override fun getReactModuleInfoProvider(): ReactModuleInfoProvider {
-        return ReactModuleInfoProvider {
+    override fun getReactModuleInfoProvider(): ReactModuleInfoProvider =
+        ReactModuleInfoProvider {
             mapOf(
                 LineLoginModule.NAME to ReactModuleInfo(
                     LineLoginModule.NAME,
@@ -28,5 +27,4 @@ class LineLoginPackage : TurboReactPackage() {
                 )
             )
         }
-    }
 }
