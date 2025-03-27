@@ -1,9 +1,10 @@
+#ifndef RCT_NEW_ARCH_ENABLED
+  #error "@xmartlabs/react-native-line v5 requires your project to have New Architecture enabled."
+#endif
+
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
-
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RTNLineSpec.h"
-#endif
 
 @interface RCT_EXTERN_MODULE(LineLogin, NSObject)
 
@@ -11,11 +12,9 @@
   return NO;
 }
 
-#ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params {
   return std::make_shared<facebook::react::NativeLineLoginSpecJSI>(params);
 }
-#endif
 
 RCT_EXTERN_METHOD(setup: (NSDictionary *)arguments resolver: (RCTPromiseResolveBlock)resolve rejecter: (RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(login: (NSDictionary *)arguments resolver: (RCTPromiseResolveBlock)resolve rejecter: (RCTPromiseRejectBlock)reject)

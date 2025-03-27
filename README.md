@@ -14,6 +14,11 @@ Line SDK wrapper for React Native 🚀
 - iOS `deploymentTarget` needs to be at least version `15.1`.
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
 
+> [!IMPORTANT]
+> @xmartlabs/react-native-line v5 is now a TurboModule and **requires the new architecture to be enabled**.
+> - If you want to use @xmartlabs/react-native-line v5, you need to enable the new architecture in your app (see how to [enable the new architecture for apps](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
+> - If you cannot enable the new architecture yet, downgrade to @xmartlabs/react-native-line v4 for now.
+
 ## Installation
 
 ### With Expo

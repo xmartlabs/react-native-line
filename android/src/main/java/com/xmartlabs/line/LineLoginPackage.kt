@@ -23,7 +23,7 @@ class LineLoginPackage : TurboReactPackage() {
                     needsEagerInit = false,
                     hasConstants = true,
                     isCxxModule = false,
-                    isTurboModule = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
+                    isTurboModule = true
                 )
             )
         }

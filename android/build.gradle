@@ -21,11 +21,8 @@ def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
-if (isNewArchitectureEnabled()) {
-    apply plugin: "com.facebook.react"
-}
-
 apply plugin: "com.android.library"
+apply plugin: "com.facebook.react"
 apply plugin: "kotlin-android"
 
 android {
@@ -36,17 +33,11 @@ android {
         targetSdkVersion safeExtGet("targetSdkVersion", 35)
         versionCode 1
         versionName "4.1.0"
-        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     }
 
     sourceSets {
         main {
-            if (isNewArchitectureEnabled()) {
-                java.srcDirs += [
-                        // This is needed to build Kotlin project with NewArch enabled
-                        "${project.buildDir}/generated/source/codegen/java"
-                ]
-            }
+            java.srcDirs += ["${project.buildDir}/generated/source/codegen/java"]
         }
     }
 }
@@ -56,3 +47,13 @@ dependencies {
     implementation "com.linecorp.linesdk:linesdk:5.11.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 }
+
+tasks.register("checkNativeLineLoginSpec") {
+    doLast {
+        if (!isNewArchitectureEnabled()) {
+            throw new GradleException("@xmartlabs/react-native-line v5 requires your project to have New Architecture enabled.")
+        }
+    }
+}
+
+preBuild.dependsOn checkNativeLineLoginSpec
