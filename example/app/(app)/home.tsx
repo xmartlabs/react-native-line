@@ -1,4 +1,7 @@
-import Line, { AccessToken, UserProfile } from '@xmartlabs/react-native-line'
+import Line, {
+  type AccessToken,
+  type UserProfile,
+} from '@xmartlabs/react-native-line'
 import { useRouter } from 'expo-router'
 import { Fragment, useEffect, useState } from 'react'
 import { Alert, Dimensions, Image, StyleSheet } from 'react-native'
@@ -12,7 +15,7 @@ import { Bullet } from '@/components/Bullet'
 import { Button } from '@/components/Button'
 import { ThemedView } from '@/components/ThemedView'
 
-function handleError(error: any) {
+function handleError(error: Error) {
   return Alert.alert(strings.errorTitle, error?.message ?? strings.errorMessage)
 }
 

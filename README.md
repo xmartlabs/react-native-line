@@ -1,4 +1,4 @@
-# ![React Native Line](/assets/github-banner.png)
+# ![React Native Line](/assets/banner.png)
 
 [![npm version](https://img.shields.io/npm/v/@xmartlabs/react-native-line.svg?style=flat-square)](https://www.npmjs.com/package/@xmartlabs/react-native-line)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
@@ -13,6 +13,11 @@ Line SDK wrapper for React Native 🚀
 - Android `minSdkVersion` needs to be at least version `24`.
 - iOS `deploymentTarget` needs to be at least version `15.1`.
 - [LINE developer account](https://developers.line.biz/console/) with a channel created.
+
+> [!IMPORTANT]
+> @xmartlabs/react-native-line v5 is now a TurboModule and **requires the new architecture to be enabled**.
+> - If you want to use @xmartlabs/react-native-line v5, you need to enable the new architecture in your app (see how to [enable the new architecture for apps](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
+> - If you cannot enable the new architecture yet, downgrade to @xmartlabs/react-native-line v4 for now.
 
 ## Installation
 
@@ -62,28 +67,66 @@ Line SDK wrapper for React Native 🚀
 
     #### With Swift
 
-    ```swift
-    import RNLine
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
 
-    ...
+      ```swift
+      import RNLine
 
-    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      return LineLogin.application(application, open: url, options: options)
-    }
-    ```
+      ...
+
+      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return LineLogin.application(application, open: url, options: options)
+      }
+      ```
+    </details>
+
+    <details>
+      <summary>@xmartlabs/react-native-line v5</summary>
+
+      ```swift
+      import react_native_line
+
+      ...
+
+      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return LineLogin.application(application, open: url, options: options)
+      }
+      ```
+    </details>
 
     #### With Objective-C
 
-    ```objectivec
-    #import "RNLine-Swift.h"
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
 
-    ...
+      ```objectivec
+      #import "RNLine-Swift.h"
 
-    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-    {
-      return [LineLogin application:application open:url options:options];
-    }
-    ```
+      ...
+
+      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+      {
+        return [LineLogin application:application open:url options:options];
+      }
+      ```
+    </details>
+
+    <details>
+      <summary>@xmartlabs/react-native-line v4</summary>
+
+      ```objectivec
+      #import "react_native_line-Swift.h"
+
+      ...
+
+      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+      {
+        return [LineLogin application:application open:url options:options];
+      }
+      ```
+    </details>
+    <br>
 
 4. Insert the following snippet in your `Info.plist` to match the [LINE documentation](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file):
 
@@ -124,7 +167,7 @@ Line SDK wrapper for React Native 🚀
 3. Login with the `login` method:
 
     ```typescript
-    LineLogin.login()
+    LineLogin.login({})
     ```
 
 ## API

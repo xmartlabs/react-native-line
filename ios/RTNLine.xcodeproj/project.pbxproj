@@ -9,36 +9,26 @@
 /* Begin PBXBuildFile section */
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		160CEE58233BED8D005110D5 /* LineLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160CEE57233BED8D005110D5 /* LineLogin.swift */; };
-		160CEE5A233BEF69005110D5 /* LineLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 160CEE59233BEF69005110D5 /* LineLogin.m */; };
-		793F53EEE7AF15831806E5FE /* Pods_RNLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BF438A6AC51A2F57E208A8 /* Pods_RNLine.framework */; };
+		160CEE58233BED8D005110D5 /* LineLoginModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 160CEE57233BED8D005110D5 /* LineLoginModule.swift */; };
+		160CEE5A233BEF69005110D5 /* LineLoginModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = 160CEE59233BEF69005110D5 /* LineLoginModule.mm */; };
+		793F53EEE7AF15831806E5FE /* Pods_RTNLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BF438A6AC51A2F57E208A8 /* Pods_RTNLine.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		06BF438A6AC51A2F57E208A8 /* Pods_RNLine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNLine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07F961A680F5B00A75B9A /* RNLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		06BF438A6AC51A2F57E208A8 /* Pods_RTNLine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTNLine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* RTNLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RTNLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNLine/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNLine/Info.plist; sourceTree = "<group>"; };
-		160CEE56233BED8C005110D5 /* RNLine-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNLine-Bridging-Header.h"; sourceTree = "<group>"; };
-		160CEE57233BED8D005110D5 /* LineLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineLogin.swift; sourceTree = "<group>"; };
-		160CEE59233BEF69005110D5 /* LineLogin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LineLogin.m; sourceTree = "<group>"; };
-		4C10FDFE1069301E38952E85 /* Pods-RNLine-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-RNLine-tvOS/Pods-RNLine-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		51AB1EE56C518DF44481A012 /* Pods-RNLine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine.debug.xcconfig"; path = "Target Support Files/Pods-RNLine/Pods-RNLine.debug.xcconfig"; sourceTree = "<group>"; };
-		5C53B096103EB884404B968F /* Pods-RNLine-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine-tvOS.release.xcconfig"; path = "Target Support Files/Pods-RNLine-tvOS/Pods-RNLine-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		683D2C5CD2635C925EA2C701 /* Pods-RNLine-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-RNLine-tvOSTests/Pods-RNLine-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		7749267AC40F6A53E6707F06 /* Pods-RNLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine.release.xcconfig"; path = "Target Support Files/Pods-RNLine/Pods-RNLine.release.xcconfig"; sourceTree = "<group>"; };
-		78DAFD4699D760F083DBFE52 /* Pods-RNLineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLineTests.debug.xcconfig"; path = "Target Support Files/Pods-RNLineTests/Pods-RNLineTests.debug.xcconfig"; sourceTree = "<group>"; };
-		93674A1B2390370F0042EA7F /* LineSetup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineSetup.h; sourceTree = "<group>"; };
-		938A22DA236CF48F00A0649B /* LineLogin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineLogin.h; sourceTree = "<group>"; };
-		97E3AA7D65D503448E0540A3 /* Pods_RNLine_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNLine_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A0A83989085865EE4881F878 /* Pods-RNLine-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLine-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-RNLine-tvOSTests/Pods-RNLine-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		CBD20B614975F56CDF90DE7E /* Pods_RNLineTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNLineTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D1F0099F24ABC2C053403D94 /* Pods_RNLine_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNLine_tvOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RTNLine/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RTNLine/Info.plist; sourceTree = "<group>"; };
+		160CEE56233BED8C005110D5 /* LineLoginModule-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LineLoginModule-Bridging-Header.h"; sourceTree = "<group>"; };
+		160CEE57233BED8D005110D5 /* LineLoginModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineLoginModule.swift; sourceTree = "<group>"; };
+		160CEE59233BEF69005110D5 /* LineLoginModule.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LineLoginModule.mm; sourceTree = "<group>"; };
+		51AB1EE56C518DF44481A012 /* Pods-RTNLine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTNLine.debug.xcconfig"; path = "Target Support Files/Pods-RTNLine/Pods-RTNLine.debug.xcconfig"; sourceTree = "<group>"; };
+		7749267AC40F6A53E6707F06 /* Pods-RTNLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RTNLine.release.xcconfig"; path = "Target Support Files/Pods-RTNLine/Pods-RTNLine.release.xcconfig"; sourceTree = "<group>"; };
+		CBD20B614975F56CDF90DE7E /* Pods_RTNLineTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RTNLineTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F05BCD33A17CE9DBD5217A13 /* Pods-RNLineTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNLineTests.release.xcconfig"; path = "Target Support Files/Pods-RNLineTests/Pods-RNLineTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,40 +36,32 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				793F53EEE7AF15831806E5FE /* Pods_RNLine.framework in Frameworks */,
+				793F53EEE7AF15831806E5FE /* Pods_RTNLine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* RNLine */ = {
+		13B07FAE1A68108700A75B9A /* RTNLine */ = {
 			isa = PBXGroup;
 			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
-				160CEE57233BED8D005110D5 /* LineLogin.swift */,
-				93674A1B2390370F0042EA7F /* LineSetup.h */,
-				160CEE56233BED8C005110D5 /* RNLine-Bridging-Header.h */,
-				160CEE59233BEF69005110D5 /* LineLogin.m */,
-				938A22DA236CF48F00A0649B /* LineLogin.h */,
+				160CEE57233BED8D005110D5 /* LineLoginModule.swift */,
+				160CEE56233BED8C005110D5 /* LineLoginModule-Bridging-Header.h */,
+				160CEE59233BEF69005110D5 /* LineLoginModule.mm */,
 			);
-			name = RNLine;
+			name = RTNLine;
 			sourceTree = "<group>";
 		};
 		23D86E4FEFB6FA81471343D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				51AB1EE56C518DF44481A012 /* Pods-RNLine.debug.xcconfig */,
-				7749267AC40F6A53E6707F06 /* Pods-RNLine.release.xcconfig */,
-				4C10FDFE1069301E38952E85 /* Pods-RNLine-tvOS.debug.xcconfig */,
-				5C53B096103EB884404B968F /* Pods-RNLine-tvOS.release.xcconfig */,
-				A0A83989085865EE4881F878 /* Pods-RNLine-tvOSTests.debug.xcconfig */,
-				683D2C5CD2635C925EA2C701 /* Pods-RNLine-tvOSTests.release.xcconfig */,
-				78DAFD4699D760F083DBFE52 /* Pods-RNLineTests.debug.xcconfig */,
-				F05BCD33A17CE9DBD5217A13 /* Pods-RNLineTests.release.xcconfig */,
+				51AB1EE56C518DF44481A012 /* Pods-RTNLine.debug.xcconfig */,
+				7749267AC40F6A53E6707F06 /* Pods-RTNLine.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -89,10 +71,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				06BF438A6AC51A2F57E208A8 /* Pods_RNLine.framework */,
-				97E3AA7D65D503448E0540A3 /* Pods_RNLine_tvOS.framework */,
-				D1F0099F24ABC2C053403D94 /* Pods_RNLine_tvOSTests.framework */,
-				CBD20B614975F56CDF90DE7E /* Pods_RNLineTests.framework */,
+				06BF438A6AC51A2F57E208A8 /* Pods_RTNLine.framework */,
+				CBD20B614975F56CDF90DE7E /* Pods_RTNLineTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -107,7 +87,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* RNLine */,
+				13B07FAE1A68108700A75B9A /* RTNLine */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -121,7 +101,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RNLine.app */,
+				13B07F961A680F5B00A75B9A /* RTNLine.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,9 +109,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* RNLine */ = {
+		13B07F861A680F5B00A75B9A /* RTNLine */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNLine" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RTNLine" */;
 			buildPhases = (
 				FE68052131AD84AFAC1B8354 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -145,9 +125,9 @@
 			);
 			dependencies = (
 			);
-			name = RNLine;
-			productName = RNLine;
-			productReference = 13B07F961A680F5B00A75B9A /* RNLine.app */;
+			name = RTNLine;
+			productName = RTNLine;
+			productReference = 13B07F961A680F5B00A75B9A /* RTNLine.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -164,7 +144,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNLine" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RTNLine" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -178,7 +158,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* RNLine */,
+				13B07F861A680F5B00A75B9A /* RTNLine */,
 			);
 		};
 /* End PBXProject section */
@@ -216,7 +196,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNLine/Pods-RNLine-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-RTNLine/Pods-RTNLine-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/FBReactNativeSpec/FBReactNativeSpec.framework",
 				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
@@ -279,7 +259,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNLine/Pods-RNLine-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RTNLine/Pods-RTNLine-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -316,7 +296,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNLine-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RTNLine-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -330,8 +310,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				160CEE58233BED8D005110D5 /* LineLogin.swift in Sources */,
-				160CEE5A233BEF69005110D5 /* LineLogin.m in Sources */,
+				160CEE58233BED8D005110D5 /* LineLoginModule.swift in Sources */,
+				160CEE5A233BEF69005110D5 /* LineLoginModule.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +324,7 @@
 				13B07FB21A68108700A75B9A /* Base */,
 			);
 			name = LaunchScreen.xib;
-			path = RNLine;
+			path = RTNLine;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -352,13 +332,13 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 51AB1EE56C518DF44481A012 /* Pods-RNLine.debug.xcconfig */;
+			baseConfigurationReference = 51AB1EE56C518DF44481A012 /* Pods-RTNLine.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				INFOPLIST_FILE = RNLine/Info.plist;
+				INFOPLIST_FILE = RTNLine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -366,9 +346,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.RNLine;
-				PRODUCT_NAME = RNLine;
-				SWIFT_OBJC_BRIDGING_HEADER = "RNLine-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.RTNLine;
+				PRODUCT_NAME = RTNLine;
+				SWIFT_OBJC_BRIDGING_HEADER = "LineLoginModule-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -377,12 +357,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7749267AC40F6A53E6707F06 /* Pods-RNLine.release.xcconfig */;
+			baseConfigurationReference = 7749267AC40F6A53E6707F06 /* Pods-RTNLine.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = RNLine/Info.plist;
+				INFOPLIST_FILE = RTNLine/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
@@ -390,9 +370,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.RNLine;
-				PRODUCT_NAME = RNLine;
-				SWIFT_OBJC_BRIDGING_HEADER = "RNLine-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.xmartlabs.RTNLine;
+				PRODUCT_NAME = RTNLine;
+				SWIFT_OBJC_BRIDGING_HEADER = "LineLoginModule-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -500,7 +480,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNLine" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RTNLine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -509,7 +489,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNLine" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RTNLine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
