@@ -58,9 +58,11 @@
   "files": [
     "android",
     "!android/build",
+    "!android/local.properties",
     "dist",
     "ios",
     "!ios/build",
+    "!ios/RTNLine.xcodeproj/project.xcworkspace",
     "plugin",
     "src",
     "app.plugin.js",
