@@ -113,7 +113,7 @@ Line SDK wrapper for React Native 🚀
     </details>
 
     <details>
-      <summary>@xmartlabs/react-native-line v4</summary>
+      <summary>@xmartlabs/react-native-line v5</summary>
 
       ```objectivec
       #import "react_native_line-Swift.h"
@@ -150,24 +150,24 @@ Line SDK wrapper for React Native 🚀
 
 ## Usage
 
-1. Import the `LineLogin` module:
+1. Import the `Line` module:
 
     ```typescript
-    import LineLogin from '@xmartlabs/react-native-line'
+    import Line from '@xmartlabs/react-native-line'
     ```
 
 2. Initialize the module with the `setup` method:
 
     ```typescript
     useEffect(() => {
-      LineLogin.setup({ channelId: 'YOUR_CHANNEL_ID' })
+      Line.setup({ channelId: 'YOUR_CHANNEL_ID' })
     }, [])
     ```
 
 3. Login with the `login` method:
 
     ```typescript
-    LineLogin.login({})
+    Line.login({})
     ```
 
 ## API
