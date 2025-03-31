@@ -1,5 +1,5 @@
 #ifndef RCT_NEW_ARCH_ENABLED
-  #error "@xmartlabs/react-native-line v5 requires your project to have New Architecture enabled."
+#error "@xmartlabs/react-native-line v5 requires your project to have NEW ARCHITECTURE ENABLED."
 #endif
 
 #import <Foundation/Foundation.h>
