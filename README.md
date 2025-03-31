@@ -12,11 +12,11 @@ Line SDK wrapper for React Native 🚀
 
 - Android `minSdkVersion` needs to be at least version `24`.
 - iOS `deploymentTarget` needs to be at least version `15.1`.
-- [LINE developer account](https://developers.line.biz/console/) with a channel created.
+- [LINE developer account](https://developers.line.biz/console/) needs to be created and also a channel.
 
 > [!IMPORTANT]
 > @xmartlabs/react-native-line v5 is now a TurboModule and **requires the new architecture to be enabled**.
-> - If you want to use @xmartlabs/react-native-line v5, you need to enable the new architecture in your app (see how to [enable the new architecture for apps](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
+> - If you want to use @xmartlabs/react-native-line v5, you will need to enable the new architecture in your app (see how to [enable the new architecture for apps](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md)).
 > - If you cannot enable the new architecture yet, downgrade to @xmartlabs/react-native-line v4 for now.
 
 ## Installation
@@ -29,7 +29,7 @@ Line SDK wrapper for React Native 🚀
     npx expo install @xmartlabs/react-native-line
     ```
 
-2. Add the plugin `expo-build-properties` to your `app.json`:
+2. Add the plugins `expo-build-properties` and `@xmartlabs/react-native-line` to your `app.json`:
 
     ```json
     "plugins": [
@@ -37,7 +37,7 @@ Line SDK wrapper for React Native 🚀
         "expo-build-properties",
         {
           "ios": {
-            "useFrameworks": "static" // This is required
+            "useFrameworks": "static"
           }
         }
       ],
@@ -57,7 +57,7 @@ Line SDK wrapper for React Native 🚀
     yarn add @xmartlabs/react-native-line
     ```
 
-2. Link native code:
+2. Link iOS native code:
 
     ```bash
     cd ios && pod install
@@ -65,70 +65,61 @@ Line SDK wrapper for React Native 🚀
 
 3. Change your `AppDelegate` to match the following:
 
-    #### With Swift
-
-    <details>
-      <summary>@xmartlabs/react-native-line v4</summary>
-
-      ```swift
-      import RNLine
-
-      ...
-
-      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return LineLogin.application(application, open: url, options: options)
-      }
-      ```
-    </details>
-
-    <details>
-      <summary>@xmartlabs/react-native-line v5</summary>
-
-      ```swift
-      import react_native_line
-
-      ...
-
-      override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return LineLogin.application(application, open: url, options: options)
-      }
-      ```
-    </details>
-
     #### With Objective-C
 
-    <details>
-      <summary>@xmartlabs/react-native-line v4</summary>
+    ##### @xmartlabs/react-native-line v4
 
-      ```objectivec
-      #import "RNLine-Swift.h"
+    ```objectivec
+    #import "RNLine-Swift.h"
 
-      ...
+    ...
 
-      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-      {
-        return [LineLogin application:application open:url options:options];
-      }
-      ```
-    </details>
+    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+    {
+      return [LineLogin application:application open:url options:options];
+    }
+    ```
 
-    <details>
-      <summary>@xmartlabs/react-native-line v5</summary>
+    ##### @xmartlabs/react-native-line v5
 
-      ```objectivec
-      #import "react_native_line-Swift.h"
+    ```objectivec
+    #import "react_native_line-Swift.h"
 
-      ...
+    ...
 
-      - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
-      {
-        return [LineLogin application:application open:url options:options];
-      }
-      ```
-    </details>
-    <br>
+    - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
+    {
+      return [LineLogin application:application open:url options:options];
+    }
+    ```
 
-4. Insert the following snippet in your `Info.plist` to match the [LINE documentation](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file):
+    #### With Swift
+
+    ##### @xmartlabs/react-native-line v4
+
+    ```swift
+    import RNLine
+
+    ...
+
+    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      return LineLogin.application(application, open: url, options: options)
+    }
+    ```
+
+    ##### @xmartlabs/react-native-line v5
+
+    ```swift
+    import react_native_line
+
+    ...
+
+    override func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      return LineLogin.application(application, open: url, options: options)
+    }
+    ```
+
+4. Insert the following [snippet](https://developers.line.biz/en/docs/line-login-sdks/ios-sdk/swift/setting-up-project/#config-infoplist-file) in your `Info.plist` just before the last `</dict>` tag:
 
     ```xml
     <key>CFBundleURLTypes</key>
@@ -148,7 +139,7 @@ Line SDK wrapper for React Native 🚀
     </array>
     ```
 
-## Migration guides
+## Migration guide
 
 ### v3 → v4
 
@@ -193,7 +184,7 @@ Line SDK wrapper for React Native 🚀
     }, [])
     ```
 
-3. Login with the `login` method:
+3. Log in with the `login` method:
 
     ```typescript
     Line.login({})
@@ -201,7 +192,7 @@ Line SDK wrapper for React Native 🚀
 
 ## API
 
-| Function                                                 | Description                                                                                                                                                                                                                        |
+| Method                                                 | Description                                                                                                                                                                                                                        |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `login(params: LoginParams): Promise<LoginResult>` | Starts the login flow of Line's SDK (Opens the apps if it's installed and defaults to the browser otherwise). It accepts the same argumements as the LineSDK, in an object `{ key: value }`, defaults the same way as LineSDK too. |
 | `getCurrentAccessToken(): Promise<AccessToken>` | Returns the access token of the current user. |
