@@ -11,6 +11,28 @@
 
 3. The `refreshToken` function is now called `refreshAccessToken`.
 
+4. Remove the function `application` from `AppDelegate`:
+    #### With Swift
+    ```swift
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        LineLogin.setup(channelID: "YOUR_CHANNEL_ID", universalLinkURL: nil)
+        return true
+    }
+    ```
+
+    #### With Objective-C
+    ```objectivec
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+    {
+        [LineLogin setupWithChannelID:@"YOUR_CHANNEL_ID" universalLinkURL:nil];
+    }
+    ```
+
+5. Remove the string `line_channel_id` from Android resources:
+    ```xml
+    <string name="line_channel_id" translatable="false">YOUR_CHANNEL_ID</string>
+    ```
+
 ## v4 → v5
 
 1. The file name in the `AppDelegate` import has changed.
