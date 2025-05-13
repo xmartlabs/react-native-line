@@ -6,4 +6,3 @@ node_modules
 LICENSE
 package-lock.json
 README.*
-yarn.lock
