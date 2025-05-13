@@ -4,7 +4,7 @@
   "author": "Xmartlabs <hi@xmartlabs.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "homepage": "https://github.com/xmartlabs/react-native-line#readme",
   "keywords": [
     "auth",
