@@ -135,12 +135,17 @@ import LineSDK
   }
   
   private func parseAccessToken(_ token: AccessToken) -> NSDictionary {
-    return [
+    var result = [
       "accessToken": token.value,
       "createdAt": token.createdAt,
       "expiresIn": token.expiresAt,
-      "idToken": try? JSONSerialization.data(withJSONObject: token.IDToken ?? [:], options: [])
-    ]
+    ] as [String : Any]
+
+    if let idToken = token.IDTokenRaw {
+      result["idToken"] = idToken
+    }
+
+    return NSDictionary(dictionary: result)
   }
   
   private func parseFriendshipStatus(_ status: GetBotFriendshipStatusRequest.Response) -> NSDictionary {
