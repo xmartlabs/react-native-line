@@ -44,7 +44,8 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "@xmartlabs/react-native-line"
+      "@xmartlabs/react-native-line",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
