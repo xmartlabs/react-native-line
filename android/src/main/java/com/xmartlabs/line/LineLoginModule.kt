@@ -46,9 +46,9 @@ class LineLoginModule(private val reactContext: ReactApplicationContext) :
         channelId = args.getString("channelId")!!
         lineApiClient = LineApiClientBuilder(reactContext.applicationContext, channelId).build()
         reactContext.addActivityEventListener(object : ActivityEventListener {
-            override fun onNewIntent(intent: Intent?) {}
+            override fun onNewIntent(intent: Intent) {}
             override fun onActivityResult(
-                activity: Activity?,
+                activity: Activity,
                 requestCode: Int,
                 resultCode: Int,
                 data: Intent?
