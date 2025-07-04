@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@xmartlabs/react-native-line": "file:../",
-    "expo": "^53.0.15",
+    "expo": "^53.0.16",
     "expo-blur": "~14.1.5",
     "expo-build-properties": "~0.14.8",
     "expo-constants": "~17.1.6",
@@ -27,9 +27,9 @@
     "expo-web-browser": "~14.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-native": "0.79.4",
+    "react-native": "0.79.5",
     "react-native-gesture-handler": "~2.24.0",
-    "react-native-mmkv": "^3.2.0",
+    "react-native-mmkv": "^3.3.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -38,9 +38,9 @@
     "react-native-webview": "13.13.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.10",
+    "@babel/core": "^7.28.0",
     "@types/react": "~19.0.10",
-    "react-native-svg-transformer": "^1.5.0"
+    "react-native-svg-transformer": "^1.5.1"
   },
   "private": true
 }
