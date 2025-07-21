@@ -2,7 +2,7 @@ import Foundation
 import LineSDK
 
 @objc(LineLogin) public class LineLogin: NSObject {
-
+  
   @objc public static func application(
     _ application: UIApplication,
     open url: URL,
@@ -21,12 +21,12 @@ import LineSDK
   
   @objc func setup(_ arguments: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock,
                    rejecter reject: @escaping RCTPromiseRejectBlock) {
-
-    if LoginManager.shared.isSetupFinished {
-        reject("SETUP_ALREADY_COMPLETED", "Setup has already been completed", nil)
-        return
+    
+    guard !LoginManager.shared.isSetupFinished else {
+      reject("SETUP_ALREADY_COMPLETED", "Setup is already completed", nil)
+      return
     }
-
+    
     guard let channelID = arguments["channelId"] as? String else {
       reject("INVALID_ARGUMENTS", "Missing required argument: channelId", nil)
       return
@@ -34,7 +34,8 @@ import LineSDK
     
     let universalLinkURL: URL? = (arguments["universalLinkUrl"] as? String).flatMap { URL(string: $0) }
     
-    return LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
+    LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
+    resolve(nil)
   }
   
   @objc func login(_ arguments: NSDictionary?, resolver resolve: @escaping RCTPromiseResolveBlock,
@@ -87,8 +88,8 @@ import LineSDK
     if let token = AccessTokenStore.shared.current {
       resolve(self.parseAccessToken(token))
     }else{
-      reject("Error getting access token",
-             "There isn't an access token available",
+      reject("ACCESS_TOKEN_NOT_AVAILABLE",
+             "No access token is available",
              NSError(domain: "", code: 200, userInfo: nil))
     }
   }
@@ -135,8 +136,8 @@ import LineSDK
   
   static func nilArgument(_ reject: @escaping RCTPromiseRejectBlock) {
     return reject(
-      "argument.nil",
-      "Expect an argument when invoking method, but it is nil.",
+      "ARGUMENT_NIL",
+      "Expected argument is nil",
       NSError(domain: "", code: 200, userInfo: nil))
   }
   
@@ -146,11 +147,11 @@ import LineSDK
       "createdAt": token.createdAt,
       "expiresIn": token.expiresAt,
     ] as [String : Any]
-
+    
     if let idToken = token.IDTokenRaw {
       result["idToken"] = idToken
     }
-
+    
     return NSDictionary(dictionary: result)
   }
   
@@ -196,8 +197,8 @@ extension Encodable {
   }
   func errorParsing(_ reject: @escaping RCTPromiseRejectBlock, _ name: String) {
     return reject(
-      "error parsing",
-      "There was an error when parsing `\(name)`",
+      "ERROR_PARSING",
+      "Error parsing \(name)",
       NSError(domain: "", code: 200, userInfo: nil))
   }
   
