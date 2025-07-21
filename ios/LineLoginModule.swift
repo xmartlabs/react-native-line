@@ -23,7 +23,7 @@ import LineSDK
                    rejecter reject: @escaping RCTPromiseRejectBlock) {
 
     if LoginManager.shared.isSetupFinished {
-        resolve(nil)
+        reject("SETUP_ALREADY_COMPLETED", "Setup has already been completed", nil)
         return
     }
 
