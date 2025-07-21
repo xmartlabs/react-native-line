@@ -2,6 +2,7 @@ import Foundation
 import LineSDK
 
 @objc(LineLogin) public class LineLogin: NSObject {
+
   @objc public static func application(
     _ application: UIApplication,
     open url: URL,
@@ -20,7 +21,12 @@ import LineSDK
   
   @objc func setup(_ arguments: NSDictionary, resolver resolve: @escaping RCTPromiseResolveBlock,
                    rejecter reject: @escaping RCTPromiseRejectBlock) {
-    
+
+    if LoginManager.shared.isSetupFinished {
+        reject("SETUP_ALREADY_COMPLETED", "Setup has already been completed", nil)
+        return
+    }
+
     guard let channelID = arguments["channelId"] as? String else {
       reject("INVALID_ARGUMENTS", "Missing required argument: channelId", nil)
       return
