@@ -6,39 +6,24 @@ import {
   ThemeProvider,
 } from '@react-navigation/native'
 import Line from '@xmartlabs/react-native-line'
-import { useFonts } from 'expo-font'
-import { Stack } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
+import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 
-import SpaceMono from '@/assets/fonts/SpaceMono-Regular.ttf'
+import { SplashScreen } from '@/components/SplashScreen'
 import { useColorScheme } from '@/hooks/useColorScheme'
-
-SplashScreen.preventAutoHideAsync()
 
 export default function () {
   const colorScheme = useColorScheme()
-  const [loaded] = useFonts({ SpaceMono })
 
-  useEffect(() => {
-    if (loaded) {
-      Line.setup({ channelId: '2006826760' })
-      SplashScreen.hideAsync()
-    }
-  }, [loaded])
-
-  if (!loaded) {
-    return null
-  }
+  useLayoutEffect(() => {
+    Line.setup({ channelId: '2006826760' })
+  }, [])
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(app)/login" />
-        <Stack.Screen name="(app)/home" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <SplashScreen />
+      <Slot />
       <StatusBar style="auto" />
     </ThemeProvider>
   )

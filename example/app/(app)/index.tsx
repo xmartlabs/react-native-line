@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router'
 import { Fragment, useEffect, useState } from 'react'
 import { Alert, Dimensions, Image, StyleSheet } from 'react-native'
 
+import { LineError } from '@/common/errors'
 import {
   removeLocalStorageItem,
   setLocalStorageItem,
@@ -15,8 +16,11 @@ import { Bullet } from '@/components/Bullet'
 import { Button } from '@/components/Button'
 import { ThemedView } from '@/components/ThemedView'
 
-function handleError(error: Error) {
-  return Alert.alert(strings.errorTitle, error?.message ?? strings.errorMessage)
+function handleError(error: LineError) {
+  const userInfo = JSON.parse(error.userInfo?.message ?? '')
+  const title = strings.errorTitle + userInfo.statusCode
+  const message = userInfo.message ?? strings.errorMessage
+  return Alert.alert(title, message)
 }
 
 export default function () {
@@ -41,7 +45,7 @@ export default function () {
     return Line.logout()
       .then(() => {
         removeLocalStorageItem('accessToken')
-        router.replace('/login')
+        router.replace('/')
       })
       .finally(() => setLoading(false))
   }
@@ -96,8 +100,8 @@ export default function () {
 
 const strings = {
   accessToken: 'Access Token',
-  errorMessage: 'Failed to get information',
-  errorTitle: 'Error',
+  errorMessage: 'The operation could not be completed',
+  errorTitle: 'Error ',
   isFriend: 'Is Friend?',
   logOut: 'Logout',
   name: 'Name',

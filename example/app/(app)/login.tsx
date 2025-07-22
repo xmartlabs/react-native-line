@@ -21,7 +21,7 @@ export default function () {
       .then(result => {
         if (!result.accessToken.accessToken) return
         setLocalStorageItem('accessToken', result.accessToken.accessToken)
-        router.replace('/home')
+        router.replace('/')
       })
       .catch(() => {
         Alert.alert(strings.errorTitle, strings.errorMessage)
