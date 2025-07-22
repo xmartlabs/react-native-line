@@ -33,7 +33,6 @@ import LineSDK
     }
     
     let universalLinkURL: URL? = (arguments["universalLinkUrl"] as? String).flatMap { URL(string: $0) }
-    
     LoginManager.shared.setup(channelID: channelID, universalLinkURL: universalLinkURL)
     resolve(nil)
   }
@@ -42,7 +41,7 @@ import LineSDK
                    rejecter reject: @escaping RCTPromiseRejectBlock) {
     
     guard let args = arguments else {
-      LineLogin.nilArgument(reject)
+      reject("INVALID_ARGUMENTS", "Expected argument is nil", NSError(domain: "", code: 200, userInfo: nil))
       return
     }
     
@@ -85,12 +84,20 @@ import LineSDK
   
   @objc func getCurrentAccessToken(_ resolve: @escaping RCTPromiseResolveBlock,
                                    rejecter reject: @escaping RCTPromiseRejectBlock) {
-    if let token = AccessTokenStore.shared.current {
-      resolve(self.parseAccessToken(token))
-    }else{
-      reject("ACCESS_TOKEN_NOT_AVAILABLE",
-             "No access token is available",
-             NSError(domain: "", code: 200, userInfo: nil))
+    guard let token = AccessTokenStore.shared.current else {
+      reject("ACCESS_TOKEN_NOT_AVAILABLE", "No access token is available", nil)
+      return
+    }
+    resolve(self.parseAccessToken(token))
+  }
+  
+  @objc func getFriendshipStatus(_ resolve: @escaping RCTPromiseResolveBlock,
+                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
+    API.getBotFriendshipStatus { result in
+      switch result {
+      case .success(let status): resolve(self.parseFriendshipStatus(status))
+      case .failure(let error): error.rejecter(reject)
+      }
     }
   }
   
@@ -124,41 +131,24 @@ import LineSDK
     }
   }
   
-  @objc func getFriendshipStatus(_ resolve: @escaping RCTPromiseResolveBlock,
-                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
-    API.getBotFriendshipStatus { result in
-      switch result {
-      case .success(let status): resolve(self.parseFriendshipStatus(status))
-      case .failure(let error): error.rejecter(reject)
-      }
-    }
-  }
-  
-  static func nilArgument(_ reject: @escaping RCTPromiseRejectBlock) {
-    return reject(
-      "ARGUMENT_NIL",
-      "Expected argument is nil",
-      NSError(domain: "", code: 200, userInfo: nil))
-  }
-  
-  private func parseAccessToken(_ token: AccessToken) -> NSDictionary {
-    var result = [
-      "accessToken": token.value,
-      "createdAt": token.createdAt,
-      "expiresIn": token.expiresAt,
-    ] as [String : Any]
-    
-    if let idToken = token.IDTokenRaw {
-      result["idToken"] = idToken
-    }
-    
-    return NSDictionary(dictionary: result)
-  }
-  
   private func parseFriendshipStatus(_ status: GetBotFriendshipStatusRequest.Response) -> NSDictionary {
     return [
       "friendFlag": status.friendFlag
     ]
+  }
+  
+  private func parseAccessToken(_ accessToken: AccessToken) -> NSDictionary {
+    var result: [String: Any] = [
+      "accessToken": accessToken.value,
+      "createdAt": accessToken.createdAt,
+      "expiresIn": accessToken.expiresAt,
+    ]
+    
+    if let idToken = accessToken.IDTokenRaw {
+      result["idToken"] = idToken
+    }
+    
+    return NSDictionary(dictionary: result)
   }
   
   private func parseProfile(_ profile: UserProfile) -> NSDictionary {
@@ -180,43 +170,19 @@ import LineSDK
     ]
   }
   
-  private func parseVerifyAccessToken(_ verification: AccessTokenVerifyResult) -> NSDictionary {
+  private func parseVerifyAccessToken(_ accessToken: AccessTokenVerifyResult) -> NSDictionary {
     return [
-      "channelId": verification.channelID,
-      "expiresIn": verification.expiresIn,
-      "scope": verification.permissions.map { $0.rawValue }.joined(separator: " ")
+      "channelId": accessToken.channelID,
+      "expiresIn": accessToken.expiresIn,
+      "scope": accessToken.permissions.map { $0.rawValue }.joined(separator: " ")
     ]
-  }
-}
-
-
-extension Encodable {
-  func toJSON() throws -> Any {
-    let data = try JSONEncoder().encode(self)
-    return try JSONSerialization.jsonObject(with: data, options: [])
-  }
-  func errorParsing(_ reject: @escaping RCTPromiseRejectBlock, _ name: String) {
-    return reject(
-      "ERROR_PARSING",
-      "Error parsing \(name)",
-      NSError(domain: "", code: 200, userInfo: nil))
-  }
-  
-  func resolver(_ resolve: @escaping RCTPromiseResolveBlock, _ reject: @escaping RCTPromiseRejectBlock, name: String) {
-    do {
-      let jsonValue = try self.toJSON()
-      resolve(jsonValue)
-    } catch {
-      self.errorParsing(reject, name)
-    }
   }
 }
 
 extension LineSDKError {
   func rejecter(_ reject: @escaping RCTPromiseRejectBlock) {
-    reject(
-      "\(errorCode)",
-      errorDescription,
-      self)
+    let code = String(errorCode)
+    let message = errorDescription ?? "Unknown error"
+    reject(code, message, self)
   }
 }
