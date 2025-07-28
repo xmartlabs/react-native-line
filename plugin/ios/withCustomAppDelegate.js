@@ -11,7 +11,7 @@ function selectStrings(language) {
       },
       return: {
         anchor: /return\s+super\.application\(\s*app,\s*open:\s*url,\s*options:\s*options\s*\)\s*\|\|\s*RCTLinkingManager\.application\(\s*app,\s*open:\s*url,\s*options:\s*options\s*\)/,
-        newSrc: '    return LineLogin.application(app, open: url, options: options)',
+        newSrc: '    if LineLogin.application(app, open: url, options: options){\n      return true\n }',
         offset: 0,
       },
     }
@@ -23,7 +23,7 @@ function selectStrings(language) {
       },
       return: {
         anchor: /-\s*\(BOOL\)\s*application:\s*\(UIApplication\s*\*\)\s*application\s+openURL:\s*\(NSURL\s*\*\)\s*url\s+options:\s*\(NSDictionary<UIApplicationOpenURLOptionsKey,\s*id>\s*\*\)\s*options\s*\{/,
-        newSrc: '  return [LineLogin application:application open:url options:options];',
+        newSrc: '    BOOL handled = [LineLogin application:application open:url options:options];\n    if (handled) {\n      return YES;\n }',
       },
     }
   }
