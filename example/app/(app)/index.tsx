@@ -23,7 +23,7 @@ function handleError(error: LineError) {
   return Alert.alert(title, message)
 }
 
-export default function () {
+export default function HomeScreen() {
   const router = useRouter()
 
   const [loading, setLoading] = useState<boolean>(true)

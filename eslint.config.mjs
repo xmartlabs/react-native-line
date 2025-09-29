@@ -3,7 +3,6 @@ import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import sortKeysFix from 'eslint-plugin-sort-keys-fix'
 import tseslint from 'typescript-eslint'
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
   { ignores: ['**/*.d.*', '**/*.js', 'android', 'ios', 'node_modules'] },
   { files: ['**/*.ts', '**/*.tsx'] },

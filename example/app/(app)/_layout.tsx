@@ -4,7 +4,7 @@ import { Stack } from 'expo-router'
 
 import { useListenLocalStorage } from '@/common/localStorage'
 
-export default function () {
+export default function AppLayout() {
   const [accessToken] = useListenLocalStorage('accessToken')
 
   const isLoggedIn = Boolean(accessToken)
