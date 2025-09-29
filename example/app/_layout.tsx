@@ -10,7 +10,6 @@ import { Slot } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useLayoutEffect } from 'react'
 
-import { SplashScreen } from '@/components/SplashScreen'
 import { useColorScheme } from '@/hooks/useColorScheme'
 
 export default function RootLayout() {
@@ -22,7 +21,6 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <SplashScreen />
       <Slot />
       <StatusBar style="auto" />
     </ThemeProvider>
