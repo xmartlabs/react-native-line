@@ -23,7 +23,7 @@ function selectStrings(language) {
       },
       return: {
         anchor: /-\s*\(BOOL\)\s*application:\s*\(UIApplication\s*\*\)\s*application\s+openURL:\s*\(NSURL\s*\*\)\s*url\s+options:\s*\(NSDictionary<UIApplicationOpenURLOptionsKey,\s*id>\s*\*\)\s*options\s*\{/,
-        newSrc: '    BOOL handled = [LineLogin application:application open:url options:options];\n    if (handled) {\n      return YES;\n    }',
+        newSrc: '  BOOL handled = [LineLogin application:application open:url options:options];\n  if (handled) {\n    return YES;\n  }',
       },
     }
   }
