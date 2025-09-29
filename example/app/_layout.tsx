@@ -13,7 +13,7 @@ import { useLayoutEffect } from 'react'
 import { SplashScreen } from '@/components/SplashScreen'
 import { useColorScheme } from '@/hooks/useColorScheme'
 
-export default function () {
+export default function RootLayout() {
   const colorScheme = useColorScheme()
 
   useLayoutEffect(() => {

@@ -10,7 +10,7 @@ import { ActivityBanner } from '@/components/ActivityBanner'
 import { LineButton } from '@/components/LineButton'
 import { ThemedView } from '@/components/ThemedView'
 
-export default function () {
+export default function LoginScreen() {
   const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
 
