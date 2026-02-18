@@ -43,10 +43,13 @@ class LineLoginModule(private val reactContext: ReactApplicationContext) :
     private var loginResult: Promise? = null
 
     override fun setup(args: ReadableMap, promise: Promise) {
+        val channelIdArg = args.getString("channelId")
+        if (channelIdArg == null) {
+            return promise.reject("SETUP_FAILED", "channelId is required", null)
+        }
+        channelId = channelIdArg
+        lineApiClient = LineApiClientBuilder(reactContext.applicationContext, channelId).build()
         try {
-            channelId = args.getString("channelId")!!
-            lineApiClient = LineApiClientBuilder(reactContext.applicationContext, channelId).build()
-
             reactContext.addActivityEventListener(object : ActivityEventListener {
                 override fun onNewIntent(intent: Intent) {}
                 override fun onActivityResult(
@@ -58,8 +61,8 @@ class LineLoginModule(private val reactContext: ReactApplicationContext) :
                     handleActivityResult(requestCode, resultCode, data)
             })
             promise.resolve(null)
-        } catch (t: Throwable) {
-            promise.reject("E_SETUP_FAILED", t.message, t)
+        } catch (e: Throwable) {
+            promise.reject("SETUP_FAILED", e.message, e)
         }
     }
 
