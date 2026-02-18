@@ -56,17 +56,22 @@
     }
   },
   "files": [
-    "android",
-    "!android/build",
-    "!android/local.properties",
+    "android/src",
+    "android/build.gradle",
+    "android/gradle.properties",
     "dist",
-    "ios",
-    "!ios/build",
-    "!ios/RTNLine.xcodeproj/project.xcworkspace",
+    "ios/RTNLine.xcodeproj/xcshareddata",
+    "ios/RTNLine.xcodeproj/project.pbxproj",
+    "ios/LineLoginModule-Bridging-Header.h",
+    "ios/LineLoginModule.mm",
+    "ios/LineLoginModule.swift",
     "plugin",
     "src",
     "app.plugin.js",
-    "react-native-line.podspec"
+    "LICENSE",
+    "package.json",
+    "react-native-line.podspec",
+    "!README.md"
   ],
   "packageManager": "npm@11.4.0+sha512.759091a21ee805d9c842bcfe2878d6626c48a16a5ca73c1e1338fa8379951abfc2d273ec4ad12ede64bd294237c6719b3bcc518118d1affe8a38985fe5d29773"
 }
