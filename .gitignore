@@ -1,9 +1,8 @@
-# OSX
-#
+# macOS
 .DS_Store
+*.pem
 
 # Xcode
-#
 build/
 *.pbxuser
 !default.pbxuser
@@ -24,7 +23,6 @@ project.xcworkspace
 **/.xcode.env.local
 
 # Android/IntelliJ
-#
 build/
 .idea
 .gradle
@@ -38,12 +36,12 @@ android/gradlew.bat
 *.keystore
 !debug.keystore
 
-# Visual Studio Code
-#
+# VSCode
+.cursorrules
 .vscode/
 
+
 # node.js
-#
 node_modules/
 npm-debug.log
 yarn-error.log
