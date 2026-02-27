@@ -13,10 +13,6 @@ buildscript {
     }
 }
 
-def isNewArchitectureEnabled() {
-    return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
-}
-
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
@@ -47,13 +43,3 @@ dependencies {
     implementation "com.linecorp.linesdk:linesdk:5.11.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
 }
-
-tasks.register("checkNativeLineLoginSpec") {
-    doLast {
-        if (!isNewArchitectureEnabled()) {
-            throw new GradleException("@xmartlabs/react-native-line v5 requires your project to have NEW ARCHITECTURE ENABLED. Use v4 if you want to keep using the old architecture.")
-        }
-    }
-}
-
-preBuild.dependsOn checkNativeLineLoginSpec
