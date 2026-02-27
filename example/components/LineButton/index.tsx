@@ -4,7 +4,7 @@ import { Image, StyleSheet, Text } from 'react-native'
 import Line from '@/assets/images/line.png'
 import { PressableOpacity } from '@/components/PressableOpacity'
 import { VerticalDivider } from '@/components/VerticalDivider'
-import { Color } from '@/constants/Colors'
+import { Color } from '@/constants/color'
 
 interface Props {
   disabled?: boolean

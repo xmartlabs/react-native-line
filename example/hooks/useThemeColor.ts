@@ -1,4 +1,4 @@
-import { Colors } from '@/constants/Colors'
+import { Colors } from '@/constants/color'
 import { useColorScheme } from '@/hooks/useColorScheme'
 
 export function useThemeColor(

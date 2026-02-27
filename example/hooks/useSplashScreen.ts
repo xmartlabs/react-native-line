@@ -5,17 +5,18 @@ import { useEffect, useState } from 'react'
 import SpaceMono from '@/assets/fonts/SpaceMono-Regular.ttf'
 
 ExpoSplashScreen.preventAutoHideAsync()
+ExpoSplashScreen.setOptions({ duration: 200, fade: true })
 
 export const useSplashScreen = () => {
-  const [loaded] = useFonts({ SpaceMono })
-  const [ready, setReady] = useState<boolean>(false)
+  const [loadedSpaceMono] = useFonts({ SpaceMono })
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    if (loaded) {
-      ExpoSplashScreen.hideAsync()
+    if (loadedSpaceMono) {
       setReady(true)
+      ExpoSplashScreen.hide()
     }
-  }, [loaded])
+  }, [loadedSpaceMono])
 
   return ready
 }
