@@ -6,7 +6,7 @@ import LineSDK
   private let loginLock = NSLock()
   private var isLoginInProgress = false
 
-  @objc public static func application(
+  @MainActor @objc public static func application(
     _ application: UIApplication,
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
@@ -14,7 +14,7 @@ import LineSDK
     return LoginManager.shared.application(application, open: url, options: options)
   }
 
-  @objc public static func application(
+  @MainActor @objc public static func application(
     _ application: UIApplication,
     continue userActivity: NSUserActivity,
     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
