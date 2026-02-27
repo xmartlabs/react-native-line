@@ -1,8 +1,9 @@
 package com.xmartlabs.line
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 
 import com.facebook.react.bridge.*
 import com.facebook.react.module.annotations.ReactModule
@@ -14,298 +15,280 @@ import com.linecorp.linesdk.auth.LineAuthenticationConfig
 import com.linecorp.linesdk.auth.LineAuthenticationParams
 import com.linecorp.linesdk.auth.LineLoginApi
 import com.linecorp.linesdk.auth.LineLoginResult
-import com.linecorp.linesdk.LineProfile
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-private var LOGIN_REQUEST_CODE: Int = 0
-
-enum class LoginArguments(val key: String) {
-    BOT_PROMPT("botPrompt"),
-    ONLY_WEB_LOGIN("onlyWebLogin"),
-    SCOPES("scopes")
-}
-
-class LineLoginModule(private val reactContext: ReactApplicationContext) :
+@ReactModule(name = LineLoginModule.NAME)
+class LineLoginModule(reactContext: ReactApplicationContext) :
     NativeLineLoginSpec(reactContext) {
 
     companion object {
+        const val BOT_PROMPT = "botPrompt"
+        const val CHANNEL_ID = "channelId"
+        const val ONLY_WEB_LOGIN = "onlyWebLogin"
+        const val SCOPES = "scopes"
+
         const val NAME = NativeLineLoginSpec.NAME
+        private const val LOGIN_REQUEST_CODE = 1423
+        private val DEFAULT_SCOPES = listOf("profile")
     }
 
-    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val pendingLogin = AtomicReference<Promise?>(null)
 
-    private lateinit var channelId: String
-    private lateinit var lineApiClient: LineApiClient
-    private var loginResult: Promise? = null
+    @Volatile private var channelId: String? = null
+    @Volatile private var lineApiClient: LineApiClient? = null
+
+    private val activityListenerRegistered = AtomicBoolean(false)
+
+    override fun invalidate() {
+        scope.cancel()
+        pendingLogin.getAndSet(null)
+            ?.reject("MODULE_INVALIDATED", "Module was destroyed during login", null)
+        if (activityListenerRegistered.getAndSet(false)) {
+            reactApplicationContext.removeActivityEventListener(loginResultListener)
+        }
+        super.invalidate()
+    }
 
     override fun setup(args: ReadableMap, promise: Promise) {
-        val channelIdArg = args.getString("channelId")
-        if (channelIdArg == null) {
-            return promise.reject("SETUP_FAILED", "channelId is required", null)
+        val id = args.getString(CHANNEL_ID)?.takeIf { it.isNotBlank() }
+            ?: return promise.reject("SETUP_FAILED", "channelId must be a non-empty string", null)
+
+        channelId = id
+
+        lineApiClient = LineApiClientBuilder(reactApplicationContext, id).build()
+
+        if (activityListenerRegistered.compareAndSet(false, true)) {
+            reactApplicationContext.addActivityEventListener(loginResultListener)
         }
-        channelId = channelIdArg
-        lineApiClient = LineApiClientBuilder(reactContext.applicationContext, channelId).build()
-        try {
-            reactContext.addActivityEventListener(object : ActivityEventListener {
-                override fun onNewIntent(intent: Intent) {}
-                override fun onActivityResult(
-                    activity: Activity,
-                    requestCode: Int,
-                    resultCode: Int,
-                    data: Intent?
-                ) =
-                    handleActivityResult(requestCode, resultCode, data)
-            })
-            promise.resolve(null)
-        } catch (e: Throwable) {
-            promise.reject("SETUP_FAILED", e.message, e)
-        }
+        promise.resolve(null)
     }
 
     override fun login(args: ReadableMap, promise: Promise) {
-        val scopes =
-            if (args.hasKey(LoginArguments.SCOPES.key)) args.getArray(LoginArguments.SCOPES.key)!!
-                .toArrayList() as List<String> else listOf("profile")
-        val onlyWebLogin =
-            args.hasKey(LoginArguments.ONLY_WEB_LOGIN.key) && args.getBoolean(LoginArguments.ONLY_WEB_LOGIN.key)
-        val botPromptString =
-            if (args.hasKey(LoginArguments.BOT_PROMPT.key)) args.getString(LoginArguments.BOT_PROMPT.key)!! else "normal"
-        login(
-            scopes,
-            onlyWebLogin,
-            botPromptString,
-            promise
-        )
-    }
+        requireClient(promise) ?: return
 
-    private fun login(
-        scopes: List<String>,
-        onlyWebLogin: Boolean,
-        botPromptString: String,
-        promise: Promise
-    ) {
+        val id = channelId ?: return promise.reject("NOT_SETUP", "Call setup() first", null)
 
-        val lineAuthenticationParams = LineAuthenticationParams.Builder()
+        val scopes = args.getArray(SCOPES)
+            ?.toArrayList()?.filterIsInstance<String>()?.takeIf { it.isNotEmpty() }
+            ?: DEFAULT_SCOPES
+
+        val onlyWebLogin = args.hasKey(ONLY_WEB_LOGIN) && args.getBoolean(ONLY_WEB_LOGIN)
+
+        val botPromptRaw = args.getString(BOT_PROMPT) ?: "normal"
+        val botPrompt = LineAuthenticationParams.BotPrompt.entries
+            .find { it.name.equals(botPromptRaw, ignoreCase = true) }
+            ?: return promise.reject(
+                "INVALID_ARGUMENT",
+                "Invalid botPrompt '$botPromptRaw'. Expected: ${
+                    LineAuthenticationParams.BotPrompt.entries.joinToString { it.name.lowercase() }
+                }",
+                null,
+            )
+
+        val activity = currentActivity
+            ?: return promise.reject("NO_ACTIVITY", "Activity is not available", null)
+
+        if (!pendingLogin.compareAndSet(null, promise)) {
+            return promise.reject("LOGIN_IN_PROGRESS", "A login is already in progress", null)
+        }
+
+        val authParams = LineAuthenticationParams.Builder()
             .scopes(Scope.convertToScopeList(scopes))
-            .apply {
-                botPrompt(LineAuthenticationParams.BotPrompt.valueOf(botPromptString))
-            }
+            .botPrompt(botPrompt)
             .build()
 
-        val lineAuthenticationConfig: LineAuthenticationConfig? =
-            createLineAuthenticationConfig(channelId, onlyWebLogin)
+        val config = if (onlyWebLogin) {
+            LineAuthenticationConfig.Builder(id).disableLineAppAuthentication().build()
+        } else null
 
-        val activity: Activity = currentActivity!!
+        val intent = if (config != null) {
+            LineLoginApi.getLoginIntent(activity, config, authParams)
+        } else {
+            LineLoginApi.getLoginIntent(activity, id, authParams)
+        }
 
-        val loginIntent =
-            when {
-                lineAuthenticationConfig != null -> LineLoginApi.getLoginIntent(
-                    activity,
-                    lineAuthenticationConfig,
-                    lineAuthenticationParams
-                )
-
-                onlyWebLogin -> LineLoginApi.getLoginIntentWithoutLineAppAuth(
-                    activity, channelId, lineAuthenticationParams
-                )
-
-                else -> LineLoginApi.getLoginIntent(activity, channelId, lineAuthenticationParams)
-            }
-
-        activity.startActivityForResult(loginIntent, LOGIN_REQUEST_CODE)
-        this.loginResult = promise
+        activity.startActivityForResult(intent, LOGIN_REQUEST_CODE)
     }
 
-    override fun getProfile(promise: Promise) {
-        coroutineScope.launch {
-            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.getProfile() }
-            if (!lineApiResponse.isSuccess) {
-                promise.reject(
-                    lineApiResponse.responseCode.name,
-                    lineApiResponse.errorData.message,
-                    null
-                )
+    private val loginResultListener = object : ActivityEventListener {
+        override fun onNewIntent(intent: Intent) = Unit
+
+        override fun onActivityResult(
+            activity: Activity,
+            requestCode: Int,
+            resultCode: Int,
+            data: Intent?
+        ) {
+            if (requestCode != LOGIN_REQUEST_CODE) return
+            val promise = pendingLogin.getAndSet(null) ?: return
+
+            if (resultCode != Activity.RESULT_OK || data == null) {
+                val (code, message) = if (resultCode == Activity.RESULT_CANCELED) {
+                    "LOGIN_CANCELLED" to "Login was cancelled by the user"
+                } else {
+                    "LOGIN_FAILED" to "Login failed with unexpected result code $resultCode"
+                }
+                return promise.reject(code, message, null)
+            }
+
+            val result = LineLoginApi.getLoginResultFromIntent(data)
+            if (result.responseCode == LineApiResponseCode.SUCCESS) {
+                val cred = result.lineCredential
+                val prof = result.lineProfile
+                if (cred != null && prof != null) {
+                    promise.resolve(buildLoginResult(result, cred, prof))
+                } else {
+                    promise.reject(
+                        "PARSE_ERROR",
+                        "Credential or profile missing from login result",
+                        null
+                    )
+                }
             } else {
-                promise.resolve(parseProfile(lineApiResponse.responseData))
-            }
-        }
-    }
-
-    fun handleActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        if (requestCode != LOGIN_REQUEST_CODE) return
-
-        if (resultCode != Activity.RESULT_OK || intent == null) {
-            loginResult?.reject(
-                resultCode.toString(),
-                "ERROR",
-                null
-            )
-        }
-
-        val result = LineLoginApi.getLoginResultFromIntent(intent)
-
-        when (result.responseCode) {
-            LineApiResponseCode.SUCCESS -> {
-                loginResult?.resolve(parseLoginResult(result))
-                loginResult = null
-            }
-
-            LineApiResponseCode.CANCEL -> {
-                loginResult?.reject(
+                promise.reject(
                     result.responseCode.name,
-                    result.errorData.message,
-                    null
-                )
-            }
-
-            else -> {
-                loginResult?.reject(
-                    result.responseCode.name,
-                    result.errorData.message,
+                    result.errorData.message ?: result.responseCode.name,
                     null
                 )
             }
         }
-
-        loginResult = null
     }
 
     override fun logout(promise: Promise) {
-        coroutineScope.launch {
-            val lineApiResponse = withContext(Dispatchers.IO) { lineApiClient.logout() }
-            if (lineApiResponse.isSuccess) {
-                promise.resolve(null)
-            } else {
-                promise.reject(
-                    lineApiResponse.responseCode.name,
-                    lineApiResponse.errorData.message,
+        val client = requireClient(promise) ?: return
+        scope.launch {
+            try {
+                val r = client.logout()
+                if (r.isSuccess) promise.resolve(null)
+                else promise.reject(
+                    r.responseCode.name,
+                    r.errorData.message ?: r.responseCode.name,
                     null
                 )
+            } catch (e: Exception) {
+                promise.reject("API_ERROR", e.message ?: "Unexpected error during logout", e)
             }
         }
     }
 
-    override fun getCurrentAccessToken(promise: Promise) = invokeLineServiceMethod(
-        promise = promise,
-        serviceCallable = { lineApiClient.getCurrentAccessToken() },
-        parser = { parseAccessToken(it, lineIdToken = null) }
+    override fun getProfile(promise: Promise) = apiCall(
+        promise,
+        call = LineApiClient::getProfile,
+        build = ::buildProfile,
     )
 
-    override fun getFriendshipStatus(promise: Promise) = invokeLineServiceMethod(
-        promise = promise,
-        serviceCallable = { lineApiClient.getFriendshipStatus() },
-        parser = { parseFriendshipStatus(it) }
+    override fun getCurrentAccessToken(promise: Promise) = apiCall(
+        promise,
+        call = LineApiClient::getCurrentAccessToken,
+        build = { buildAccessToken(it, idToken = null) },
     )
 
-    override fun refreshAccessToken(promise: Promise) = invokeLineServiceMethod(
-        promise = promise,
-        serviceCallable = { lineApiClient.refreshAccessToken() },
-        parser = { parseAccessToken(it, lineIdToken = null) }
+    override fun getFriendshipStatus(promise: Promise) = apiCall(
+        promise,
+        call = LineApiClient::getFriendshipStatus,
+        build = ::buildFriendshipStatus,
     )
 
-    override fun verifyAccessToken(promise: Promise) = invokeLineServiceMethod(
-        promise = promise,
-        serviceCallable = { lineApiClient.verifyToken() },
-        parser = { parseVerifyAccessToken(it) }
+    override fun refreshAccessToken(promise: Promise) = apiCall(
+        promise,
+        call = LineApiClient::refreshAccessToken,
+        build = { buildAccessToken(it, idToken = null) },
     )
 
-    private fun <T> invokeLineServiceMethod(
+    override fun verifyAccessToken(promise: Promise) = apiCall(
+        promise,
+        call = LineApiClient::verifyToken,
+        build = ::buildVerifyResult,
+    )
+
+    /**
+     * Returns the initialized [LineApiClient] or rejects [promise] with NOT_SETUP
+     * and returns null, allowing callers to use the `?: return` pattern.
+     */
+    private fun requireClient(promise: Promise): LineApiClient? =
+        lineApiClient ?: run {
+            promise.reject("NOT_SETUP", "Call setup() before using the LINE SDK", null)
+            null
+        }
+
+    /**
+     * Runs a blocking LINE API [call] on the IO dispatcher.
+     * Resolves [promise] via [build] on success, or rejects it with the LINE error.
+     */
+    private fun <T> apiCall(
         promise: Promise,
-        serviceCallable: () -> LineApiResponse<T>,
-        parser: (T) -> WritableMap
+        call: (LineApiClient) -> LineApiResponse<T>,
+        build: (T) -> WritableMap,
     ) {
-        coroutineScope.launch {
-            val lineApiResponse = withContext(Dispatchers.IO) { serviceCallable.invoke() }
-            if (lineApiResponse.isSuccess) {
-                promise.resolve(parser.invoke(lineApiResponse.responseData))
-            } else {
-                promise.reject(
-                    lineApiResponse.responseCode.name,
-                    lineApiResponse.errorData.message,
+        val client = requireClient(promise) ?: return
+        scope.launch {
+            try {
+                val r = call(client)
+                if (r.isSuccess) promise.resolve(build(r.responseData))
+                else promise.reject(
+                    r.responseCode.name,
+                    r.errorData.message ?: r.responseCode.name,
                     null
                 )
+            } catch (e: Exception) {
+                promise.reject("API_ERROR", e.message ?: "Unexpected error", e)
             }
         }
     }
 
-
-    private fun parseAccessToken(
-        accessToken: LineAccessToken,
-        lineIdToken: LineIdToken?
-    ): WritableMap = Arguments.makeNativeMap(
-        mapOf(
-            "accessToken" to accessToken.tokenString,
-            "expiresIn" to accessToken.expiresInMillis,
-            "idToken" to lineIdToken?.rawString
-        )
-    )
-
-    private fun parseFriendshipStatus(friendshipStatus: LineFriendshipStatus): WritableMap =
+    /**
+     * [expiresIn] is seconds-until-expiry (OAuth standard `expires_in`),
+     * derived from the SDK's millisecond value.
+     */
+    private fun buildAccessToken(token: LineAccessToken, idToken: LineIdToken?): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "friendFlag" to friendshipStatus.isFriend
+                "accessToken" to token.tokenString,
+                "expiresIn"   to token.expiresInMillis / 1000L,
+                "idToken"     to idToken?.rawString,
             )
         )
 
-    private fun parseProfile(profile: LineProfile): WritableMap = Arguments.makeNativeMap(
-        mapOf(
-            "displayName" to profile.displayName,
-            "pictureUrl" to profile.pictureUrl?.toString(),
-            "statusMessage" to profile.statusMessage,
-            "userId" to profile.userId
-        )
-    )
-
-    private fun parseLoginResult(loginResult: LineLoginResult): WritableMap =
+    private fun buildProfile(profile: LineProfile): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "accessToken" to parseAccessToken(
-                    loginResult.lineCredential!!.accessToken,
-                    loginResult.lineIdToken
-                ),
-                "friendshipStatusChanged" to loginResult.friendshipStatusChanged,
-                "idTokenNonce" to loginResult.lineIdToken?.nonce,
-                "scope" to loginResult.lineCredential?.scopes?.let {
-                    Scope.join(it)
-                },
-                "userProfile" to parseProfile(loginResult.lineProfile!!)
+                "displayName"   to profile.displayName,
+                "pictureUrl"    to profile.pictureUrl?.toString(),
+                "statusMessage" to profile.statusMessage,
+                "userId"        to profile.userId,
             )
         )
 
-    private fun parseVerifyAccessToken(verifyAccessToken: LineCredential): WritableMap =
+    private fun buildFriendshipStatus(status: LineFriendshipStatus): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "clientId" to channelId,
-                "expiresIn" to verifyAccessToken.accessToken.expiresInMillis,
-                "scope" to Scope.join(verifyAccessToken.scopes)
+                "friendFlag" to status.isFriend
             )
         )
 
-
-    private fun createConfig(
-        channelId: String,
-        isLineAppAuthDisabled: Boolean
-    ): LineAuthenticationConfig {
-        val configBuilder = LineAuthenticationConfig.Builder(channelId)
-
-        if (isLineAppAuthDisabled) {
-            configBuilder.disableLineAppAuthentication()
-        }
-
-        return configBuilder.build()
-    }
-
-    private fun createLineAuthenticationConfig(
-        channelId: String,
-        onlyWebLogin: Boolean
-    ): LineAuthenticationConfig? {
-        return createConfig(
-            channelId,
-            onlyWebLogin
+    private fun buildLoginResult(result: LineLoginResult, credential: LineCredential, profile: LineProfile): WritableMap =
+        Arguments.makeNativeMap(
+            mapOf(
+                "accessToken"             to buildAccessToken(credential.accessToken, result.lineIdToken),
+                "friendshipStatusChanged" to result.friendshipStatusChanged,
+                "idTokenNonce"            to result.lineIdToken?.let { result.nonce },
+                "scope"                   to Scope.join(credential.scopes),
+                "userProfile"             to buildProfile(profile),
+            )
         )
-    }
+
+    private fun buildVerifyResult(credential: LineCredential): WritableMap =
+        Arguments.makeNativeMap(
+            mapOf(
+                "clientId"  to channelId,
+                "expiresIn" to credential.accessToken.expiresInMillis / 1000L,
+                "scope"     to Scope.join(credential.scopes),
+            )
+        )
 }
