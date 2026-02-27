@@ -2,6 +2,7 @@ package com.xmartlabs.line
 
 import android.app.Activity
 import android.content.Intent
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 
 import com.facebook.react.bridge.*
@@ -26,6 +27,11 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     NativeLineLoginSpec(reactContext) {
 
     companion object {
+        const val BOT_PROMPT = "botPrompt"
+        const val CHANNEL_ID = "channelId"
+        const val ONLY_WEB_LOGIN = "onlyWebLogin"
+        const val SCOPES = "scopes"
+
         const val NAME = NativeLineLoginSpec.NAME
         private const val LOGIN_REQUEST_CODE = 1423
         private val DEFAULT_SCOPES = listOf("profile")
@@ -37,26 +43,28 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     @Volatile private var channelId: String? = null
     @Volatile private var lineApiClient: LineApiClient? = null
 
-    private var activityListenerRegistered = false
+    private val activityListenerRegistered = AtomicBoolean(false)
 
     override fun invalidate() {
         scope.cancel()
         pendingLogin.getAndSet(null)
             ?.reject("MODULE_INVALIDATED", "Module was destroyed during login", null)
+        if (activityListenerRegistered.getAndSet(false)) {
+            reactApplicationContext.removeActivityEventListener(loginResultListener)
+        }
         super.invalidate()
     }
 
     override fun setup(args: ReadableMap, promise: Promise) {
-        val id = args.getString("channelId")?.takeIf { it.isNotBlank() }
+        val id = args.getString(CHANNEL_ID)?.takeIf { it.isNotBlank() }
             ?: return promise.reject("SETUP_FAILED", "channelId must be a non-empty string", null)
 
         channelId = id
 
         lineApiClient = LineApiClientBuilder(reactApplicationContext, id).build()
 
-        if (!activityListenerRegistered) {
+        if (activityListenerRegistered.compareAndSet(false, true)) {
             reactApplicationContext.addActivityEventListener(loginResultListener)
-            activityListenerRegistered = true
         }
         promise.resolve(null)
     }
@@ -66,13 +74,13 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
 
         val id = channelId ?: return promise.reject("NOT_SETUP", "Call setup() first", null)
 
-        val scopes = args.getArray("scopes")
+        val scopes = args.getArray(SCOPES)
             ?.toArrayList()?.filterIsInstance<String>()?.takeIf { it.isNotEmpty() }
             ?: DEFAULT_SCOPES
 
-        val onlyWebLogin = args.hasKey("onlyWebLogin") && args.getBoolean("onlyWebLogin")
+        val onlyWebLogin = args.hasKey(ONLY_WEB_LOGIN) && args.getBoolean(ONLY_WEB_LOGIN)
 
-        val botPromptRaw = args.getString("botPrompt") ?: "normal"
+        val botPromptRaw = args.getString(BOT_PROMPT) ?: "normal"
         val botPrompt = LineAuthenticationParams.BotPrompt.entries
             .find { it.name.equals(botPromptRaw, ignoreCase = true) }
             ?: return promise.reject(
@@ -155,13 +163,17 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     override fun logout(promise: Promise) {
         val client = requireClient(promise) ?: return
         scope.launch {
-            val r = client.logout()
-            if (r.isSuccess) promise.resolve(null)
-            else promise.reject(
-                r.responseCode.name,
-                r.errorData.message ?: r.responseCode.name,
-                null
-            )
+            try {
+                val r = client.logout()
+                if (r.isSuccess) promise.resolve(null)
+                else promise.reject(
+                    r.responseCode.name,
+                    r.errorData.message ?: r.responseCode.name,
+                    null
+                )
+            } catch (e: Exception) {
+                promise.reject("API_ERROR", e.message ?: "Unexpected error during logout", e)
+            }
         }
     }
 
@@ -216,13 +228,17 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     ) {
         val client = requireClient(promise) ?: return
         scope.launch {
-            val r = call(client)
-            if (r.isSuccess) promise.resolve(build(r.responseData))
-            else promise.reject(
-                r.responseCode.name,
-                r.errorData.message ?: r.responseCode.name,
-                null
-            )
+            try {
+                val r = call(client)
+                if (r.isSuccess) promise.resolve(build(r.responseData))
+                else promise.reject(
+                    r.responseCode.name,
+                    r.errorData.message ?: r.responseCode.name,
+                    null
+                )
+            } catch (e: Exception) {
+                promise.reject("API_ERROR", e.message ?: "Unexpected error", e)
+            }
         }
     }
 
