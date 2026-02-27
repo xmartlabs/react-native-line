@@ -21,7 +21,7 @@ class LineLoginPackage : TurboReactPackage() {
                     LineLoginModule.NAME,
                     canOverrideExistingModule = false,
                     needsEagerInit = false,
-                    hasConstants = true,
+                    hasConstants = false,
                     isCxxModule = false,
                     isTurboModule = true
                 )

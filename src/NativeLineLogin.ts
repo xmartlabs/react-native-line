@@ -1,126 +1,156 @@
+/**
+ * Native TurboModule specification for LINE Login.
+ *
+ * This file is consumed by React Native code generation — do not change method
+ * signatures without regenerating the native specs.
+ *
+ * @see https://developers.line.biz/en/docs/line-login/
+ */
 import { TurboModule, TurboModuleRegistry } from 'react-native'
 
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+/** Controls whether the user is prompted to add the LINE Official Account as a friend during login. */
 export enum BotPrompt {
-  /** Opens a new screen to add a LINE Official Account as a friend after the user agrees to the permissions in the consent screen. */
+  /** Shows a standalone screen after the consent screen asking the user to add the bot. */
   Aggressive = 'aggressive',
-  /** Includes an option to add a LINE Official Account as a friend in the consent screen. */
+  /** Adds an inline "Add friend" option inside the consent screen. */
   Normal = 'normal',
 }
 
-export enum LoginPermission {
+/** OAuth scopes that can be requested during login. */
+export enum Scope {
+  /** Grants access to the user's email address. Requires channel approval from LINE. */
   Email = 'email',
-  /** To get an ID token in the login response. */
+  /** Issues an OpenID Connect ID token in the login response. Required to receive `idToken` and `idTokenNonce`. */
   OpenId = 'openid',
-  /** To get user's profile including the user ID, display name, and the profile image URL in the login response. */
+  /** Grants access to the user's basic profile: display name, picture URL, status message, and user ID. */
   Profile = 'profile',
 }
 
-export interface AccessToken {
-  /** The value of the access token. */
-  accessToken: string
-  /** The amount of time until the access token expires. */
-  expiresIn: string
-  /** The raw string of the ID token bound to the access token. Only if the access token is obtained with the `.openID` permission. */
-  idToken?: string
-}
-
-export interface FriendshipStatus {
-  /** Whether the LINE Official Account is a friend of the user or not. */
-  friendFlag: boolean
-}
+// ─── Parameter types ─────────────────────────────────────────────────────────
 
 export interface SetupParams {
-  /** The channel ID of the LINE Login channel. */
-  channelId: string
-  /** The universal link URL for LINE Login. */
-  universalLinkUrl?: string
+  /** The LINE Login channel ID. */
+  readonly channelId: string
+  /**
+   * Universal link URL registered for your LINE Login channel.
+   * @platform ios
+   */
+  readonly universalLinkUrl?: string
 }
 
 export interface LoginParams {
-  botPrompt?: BotPrompt
-  onlyWebLogin?: boolean
-  scopes?: LoginPermission[]
+  /**
+   * Whether to skip the LINE app and go straight to the web-based login flow.
+   * @default false
+   */
+  readonly onlyWebLogin?: boolean
+  /**
+   * OAuth scopes to request. Defaults to `[Scope.Profile]` when omitted.
+   * @default [Scope.Profile]
+   */
+  readonly scopes?: Scope[]
+  /**
+   * Controls the bot friend-add prompt shown during login.
+   * Only applicable when a LINE Official Account is linked to your channel.
+   * @default BotPrompt.Normal
+   */
+  readonly botPrompt?: BotPrompt
+}
+
+// ─── Response types ──────────────────────────────────────────────────────────
+
+export interface AccessToken {
+  /** Bearer token used to authorize LINE API calls. */
+  readonly accessToken: string
+  /**
+   * Seconds until the access token expires (OAuth standard `expires_in`).
+   * Schedule a proactive refresh before this value reaches zero.
+   */
+  readonly expiresIn: number
+  /**
+   * Raw OpenID Connect ID token string.
+   * Present only when `Scope.OpenId` was requested.
+   */
+  readonly idToken?: string
 }
 
 export interface UserProfile {
-  /** User's display name. */
-  displayName: string
-  /** User's profile image URL. */
-  pictureUrl?: string
-  /** User's status message. */
-  statusMessage?: string
-  /** User's user ID. */
-  userId: string
+  /** The user's LINE display name. */
+  readonly displayName: string
+  /** URL of the user's profile picture. `undefined` if the user has not set one. */
+  readonly pictureUrl?: string
+  /** The user's LINE status message. `undefined` if the user has not set one. */
+  readonly statusMessage?: string
+  /** The user's LINE user ID. Stable across logins for the same channel. */
+  readonly userId: string
+}
+
+export interface FriendshipStatus {
+  /** `true` if the user has added the linked LINE Official Account as a friend. */
+  readonly friendFlag: boolean
 }
 
 export interface LoginResult {
-  /** The access token obtained by the login process. */
-  accessToken: AccessToken
-  /** Indicates that the friendship status between the user and the bot changed during the login. This value is
-      non-`null` only if the `.botPromptNormal` or `.botPromptAggressive` are specified as part of the
-      `LoginManagerOption` object when the user logs in. For more information, see Linking a bot with your LINE
-      Login channel at https://developers.line.me/en/docs/line-login/web/link-a-bot/. */
-  friendshipStatusChanged?: boolean
-  /** The `nonce` value when requesting ID Token during login process. Use this value as a parameter when you
-      verify the ID Token against the LINE server. This value is `null` if `.openID` permission is not requested. */
-  idTokenNonce?: string
-  /** The permissions bound to the `accessToken` object by the authorization process. Scope has them separated by spaces. */
-  scope: string
-  /** Contains the user profile including the user ID, display name, and so on.
-      The value exists only when the `.profile` permission is set in the authorization request. */
-  userProfile?: UserProfile
+  /** The access token issued for this login session. */
+  readonly accessToken: AccessToken
+  /**
+   * `true` if the user's friendship status with the linked LINE Official Account
+   * changed during this login (e.g. they added the bot as a friend).
+   * Only present when `BotPrompt.Normal` or `BotPrompt.Aggressive` was used.
+   */
+  readonly friendshipStatusChanged?: boolean
+  /**
+   * The nonce tied to the ID token. Pass this to your server when verifying the
+   * ID token via the LINE server. `undefined` unless `Scope.OpenId`
+   * was requested.
+   * @see https://developers.line.biz/en/docs/line-login/verify-id-token/
+   */
+  readonly idTokenNonce?: string
+  /**
+   * Space-separated list of OAuth scopes granted (e.g. `"profile openid email"`).
+   */
+  readonly scope: string
+  /**
+   * The user's LINE profile. Present only when `Scope.Profile` was
+   * included in the requested scopes.
+   */
+  readonly userProfile?: UserProfile
 }
 
 export interface VerifyResult {
-  /** The channel ID bound to the access token. */
-  clientId: string
-  /** The amount of time until the access token expires. */
-  expiresIn: string
-  /** Valid permissions of the access token separated by spaces */
-  scope: string
+  /** The LINE Login channel ID the access token was issued for. */
+  readonly clientId: string
+  /** Seconds until the access token expires. */
+  readonly expiresIn: number
+  /** Space-separated list of scopes granted to this access token. */
+  readonly scope: string
 }
 
+// ─── TurboModule spec ────────────────────────────────────────────────────────
+
+/**
+ * Bridge interface consumed by the React Native native module system.
+ * Use the default export for all SDK calls rather than referencing `Spec` directly.
+ */
 export interface Spec extends TurboModule {
-  /**
-   * Gets the access token of the current user.
-   * @returns
-   */
-  getCurrentAccessToken(): Promise<AccessToken>
-  /**
-   * Gets the friendship status between the LINE Official Account (which is linked to the current channel) and the user.
-   * @returns
-   */
-  getFriendshipStatus(): Promise<FriendshipStatus>
-  /**
-   * Gets the current user profile information.
-   * @returns
-   */
-  getProfile(): Promise<UserProfile>
-  /**
-   * Logs in the user.
-   * @param params
-   * @returns
-   */
-  login(params: LoginParams): Promise<LoginResult>
-  /**
-   * Revokes the access token of the current user.
-   */
-  logout(): Promise<void>
-  /**
-   * Refreshes the access token of the current user.
-   * @returns
-   */
-  refreshAccessToken(): Promise<AccessToken>
-  /**
-   * Initializes the Line SDK.
-   * @param params
-   */
+  /** Initializes the LINE SDK with your channel credentials. Must be called before any other method. */
   setup(params: SetupParams): Promise<void>
-  /**
-   * Checks whether the access token of the current user is valid.
-   * @returns
-   */
+  /** Starts the LINE login flow and resolves with the authenticated session. */
+  login(params: LoginParams): Promise<LoginResult>
+  /** Revokes the current user's access token and clears the local session. */
+  logout(): Promise<void>
+  /** Returns the locally cached access token without a network call. */
+  getCurrentAccessToken(): Promise<AccessToken>
+  /** Exchanges the current access token for a fresh one before it expires. */
+  refreshAccessToken(): Promise<AccessToken>
+  /** Validates the current access token against the LINE server and returns its metadata. */
   verifyAccessToken(): Promise<VerifyResult>
+  /** Fetches the current user's LINE profile. Requires `Scope.Profile`. */
+  getProfile(): Promise<UserProfile>
+  /** Returns the friendship status between the current user and the channel's linked LINE Official Account. */
+  getFriendshipStatus(): Promise<FriendshipStatus>
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('LineLogin')
