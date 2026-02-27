@@ -1,6 +1,9 @@
-import { MMKV, useMMKVString } from 'react-native-mmkv'
+import { createMMKV, useMMKVString } from 'react-native-mmkv'
 
-const localStorage = new MMKV({ encryptionKey: 'encryptionKey', id: 'default' })
+const localStorage = createMMKV({
+  encryptionKey: 'your-encryption-key',
+  id: 'default',
+})
 
 export function getLocalStorageItem(key: string) {
   return localStorage.getString(key)
@@ -11,7 +14,7 @@ export function setLocalStorageItem(key: string, value: string) {
 }
 
 export function removeLocalStorageItem(key: string) {
-  return localStorage.delete(key)
+  return localStorage.remove(key)
 }
 
 export const useListenLocalStorage = (key: string) =>

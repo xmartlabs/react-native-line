@@ -1,6 +1,6 @@
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
-import { Color } from '@/constants/Colors'
+import { Color } from '@/constants/color'
 
 interface Props {
   backgroundColor?: Color

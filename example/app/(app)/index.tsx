@@ -4,7 +4,7 @@ import Line, {
 } from '@xmartlabs/react-native-line'
 import { useRouter } from 'expo-router'
 import { Fragment, useEffect, useState } from 'react'
-import { Alert, Dimensions, Image, StyleSheet } from 'react-native'
+import { Alert, Dimensions, Image, StyleSheet, View } from 'react-native'
 
 import { LineError } from '@/common/errors'
 import {
@@ -15,6 +15,7 @@ import { ActivityBanner } from '@/components/ActivityBanner'
 import { Bullet } from '@/components/Bullet'
 import { Button } from '@/components/Button'
 import { ThemedView } from '@/components/ThemedView'
+import { Color } from '@/constants/color'
 
 function handleError(error: LineError) {
   const userInfo = JSON.parse(error.userInfo?.message ?? '')
@@ -80,17 +81,15 @@ export default function HomeScreen() {
   return (
     <Fragment>
       <ThemedView style={styles.container}>
-        <ThemedView style={styles.contentContainer}>
+        <View style={styles.contentContainer}>
           <Image source={{ uri: user?.pictureUrl }} style={styles.image} />
-          <Bullet header={strings.name} text={user?.displayName} />
-          <Bullet header={strings.userId} text={user?.userId} />
-          <Bullet header={strings.accessToken} text={token?.accessToken} />
-        </ThemedView>
+          <Bullet body={user?.displayName} header={strings.name} />
+          <Bullet body={user?.userId} header={strings.userId} />
+          <Bullet body={token?.accessToken} header={strings.accessToken} />
+        </View>
+        <Button onPress={verifyAccessToken} text={strings.verifyToken} />
+        <Button onPress={refreshAccessToken} text={strings.refreshToken} />
         <Button onPress={getFriendshipStatus} text={strings.isFriend} />
-        <ThemedView style={styles.row}>
-          <Button onPress={verifyAccessToken} text={strings.verifyToken} />
-          <Button onPress={refreshAccessToken} text={strings.refreshToken} />
-        </ThemedView>
         <Button onPress={logOut} text={strings.logOut} />
       </ThemedView>
       {loading && <ActivityBanner />}
@@ -112,7 +111,6 @@ const strings = {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     flex: 1,
     gap: 16,
     justifyContent: 'center',
@@ -126,16 +124,12 @@ const styles = StyleSheet.create({
   },
   image: {
     alignSelf: 'center',
-    backgroundColor: 'black',
-    borderColor: 'gray',
+    backgroundColor: Color.Gray,
+    borderColor: Color.LightGray,
     borderRadius: Dimensions.get('window').width / 1.5,
     borderWidth: 0.5,
     height: Dimensions.get('window').width / 3,
     resizeMode: 'cover',
     width: Dimensions.get('window').width / 3,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 16,
   },
 })

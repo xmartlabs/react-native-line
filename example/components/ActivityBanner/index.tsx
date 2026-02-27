@@ -7,7 +7,7 @@ import Animated, {
   ZoomOut,
 } from 'react-native-reanimated'
 
-import { Color } from '@/constants/Colors'
+import { Color } from '@/constants/color'
 
 interface Props {
   backgroundColor?: Color
@@ -19,7 +19,7 @@ export const ActivityBanner: FunctionComponent<Props> = ({
   <Animated.View
     entering={FadeIn}
     exiting={FadeOut}
-    style={[StyleSheet.absoluteFill, styles.container, { backgroundColor }]}>
+    style={[styles.container, { backgroundColor }]}>
     <Animated.View
       entering={ZoomIn}
       exiting={ZoomOut}
@@ -31,6 +31,7 @@ export const ActivityBanner: FunctionComponent<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
+    ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
   },
