@@ -1,50 +1,103 @@
-# Migration guides
+# Migration Guide
 
 ## v3 → v4
 
-1. A `setup` function has been added and needs to be called before using the library.
-    ```typescript
-    Line.setup({ channelId: 'YOUR_CHANNEL_ID' })
-    ```
+1. **`setup()` is now required**
 
-2. The `getBotFriendshipStatus` function is now called `getFriendshipStatus`.
+   - SDK initialization has moved from native code to JavaScript. Add a `setup()` call when your app starts:
 
-3. The `refreshToken` function is now called `refreshAccessToken`.
+     ```typescript
+     useEffect(() => {
+         Line.setup({ channelId: 'YOUR_CHANNEL_ID' })
+     }, [])
+     ```
 
-4. Remove the function `application` from `AppDelegate`:
-    #### With Swift
-    ```swift
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        LineLogin.setup(channelID: "YOUR_CHANNEL_ID", universalLinkURL: nil)
-        return true
-    }
-    ```
+   Then remove the native setup code:
 
-    #### With Objective-C
-    ```objectivec
-    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-    {
-        [LineLogin setupWithChannelID:@"YOUR_CHANNEL_ID" universalLinkURL:nil];
-    }
-    ```
+   - **iOS** — remove the setup call from `AppDelegate`:
 
-5. Remove the string `line_channel_id` from Android resources:
-    ```xml
-    <string name="line_channel_id" translatable="false">YOUR_CHANNEL_ID</string>
-    ```
+     ```swift
+     // Swift — remove these lines
+     func application(_ application: UIApplication, didFinishLaunchingWithOptions ...) -> Bool {
+         LineLogin.setup(channelID: "YOUR_CHANNEL_ID", universalLinkURL: nil)
+         ...
+     }
+     ```
+
+     ```objectivec
+     // Objective-C — remove these lines
+     - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+         [LineLogin setupWithChannelID:@"YOUR_CHANNEL_ID" universalLinkURL:nil];
+         ...
+     }
+     ```
+
+   - **Android** — remove the channel ID string from your resources:
+
+     ```xml
+     <!-- remove this line -->
+     <string name="line_channel_id" translatable="false">YOUR_CHANNEL_ID</string>
+     ```
+
+2. **Renamed methods**
+
+   | Before | After |
+   | --- | --- |
+   | `getBotFriendshipStatus()` | `getFriendshipStatus()` |
+   | `refreshToken()` | `refreshAccessToken()` |
+
+---
 
 ## v4 → v5
 
-1. The file name in the `AppDelegate` import has changed.
-    ```objectivec
-    - #import "RNLine-Swift.h"
+> [!IMPORTANT]
+> v5 is a TurboModule and **requires the new architecture**. Enable it in your app before upgrading — see [how to enable the new architecture](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md).
+> If you cannot enable the new architecture yet, stay on v4.
 
-    + #import "react_native_line-Swift.h"
-    ```
+1. **iOS header rename**
 
-2. The `login` function now expects an empty object as a default value.
-    ```typescript
-    - Line.login()
+   Update the import in your `AppDelegate`:
 
-    + Line.login({})
-    ```
+   ```objectivec
+   - #import "RNLine-Swift.h"
+   + #import "react_native_line-Swift.h"
+   ```
+
+2. **`login()` requires an argument**
+
+   Pass an empty object when using default options:
+
+   ```typescript
+   - Line.login()
+   + Line.login({})
+   ```
+
+---
+
+## v5 → v6
+
+> [!NOTE]
+> v6 continues to require the new architecture. No changes needed if you already enabled it for v5.
+
+1. **`LoginPermission` renamed to `Scope`**
+
+   The `LoginPermission` enum has been renamed to `Scope` to align with OAuth 2.0 terminology.
+
+   ```typescript
+   - import { LoginPermission } from '@xmartlabs/react-native-line'
+   + import { Scope } from '@xmartlabs/react-native-line'
+
+   - Line.login({ scopes: [LoginPermission.Profile, LoginPermission.OpenId] })
+   + Line.login({ scopes: [Scope.Profile, Scope.OpenId] })
+   ```
+
+   The underlying string values are unchanged (`'profile'`, `'openid'`, `'email'`), so any code that passes raw strings is unaffected.
+
+2. **`expiresIn` is now a `number`**
+
+   `AccessToken.expiresIn` and `VerifyResult.expiresIn` are now typed as `number` (seconds until expiry) instead of `string`.
+
+   ```typescript
+   - const secondsLeft = parseInt(token.expiresIn, 10)
+   + const secondsLeft = token.expiresIn
+   ```
