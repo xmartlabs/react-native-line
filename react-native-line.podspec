@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.source_files  = "ios/**/*.{h,m,mm,swift}"
 
-  s.dependency 'LineSDKSwift', '~> 5.12.0'
+  s.dependency 'LineSDKSwift', '~> 5.14.0'
 
   install_modules_dependencies(s)
 end

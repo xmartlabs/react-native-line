@@ -121,7 +121,7 @@ export interface LoginResult {
 
 export interface VerifyResult {
   /** The LINE Login channel ID the access token was issued for. */
-  readonly clientId: string
+  readonly channelId: string
   /** Seconds until the access token expires. */
   readonly expiresIn: number
   /** Space-separated list of scopes granted to this access token. */
