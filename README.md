@@ -141,6 +141,34 @@ See the [Migration Guide](./docs/MIGRATION_GUIDE.md) for upgrade instructions be
     })
     ```
 
+### Web
+
+On web, `login()` opens a **popup window** to LINE's OAuth consent page and uses PKCE (Proof Key for Code Exchange) to exchange the authorization code client-side — no server-side proxy or channel secret is required.
+
+> [!IMPORTANT]
+> - The browser must allow popups for your site.
+> - `redirectUri` must be registered as a **Callback URL** in your [LINE Developer Console](https://developers.line.biz/console/) and be **same-origin** with the calling page.
+
+The full web flow:
+
+1. Call `setup()` with your channel ID and `redirectUri`. The redirect URI must be registered as a **Callback URL** in your [LINE Developer Console](https://developers.line.biz/console/) and must be same-origin with the calling page:
+
+    ```typescript
+    Line.setup({
+      channelId: 'YOUR_CHANNEL_ID',
+      redirectUri: 'https://yourapp.com',
+    })
+    ```
+
+2. Call `login()` and await the result. A popup opens, the user authenticates, and the promise resolves with a `LoginResult` once LINE redirects back:
+
+    ```typescript
+    const result = await Line.login({ scopes: [Scope.Profile, Scope.OpenId] })
+    console.log(result.userProfile?.displayName)
+    ```
+
+3. After login, all other SDK methods (`getProfile()`, `getCurrentAccessToken()`, `refreshAccessToken()`, etc.) work normally.
+
 ## API
 
 ### Methods
@@ -151,7 +179,7 @@ See the [Migration Guide](./docs/MIGRATION_GUIDE.md) for upgrade instructions be
 | `login(params: LoginParams): Promise<LoginResult>` | Starts the LINE login flow. Opens the LINE app if installed, otherwise falls back to the browser. |
 | `logout(): Promise<void>` | Revokes the current user's access token and clears the local session. |
 | `getCurrentAccessToken(): Promise<AccessToken>` | Returns the locally cached access token for the current user, without a network call. |
-| `refreshAccessToken(): Promise<AccessToken>` | Exchanges the current access token for a fresh one. |
+| `refreshAccessToken(): Promise<AccessToken>` | Exchanges the current access token for a fresh one using the stored refresh token. |
 | `verifyAccessToken(): Promise<VerifyResult>` | Validates the current access token against the LINE server and returns its metadata. |
 | `getProfile(): Promise<UserProfile>` | Returns the current user's LINE profile. Requires `Scope.Profile`. |
 | `getFriendshipStatus(): Promise<FriendshipStatus>` | Returns whether the current user has added the channel's linked LINE Official Account as a friend. Requires [bot linkage](https://developers.line.biz/en/docs/line-login/link-a-bot/) to be configured. |
@@ -164,6 +192,7 @@ See the [Migration Guide](./docs/MIGRATION_GUIDE.md) for upgrade instructions be
 | --- | --- | --- |
 | `channelId` | `string` | Your LINE Login channel ID. |
 | `universalLinkUrl` | `string?` | Universal link URL registered for your channel. iOS only. |
+| `redirectUri` | `string?` | The URL LINE redirects back to after login. Must be same-origin with the calling page and registered as a Callback URL in the LINE Developer Console. **Required on web.** iOS/Android ignore this field. |
 
 #### `LoginParams`
 
@@ -171,7 +200,7 @@ See the [Migration Guide](./docs/MIGRATION_GUIDE.md) for upgrade instructions be
 | --- | --- | --- | --- |
 | `scopes` | `Scope[]` | `[Scope.Profile]` | OAuth scopes to request. |
 | `onlyWebLogin` | `boolean` | `false` | Skip the LINE app and use the browser-based login flow. |
-| `botPrompt` | `BotPrompt` | `BotPrompt.Normal` | Controls the bot friend-add prompt shown during login. |
+| `botPrompt` | `BotPrompt?` | — | Controls the bot friend-add prompt shown during login. Only applicable when a LINE Official Account is linked to your channel. |
 
 #### `Scope` (enum)
 
@@ -183,10 +212,10 @@ See the [Migration Guide](./docs/MIGRATION_GUIDE.md) for upgrade instructions be
 
 #### `BotPrompt` (enum)
 
-| Value | Description |
-| --- | --- |
-| `BotPrompt.Normal` | Adds an inline "Add friend" option in the consent screen. |
-| `BotPrompt.Aggressive` | Shows a standalone friend-add screen after the consent screen. |
+| Value | String | Description |
+| --- | --- | --- |
+| `BotPrompt.Normal` | `'normal'` | Adds an inline "Add friend" option in the consent screen. |
+| `BotPrompt.Aggressive` | `'aggressive'` | Shows a standalone friend-add screen after the consent screen. |
 
 #### `AccessToken`
 
