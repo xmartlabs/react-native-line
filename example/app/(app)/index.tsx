@@ -18,10 +18,15 @@ import { ThemedView } from '@/components/ThemedView'
 import { Color } from '@/constants/color'
 
 function handleError(error: LineError) {
-  const userInfo = JSON.parse(error.userInfo?.message ?? '')
-  const title = strings.errorTitle + userInfo.statusCode
-  const message = userInfo.message ?? strings.errorMessage
-  return Alert.alert(title, message)
+  let errorTitle = strings.errorTitle
+  let errorMessage = strings.errorMessage
+  try {
+    const userInfo = JSON.parse(error.userInfo?.message ?? '')
+    errorTitle = errorTitle + userInfo.statusCode
+    errorMessage = errorMessage + strings.errorMessage
+  } finally {
+    return Alert.alert(errorTitle, errorMessage)
+  }
 }
 
 export default function HomeScreen() {
