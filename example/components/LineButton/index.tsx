@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
+    minWidth: 200,
     textAlign: 'center',
   },
 })

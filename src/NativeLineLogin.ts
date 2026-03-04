@@ -8,7 +8,7 @@
  */
 import { TurboModule, TurboModuleRegistry } from 'react-native'
 
-// ─── Enums ───────────────────────────────────────────────────────────────────
+import { Scope } from './elements'
 
 /** Controls whether the user is prompted to add the LINE Official Account as a friend during login. */
 export enum BotPrompt {
@@ -18,18 +18,6 @@ export enum BotPrompt {
   Normal = 'normal',
 }
 
-/** OAuth scopes that can be requested during login. */
-export enum Scope {
-  /** Grants access to the user's email address. Requires channel approval from LINE. */
-  Email = 'email',
-  /** Issues an OpenID Connect ID token in the login response. Required to receive `idToken` and `idTokenNonce`. */
-  OpenId = 'openid',
-  /** Grants access to the user's basic profile: display name, picture URL, status message, and user ID. */
-  Profile = 'profile',
-}
-
-// ─── Parameter types ─────────────────────────────────────────────────────────
-
 export interface SetupParams {
   /** The LINE Login channel ID. */
   readonly channelId: string
@@ -38,6 +26,12 @@ export interface SetupParams {
    * @platform ios
    */
   readonly universalLinkUrl?: string
+  /**
+   * The URL LINE redirects back to after login.
+   * Defaults to `${window.location.origin}/login`.
+   * @platform web
+   */
+  readonly redirectUri?: string
 }
 
 export interface LoginParams {
@@ -58,8 +52,6 @@ export interface LoginParams {
    */
   readonly botPrompt?: BotPrompt
 }
-
-// ─── Response types ──────────────────────────────────────────────────────────
 
 export interface AccessToken {
   /** Bearer token used to authorize LINE API calls. */
@@ -127,8 +119,6 @@ export interface VerifyResult {
   /** Space-separated list of scopes granted to this access token. */
   readonly scope: string
 }
-
-// ─── TurboModule spec ────────────────────────────────────────────────────────
 
 /**
  * Bridge interface consumed by the React Native native module system.

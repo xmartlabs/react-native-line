@@ -37,6 +37,7 @@ android/gradlew.bat
 !debug.keystore
 
 # VSCode
+.claude/
 .cursorrules
 .vscode/
 

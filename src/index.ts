@@ -1,4 +1,2 @@
-import NativeLineLogin from './NativeLineLogin'
-
+export { default } from './NativeLineLogin'
 export * from './NativeLineLogin'
-export default NativeLineLogin

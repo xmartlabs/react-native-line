@@ -1,9 +1,11 @@
 import { createMMKV, useMMKVString } from 'react-native-mmkv'
 
-const localStorage = createMMKV({
-  encryptionKey: 'your-encryption-key',
-  id: 'default',
-})
+import { isWebPlatform } from './platform'
+
+// ⚠️ WARNING: Never use a hardcoded encryption key in production.
+const localStorage = isWebPlatform
+  ? createMMKV({ id: 'default' })
+  : createMMKV({ encryptionKey: 'your-encryption-key', id: 'default' })
 
 export function getLocalStorageItem(key: string) {
   return localStorage.getString(key)
