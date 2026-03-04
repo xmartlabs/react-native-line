@@ -257,7 +257,7 @@ async function verifyAccessToken(): Promise<VerifyResult> {
   if (!res.ok) throw new Error(`Failed to verify access token: ${res.status}`)
   const data = await res.json()
   return {
-    clientId: String(data.client_id),
+    channelId: String(data.client_id),
     expiresIn: data.expires_in,
     scope: data.scope,
   }
