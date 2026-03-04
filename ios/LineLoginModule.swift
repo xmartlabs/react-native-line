@@ -195,7 +195,7 @@ import LineSDK
 
   private func parseVerifyAccessToken(_ accessToken: AccessTokenVerifyResult) -> NSDictionary {
     return [
-      "clientId":  accessToken.channelID,
+      "channelId":  accessToken.channelID,
       "expiresIn": accessToken.expiresIn,
       "scope":     accessToken.permissions.map { $0.rawValue }.joined(separator: " ")
     ]

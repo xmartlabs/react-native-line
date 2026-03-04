@@ -73,7 +73,9 @@ export default function HomeScreen() {
   function verifyAccessToken() {
     setLoading(true)
     return Line.verifyAccessToken()
-      .then(result => Alert.alert(result.clientId, result.expiresIn.toString()))
+      .then(result => {
+        Alert.alert(result.channelId, result.expiresIn.toString())
+      })
       .catch(handleError)
       .finally(() => setLoading(false))
   }

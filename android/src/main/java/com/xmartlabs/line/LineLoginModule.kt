@@ -286,7 +286,7 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     private fun buildVerifyResult(credential: LineCredential): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "clientId"  to channelId,
+                "channelId"  to channelId,
                 "expiresIn" to credential.accessToken.expiresInMillis / 1000L,
                 "scope"     to Scope.join(credential.scopes),
             )
