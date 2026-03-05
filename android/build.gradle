@@ -29,7 +29,7 @@ android {
         minSdk safeExtGet("minSdkVersion", 24)
         targetSdk safeExtGet("targetSdkVersion", 36)
         versionCode 1
-        versionName "5.6.0"
+        versionName "6.0.0"
     }
 
     sourceSets {
