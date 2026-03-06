@@ -19,5 +19,4 @@ export function removeLocalStorageItem(key: string) {
   return localStorage.remove(key)
 }
 
-export const useListenLocalStorage = (key: string) =>
-  useMMKVString(key, localStorage)
+export const useSession = () => useMMKVString('accessToken', localStorage)

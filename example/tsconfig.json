@@ -4,7 +4,8 @@
     "strict": true,
     "paths": {
       "@xmartlabs/react-native-line": ["./../src/index.ts"],
-      "@/*": ["./*"]
+      "@/*": ["./src/*"],
+      "@/assets/*": ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]

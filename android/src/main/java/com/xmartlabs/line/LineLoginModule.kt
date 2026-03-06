@@ -242,10 +242,6 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
         }
     }
 
-    /**
-     * [expiresIn] is seconds-until-expiry (OAuth standard `expires_in`),
-     * derived from the SDK's millisecond value.
-     */
     private fun buildAccessToken(token: LineAccessToken, idToken: LineIdToken?): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
@@ -286,7 +282,7 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
     private fun buildVerifyResult(credential: LineCredential): WritableMap =
         Arguments.makeNativeMap(
             mapOf(
-                "channelId"  to channelId,
+                "channelId" to channelId,
                 "expiresIn" to credential.accessToken.expiresInMillis / 1000L,
                 "scope"     to Scope.join(credential.scopes),
             )
