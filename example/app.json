@@ -17,7 +17,6 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.xmartlabs.line.example"
     },
     "web": {
@@ -26,6 +25,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@xmartlabs/react-native-line",
       [
         "expo-build-properties",
         {
@@ -34,6 +34,7 @@
           }
         }
       ],
+      "expo-font",
       "expo-router",
       [
         "expo-splash-screen",
@@ -44,11 +45,10 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "@xmartlabs/react-native-line",
-      "expo-web-browser",
-      "expo-font"
+      "expo-web-browser"
     ],
     "experiments": {
+      "reactCompiler": true,
       "typedRoutes": true
     }
   }

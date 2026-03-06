@@ -1,12 +1,12 @@
 import { Stack } from 'expo-router'
 
-import { useListenLocalStorage } from '@/common/localStorage'
+import { useSession } from '@/common/localStorage'
 import { Spinner } from '@/components/Spinner'
 import { useSplashScreen } from '@/hooks/useSplashScreen'
 
 export default function AppLayout() {
+  const [session] = useSession()
   const ready = useSplashScreen()
-  const [accessToken] = useListenLocalStorage('accessToken')
 
   if (!ready) {
     return <Spinner />
@@ -14,10 +14,10 @@ export default function AppLayout() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={Boolean(accessToken)}>
+      <Stack.Protected guard={!!session}>
         <Stack.Screen name="index" />
       </Stack.Protected>
-      <Stack.Protected guard={!Boolean(accessToken)}>
+      <Stack.Protected guard={!session}>
         <Stack.Screen name="login" />
       </Stack.Protected>
     </Stack>
