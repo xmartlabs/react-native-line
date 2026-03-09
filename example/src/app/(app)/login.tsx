@@ -1,6 +1,4 @@
 import Line from '@xmartlabs/react-native-line'
-import * as Haptics from 'expo-haptics'
-import { useRouter } from 'expo-router'
 import { Fragment, useState } from 'react'
 import { Alert, Image, StyleSheet } from 'react-native'
 
@@ -11,17 +9,15 @@ import { LineButton } from '@/components/LineButton'
 import { ThemedView } from '@/components/ThemedView'
 
 export default function LoginScreen() {
-  const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
 
   function logIn() {
     setLoading(true)
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
     return Line.login({})
       .then(result => {
-        if (!result.accessToken.accessToken) return
-        setLocalStorageItem('accessToken', result.accessToken.accessToken)
-        router.replace('/')
+        if (result.accessToken.accessToken) {
+          setLocalStorageItem('accessToken', result.accessToken.accessToken)
+        }
       })
       .catch(() => {
         Alert.alert(strings.errorTitle, strings.errorMessage)

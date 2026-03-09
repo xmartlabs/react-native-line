@@ -4,19 +4,23 @@ import { useEffect, useState } from 'react'
 
 import SpaceMono from '@/assets/fonts/SpaceMono-Regular.ttf'
 
+import { useReactNativeLine } from './useReactNativeLine'
+
 ExpoSplashScreen.preventAutoHideAsync()
 ExpoSplashScreen.setOptions({ duration: 200, fade: true })
 
 export const useSplashScreen = () => {
   const [loadedSpaceMono] = useFonts({ SpaceMono })
-  const [ready, setReady] = useState(false)
+  const reactNativeLineReady = useReactNativeLine()
+
+  const [ready, setReady] = useState<boolean>(false)
 
   useEffect(() => {
-    if (loadedSpaceMono) {
+    if (loadedSpaceMono && reactNativeLineReady) {
       setReady(true)
       ExpoSplashScreen.hide()
     }
-  }, [loadedSpaceMono])
+  }, [loadedSpaceMono, reactNativeLineReady])
 
   return ready
 }

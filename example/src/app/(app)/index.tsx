@@ -2,7 +2,6 @@ import Line, {
   type AccessToken,
   type UserProfile,
 } from '@xmartlabs/react-native-line'
-import { useRouter } from 'expo-router'
 import { Fragment, useEffect, useState } from 'react'
 import { Alert, Dimensions, Image, StyleSheet, View } from 'react-native'
 
@@ -18,20 +17,18 @@ import { ThemedView } from '@/components/ThemedView'
 import { Color } from '@/constants/color'
 
 function handleError(error: LineError) {
-  let errorTitle = strings.errorTitle
-  let errorMessage = strings.errorMessage
+  let header = strings.errorTitle
+  let message = strings.errorMessage
   try {
     const userInfo = JSON.parse(error.userInfo?.message ?? '')
-    errorTitle = errorTitle + userInfo.statusCode
-    errorMessage = errorMessage + strings.errorMessage
+    if (userInfo.code) header = header + userInfo.code
+    if (userInfo.message) message = userInfo.message
   } finally {
-    return Alert.alert(errorTitle, errorMessage)
+    return Alert.alert(header, message)
   }
 }
 
 export default function HomeScreen() {
-  const router = useRouter()
-
   const [loading, setLoading] = useState<boolean>(true)
   const [token, setToken] = useState<AccessToken>()
   const [user, setUser] = useState<UserProfile>()
@@ -51,7 +48,6 @@ export default function HomeScreen() {
     return Line.logout()
       .then(() => {
         removeLocalStorageItem('accessToken')
-        router.replace('/')
       })
       .finally(() => setLoading(false))
   }
@@ -59,7 +55,9 @@ export default function HomeScreen() {
   function getFriendshipStatus() {
     setLoading(true)
     return Line.getFriendshipStatus()
-      .then(result => Alert.alert(strings.isFriend, String(result.friendFlag)))
+      .then(result => {
+        Alert.alert(strings.isFriend, String(result.friendFlag))
+      })
       .catch(handleError)
       .finally(() => setLoading(false))
   }
