@@ -50,7 +50,7 @@ import LineSDK
     isLoginInProgress = true
     loginLock.unlock()
 
-    let scopes = (arguments["scopes"] as? [String])?.map { LoginPermission(rawValue: $0) } ?? [.profile]
+    let scopes = (arguments["scopes"] as? [String])?.compactMap { LoginPermission(rawValue: $0) } ?? [.profile]
     let onlyWebLogin = (arguments["onlyWebLogin"] as? Bool) ?? false
     var parameters = LoginManager.Parameters()
 
@@ -58,8 +58,8 @@ import LineSDK
 
     if let botPromptRaw = arguments["botPrompt"] as? String {
       switch botPromptRaw {
-      case "aggressive": parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "aggressive")
-      case "normal":     parameters.botPromptStyle = LoginManager.BotPrompt(rawValue: "normal")
+      case "aggressive": parameters.botPromptStyle = .aggressive
+      case "normal":     parameters.botPromptStyle = .normal
       default:
         loginLock.lock()
         isLoginInProgress = false
@@ -74,12 +74,13 @@ import LineSDK
         permissions: Set(scopes),
         in: nil,
         parameters: parameters) { [weak self] result in
-          guard let self else { return }
-          self.loginLock.lock()
-          self.isLoginInProgress = false
-          self.loginLock.unlock()
+          if let self {
+            self.loginLock.lock()
+            self.isLoginInProgress = false
+            self.loginLock.unlock()
+          }
           switch result {
-          case .success(let value): resolve(self.parseLoginResult(value))
+          case .success(let value): resolve(self?.parseLoginResult(value))
           case .failure(let error): error.rejecter(reject)
           }
         }

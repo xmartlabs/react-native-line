@@ -7,20 +7,21 @@
     "icon": "./assets/images/icon.png",
     "scheme": "example",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.xmartlabs.line.example"
+      "bundleIdentifier": "com.xmartlabs.line.example",
+      "icon": "./assets/expo.icon"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#06C755",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "package": "com.xmartlabs.line.example"
+      "package": "com.xmartlabs.line.example",
+      "predictiveBackGestureEnabled": false
     },
     "web": {
-      "bundler": "metro",
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
@@ -39,17 +40,18 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#06C755",
+          "android": {
+            "image": "./assets/images/splash-icon.png",
+            "imageWidth": 200
+          }
         }
       ],
       "expo-web-browser"
     ],
     "experiments": {
-      "reactCompiler": true,
-      "typedRoutes": true
+      "typedRoutes": true,
+      "reactCompiler": true
     }
   }
 }

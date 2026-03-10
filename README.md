@@ -254,7 +254,7 @@ The full web flow:
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `clientId` | `string` | The channel ID the access token was issued for. |
+| `channelId` | `string` | The channel ID the access token was issued for. |
 | `expiresIn` | `number` | Seconds until the token expires. |
 | `scope` | `string` | Space-separated list of scopes granted to the token. |
 
