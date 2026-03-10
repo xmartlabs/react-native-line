@@ -3,7 +3,7 @@ import Line, {
   type UserProfile,
 } from '@xmartlabs/react-native-line'
 import { Fragment, useEffect, useState } from 'react'
-import { Alert, Dimensions, Image, StyleSheet, View } from 'react-native'
+import { Alert, Image, StyleSheet, View } from 'react-native'
 
 import { LineError } from '@/common/errors'
 import {
@@ -131,10 +131,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: Color.Gray,
     borderColor: Color.LightGray,
-    borderRadius: Dimensions.get('window').width / 1.5,
+    borderRadius: 100,
     borderWidth: 0.5,
-    height: Dimensions.get('window').width / 3,
+    height: 200,
     resizeMode: 'cover',
-    width: Dimensions.get('window').width / 3,
+    width: 200,
   },
 })

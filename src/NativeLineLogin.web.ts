@@ -24,7 +24,7 @@ let redirectUri = ''
 
 interface Session {
   accessToken: string
-  expiresIn: number
+  expiresAt: number
   idToken?: string
   refreshToken?: string
 }
@@ -53,7 +53,7 @@ function requireSession(): Session {
 function sessionToToken(session: Session): AccessToken {
   return {
     accessToken: session.accessToken,
-    expiresIn: session.expiresIn,
+    expiresIn: Math.max(0, Math.floor((session.expiresAt - Date.now()) / 1000)),
     ...(session.idToken ? { idToken: session.idToken } : {}),
   }
 }
@@ -120,9 +120,7 @@ async function login(params: LoginParams): Promise<LoginResult> {
           popup.close()
           resolve(url)
         }
-      } catch {
-        // Still on LINE's domain (cross-origin) — keep polling.
-      }
+      } catch {}
     }, 200)
   })
 
@@ -152,7 +150,7 @@ async function login(params: LoginParams): Promise<LoginResult> {
 
   const session: Session = {
     accessToken: tokenData.access_token,
-    expiresIn: tokenData.expires_in,
+    expiresAt: Date.now() + tokenData.expires_in * 1000,
     ...(tokenData.id_token ? { idToken: tokenData.id_token } : {}),
     ...(tokenData.refresh_token
       ? { refreshToken: tokenData.refresh_token }
@@ -181,15 +179,17 @@ async function login(params: LoginParams): Promise<LoginResult> {
 async function logout(): Promise<void> {
   const session = loadSession()
   if (session && channelId) {
-    const body = new URLSearchParams({
-      access_token: session.accessToken,
-      client_id: channelId,
-    })
-    await fetch(LINE_REVOKE_URL, {
-      body: body.toString(),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      method: 'POST',
-    })
+    try {
+      const body = new URLSearchParams({
+        access_token: session.accessToken,
+        client_id: channelId,
+      })
+      await fetch(LINE_REVOKE_URL, {
+        body: body.toString(),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        method: 'POST',
+      })
+    } catch {}
   }
   sessionStorage.removeItem(SESSION_KEY)
 }
@@ -215,7 +215,7 @@ async function refreshAccessToken(): Promise<AccessToken> {
   const data = await res.json()
   const updated: Session = {
     accessToken: data.access_token,
-    expiresIn: data.expires_in,
+    expiresAt: Date.now() + data.expires_in * 1000,
     ...(data.id_token ? { idToken: data.id_token } : {}),
     refreshToken: data.refresh_token ?? session.refreshToken,
   }

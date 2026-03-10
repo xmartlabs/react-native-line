@@ -28,7 +28,7 @@ export interface SetupParams {
   readonly universalLinkUrl?: string
   /**
    * The URL LINE redirects back to after login.
-   * Defaults to `${window.location.origin}/login`.
+   * Defaults to `window.location.origin`.
    * @platform web
    */
   readonly redirectUri?: string
