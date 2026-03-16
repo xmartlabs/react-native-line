@@ -1,6 +1,6 @@
 import parser from '@typescript-eslint/parser'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
-import simpleKeySort from 'eslint-plugin-simple-key-sort'
+import simpleSortKeys from 'eslint-plugin-simple-sort-keys'
 import tseslint from 'typescript-eslint'
 
 export default [
@@ -14,7 +14,7 @@ export default [
     },
     plugins: {
       'simple-import-sort': simpleImportSort,
-      'simple-key-sort': simpleKeySort,
+      'simple-sort-keys': simpleSortKeys,
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -25,7 +25,7 @@ export default [
       'no-duplicate-imports': ['error', { includeExports: true }],
       'simple-import-sort/exports': 'error',
       'simple-import-sort/imports': 'error',
-      'simple-key-sort/sort': 'error',
+      'simple-sort-keys/sort': 'error',
     },
   },
   ...tseslint.configs.recommended,
