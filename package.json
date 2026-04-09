@@ -29,15 +29,15 @@
     "start:app": "npm --prefix example run start"
   },
   "devDependencies": {
-    "@expo/config-plugins": "^55.0.7",
-    "@typescript-eslint/parser": "^8.57.2",
-    "eslint": "^10.1.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "@expo/config-plugins": "^55.0.8",
+    "@typescript-eslint/parser": "^8.58.1",
+    "eslint": "^10.2.0",
+    "eslint-plugin-simple-import-sort": "^13.0.0",
     "eslint-plugin-simple-sort-keys": "^1.0.1",
     "prettier": "^3.8.1",
-    "react-native": "0.83.2",
+    "react-native": "0.83.4",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.2"
+    "typescript-eslint": "^8.58.1"
   },
   "peerDependencies": {
     "react": "*",
