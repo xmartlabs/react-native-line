@@ -2,7 +2,7 @@ import Line from '@xmartlabs/react-native-line'
 import { useLayoutEffect, useState } from 'react'
 import { Alert } from 'react-native'
 
-import { isWebPlatform } from '@/common/platform'
+import { isWebPlatform } from '@/constants/platform'
 
 export const useReactNativeLine = () => {
   const [ready, setReady] = useState<boolean>(false)
