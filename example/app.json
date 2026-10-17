@@ -31,6 +31,7 @@
         "expo-build-properties",
         {
           "ios": {
+            "enableSceneSupport": true,
             "useFrameworks": "static"
           }
         }
@@ -47,7 +48,8 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true,
