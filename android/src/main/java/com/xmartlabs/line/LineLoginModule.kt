@@ -91,7 +91,7 @@ class LineLoginModule(reactContext: ReactApplicationContext) :
                 null,
             )
 
-        val activity = currentActivity
+        val activity = reactApplicationContext.currentActivity
             ?: return promise.reject("NO_ACTIVITY", "Activity is not available", null)
 
         if (!pendingLogin.compareAndSet(null, promise)) {
